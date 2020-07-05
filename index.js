@@ -26,7 +26,7 @@ function rollall(message, TEAMmode) {
             var eachdice = '';
             var dices = 0;
             if (cliche.indexOf('(') + cliche.indexOf('[') < 0) {
-                dices = parseInt(cliche.replace(/[^0-9-]/g, ''));
+                dices = parseInt(cliche.split(' ')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
                 if (isNaN(dices)) return;
                 if (dices > 50) {
                     allroll += parse('%s - !เกินขีดจำกัด50\n', cliche);
@@ -45,9 +45,9 @@ function rollall(message, TEAMmode) {
             }
             var bracket = '('
             var bracket2 = ')'
-            if (cliche.indexOf('(') < 0) bracket = '[';
-            if (cliche.indexOf(')') < 0) bracket2 = ']';
-            dices = parseInt(cliche.split(bracket)[1].split('/')[0].replace(/[^0-9-]/g, ''));
+            if (cliche.indexOf('(') < 0) if (cliche.indexOf('[') > -1) bracket = '[';
+            if (cliche.indexOf(')') < 0) if (cliche.indexOf(']') > -1) bracket2 = ']';
+            dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
             if (isNaN(dices)) return;
             if (dices > 50) {
                 allroll += parse('%s - !เกินขีดจำกัด50\n', cliche);
