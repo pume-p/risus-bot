@@ -20,6 +20,7 @@ function rollall(message, TEAMmode) {
     cliches[0] = cliches[0].slice(1);
     var allroll = '';
     cliches.forEach(function (cliche) {
+        var TEAMscore6s = 0;
         try {
             if (cliche.length < 1) return;
             var result = 0;
@@ -36,17 +37,20 @@ function rollall(message, TEAMmode) {
                     var random = Math.floor(Math.random() * 6) + 1;
                     eachdice += random + ' ';
                     if (TEAMmode)
-                        if (random != 6) random = 0;
+                        if (random == 6) TEAMscore6s++;
+                        else random = 0;
                     result += random;
                 }
-                var modifier = modification(cliche, result);
+                if (!TEAMmode) var modifier = modification(cliche, result);
                 allroll += parse('%s:%s%s\n', eachdice, result, modifier);
                 return;
             }
             var bracket = '('
             var bracket2 = ')'
-            if (cliche.indexOf('(') < 0) if (cliche.indexOf('[') > -1) bracket = '[';
-            if (cliche.indexOf(')') < 0) if (cliche.indexOf(']') > -1) bracket2 = ']';
+            if (cliche.indexOf('(') < 0)
+                if (cliche.indexOf('[') > -1) bracket = '[';
+            if (cliche.indexOf(')') < 0)
+                if (cliche.indexOf(']') > -1) bracket2 = ']';
             dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
             if (isNaN(dices)) return;
             if (dices > 50) {
@@ -65,8 +69,11 @@ function rollall(message, TEAMmode) {
         } catch (e) {} finally {}
     });
     if (allroll.length > 0) {
+        var TEAMscore = '';
+        if (TEAMmode)
+            TEAMscore = parse('\nTEAM= %s* =%s', TEAMscore6s, TEAMscore6s * 6)
         console.log(parse('%s - %s\n%s\n%s\n---', message.member.displayName, message.channel.name, message.content, allroll));
-        message.channel.send('```' + allroll + '```');
+        message.channel.send('```' + allroll + TEAMscore + '```');
     }
 }
 
