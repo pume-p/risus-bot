@@ -3,6 +3,14 @@ const client = new Discord.Client();
 
 client.once('ready', () => {
     console.log('Ready!\n---');
+    lodge = client.channels.get('685745431107338275');
+    lodge.join().then(connection => {
+        const dispatcher = connection.playFile('./lodgeAudio.mp3');
+        dispatcher.setVolume(0.5);
+        dispatcher.on('end', () => {
+            connection.playFile('./lodgeAudio.mp3');
+        });
+    }).catch(err => console.log(err));
 });
 
 client.login(process.env.token);
@@ -13,6 +21,10 @@ client.on('message', message => {
     } else if (message.content.charAt(0) === '$') {
         rollall(message, true)
     }
+});
+
+client.on('guildMemberAdd', member => {
+    member.send('ยินดีต้อนรับสู่Risusiverse Thai!');
 });
 
 function rollall(message, TEAMmode) {
