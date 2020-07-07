@@ -3,7 +3,7 @@ const client = new Discord.Client();
 
 client.once('ready', () => {
     console.log('Ready!\n---');
-    lodge = client.channels.get('685745431107338275');
+    lodge = client.channels.cache.get('685745431107338275');
     lodge.join().then(connection => {
         const dispatcher = connection.playFile('./lodgeAudio.mp3');
         dispatcher.setVolume(0.5);
