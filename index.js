@@ -24,7 +24,7 @@ client.on('message', message => {
 });
 
 client.on('guildMemberAdd', member => {
-    member.send('ยินดีต้อนรับสู่Risusiverse Thai!');
+    member.send('**ยินดีต้อนรับสู่Risusiverse Thai!**');
 });
 
 function rollall(message, TEAMmode) {
