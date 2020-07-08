@@ -12,7 +12,7 @@ client.once('ready', () => {
 
 function loopmusic(connection) {
     const dispatcher = connection.play('lodgeAudio.mp3', {
-        volume: 0.5
+        volume: 0.375
     });
     dispatcher.on('end', () => {
         loopmusic(connection);
