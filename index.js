@@ -7,18 +7,20 @@ var music = ['AHIT-7.mp3', 'AHIT-14.mp3', 'AHIT-23.mp3', 'AHIT-25.mp3', 'AHIT-66
 var playing = false;
 var lodge;
 var ch;
+var connected = false;
 client.once('ready', () => {
     console.log('Ready!\n---');
     lodge = client.channels.cache.get('685745431107338275');
     lodge.join().then(connection => {
         ch = connection;
+        connected = true;
         console.log('Lodge joined\n---');
         CheckUserInLodge();
     });
 });
 
 client.on('voiceStateUpdate', () => {
-    CheckUserInLodge();
+    if (connected) CheckUserInLodge();
 });
 
 function CheckUserInLodge() {
@@ -31,7 +33,7 @@ function CheckUserInLodge() {
 
 function loopmusic(connection, lodge) {
     const dispatcher = connection.play(music[Math.floor(Math.random() * music.length)], {
-        volume: 0.25
+        volume: 0.275
     });
     dispatcher.on('finish', () => {
         console.log('music finish playing\n---');
