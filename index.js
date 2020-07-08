@@ -5,13 +5,19 @@ client.once('ready', () => {
     console.log('Ready!\n---');
     lodge = client.channels.cache.get('685745431107338275');
     lodge.join().then(connection => {
-        const dispatcher = connection.play('lodgeAudio.mp3');
-        dispatcher.setVolume(0.5);
-        dispatcher.on('end', () => {
-            connection.play('lodgeAudio.mp3');
-        });
+        console.log('Start playing music in Lodge\n---');
+        loopmusic(connection);
     }).catch(err => console.log(err));
 });
+
+function loopmusic(connection) {
+    const dispatcher = connection.play('lodgeAudio.mp3', {
+        volume: 0.5
+    });
+    dispatcher.on('end', () => {
+        loopmusic(connection);
+    });
+}
 
 client.login(process.env.token);
 
