@@ -2,6 +2,8 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 client.login(process.env.token);
 
+var music = ['AHIT-7.mp3', 'AHIT-14.mp3', 'AHIT-23.mp3', 'AHIT-25.mp3', 'AHIT-66.mp3', 'AHITB-4.mp3', 'AHITB-7.mp3', 'AHITB-9.mp3', 'AHITB-100.mp3', 'Z-LS-3.mp3'];
+
 var playing = false;
 var lodge;
 var ch;
@@ -23,12 +25,13 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 });
 
 function loopmusic(connection, lodge) {
-    const dispatcher = connection.play('lodgeAudio.mp3', {
+    const dispatcher = connection.play(music[Math.floor(Math.random() * music.length)], {
         volume: 0.375
     });
     dispatcher.on('finish', () => {
+        console.log('music finish playing\n---');
         if (newState.channel.members.size > 1) {
-            loopmusic(ch, lodge);
+            loopmusic(connection, lodge);
             console.log('restarting music\n---');
         } else playing = false;
     });
