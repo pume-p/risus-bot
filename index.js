@@ -3,7 +3,7 @@ const client = new Discord.Client();
 client.login(process.env.token);
 
 var playing = false;
-lodge = client.channels.cache.get('685745431107338275');
+var lodge = client.channels.cache.get('685745431107338275');
 var ch;
 client.once('ready', () => {
     console.log('Ready!\n---');
