@@ -1,25 +1,36 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
+client.login(process.env.token);
 
+var playing = false;
+lodge = client.channels.cache.get('685745431107338275');
+var ch;
 client.once('ready', () => {
     console.log('Ready!\n---');
-    lodge = client.channels.cache.get('685745431107338275');
     lodge.join().then(connection => {
-        console.log('Start playing music in Lodge\n---');
-        loopmusic(connection);
+        ch = connection;
     }).catch(err => console.log(err));
 });
 
-function loopmusic(connection) {
+client.on('voiceStateUpdate', (oldState, newState) => {
+    if (newState.channel.members.size > 1 && !playing) {
+        loopmusic(ch, lodge);
+        playing = true;
+        console.log('Start playing music in Lodge\n---');
+    }
+});
+
+function loopmusic(connection, lodge) {
     const dispatcher = connection.play('lodgeAudio.mp3', {
         volume: 0.375
     });
-    dispatcher.on('end', () => {
-        loopmusic(connection);
+    dispatcher.on('finish', () => {
+        if (newState.channel.members.size > 1) {
+            loopmusic(ch, lodge);
+            console.log('restarting music\n---');
+        } else playing = false;
     });
 }
-
-client.login(process.env.token);
 
 client.on('message', message => {
     if (message.content.charAt(0) === '!') {
