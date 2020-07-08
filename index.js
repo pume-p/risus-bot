@@ -13,20 +13,25 @@ client.once('ready', () => {
     lodge.join().then(connection => {
         ch = connection;
         console.log('Lodge joined\n---');
+        CheckUserInLodge();
     });
 });
 
-client.on('voiceStateUpdate', (oldState, newState) => {
-    if (newState.channel.members.size > 1 && !playing) {
+client.on('voiceStateUpdate', () => {
+    CheckUserInLodge();
+});
+
+function CheckUserInLodge() {
+    if (lodge.members.size > 1 && !playing) {
         loopmusic(ch, lodge);
         playing = true;
         console.log('Start playing music in Lodge\n---');
     }
-});
+}
 
 function loopmusic(connection, lodge) {
     const dispatcher = connection.play(music[Math.floor(Math.random() * music.length)], {
-        volume: 0.375
+        volume: 0.25
     });
     dispatcher.on('finish', () => {
         console.log('music finish playing\n---');
