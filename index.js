@@ -37,7 +37,7 @@ function loopmusic(connection, lodge) {
     });
     dispatcher.on('finish', () => {
         console.log('music finish playing\n---');
-        if (newState.channel.members.size > 1) {
+        if (lodge.members.size > 1) {
             loopmusic(connection, lodge);
             console.log('restarting music\n---');
         } else playing = false;
