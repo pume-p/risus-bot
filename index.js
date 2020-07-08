@@ -3,14 +3,14 @@ const client = new Discord.Client();
 
 client.once('ready', () => {
     console.log('Ready!\n---');
-    /*lodge = client.channels.cache.get('685745431107338275');
+    lodge = client.channels.cache.get('685745431107338275');
     lodge.join().then(connection => {
         const dispatcher = connection.play('lodgeAudio.mp3');
         dispatcher.setVolume(0.5);
         dispatcher.on('end', () => {
             connection.play('lodgeAudio.mp3');
         });
-    }).catch(err => console.log(err));*/
+    }).catch(err => console.log(err));
 });
 
 client.login(process.env.token);
