@@ -3,10 +3,11 @@ const client = new Discord.Client();
 client.login(process.env.token);
 
 var playing = false;
-var lodge = client.channels.cache.get('685745431107338275');
+var lodge;
 var ch;
 client.once('ready', () => {
     console.log('Ready!\n---');
+    lodge = client.channels.cache.get('685745431107338275');
     lodge.join().then(connection => {
         ch = connection;
         console.log('Lodge joined\n---');
