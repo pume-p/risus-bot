@@ -9,7 +9,8 @@ client.once('ready', () => {
     console.log('Ready!\n---');
     lodge.join().then(connection => {
         ch = connection;
-    }).catch(err => console.log(err));
+        console.log('Lodge joined\n---');
+    });
 });
 
 client.on('voiceStateUpdate', (oldState, newState) => {
