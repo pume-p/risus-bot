@@ -88,6 +88,8 @@ function rollall(message, TEAMmode) {
                     allroll += parse('> *%s - !เกินขีดจำกัด50*\n', cliche);
                     return;
                 }
+                if (cliche.indexOf('+') > -1)
+                    dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
                 for (var i = 0; i < dices; i++) {
                     var random = Math.floor(Math.random() * 6) + 1;
                     eachdice += typeEmoji(random);
@@ -96,7 +98,6 @@ function rollall(message, TEAMmode) {
                         else random = 0;
                     result += random;
                 }
-                if (!TEAMmode) modifier = modification(cliche, result);
                 allroll += parse('> **%s :%s%s**\n', eachdice, result, modifier);
                 return;
             }
@@ -112,6 +113,8 @@ function rollall(message, TEAMmode) {
                 allroll += parse('> *%s - !เกินขีดจำกัด50*\n', cliche);
                 return;
             }
+            if (cliche.indexOf('+') > -1)
+                dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
             for (var i = 0; i < dices; i++) {
                 var random = Math.floor(Math.random() * 6) + 1;
                 eachdice += typeEmoji(random);
@@ -120,7 +123,6 @@ function rollall(message, TEAMmode) {
                     else random = 0;
                 result += random;
             }
-            modifier = modification(cliche, result);
             allroll += parse('> **%s%s: %s :%s%s**\n', cliche.split(bracket2)[0], bracket2, eachdice, result, modifier);
         } catch (e) {} finally {}
     });
@@ -138,17 +140,6 @@ function parse(str) {
     var args = [].slice.call(arguments, 1),
         i = 0;
     return str.replace(/%s/g, () => args[i++]);
-}
-
-function modification(cliche, result) {
-    if (cliche.indexOf('+') + cliche.indexOf('-') > -1) {
-        if (cliche.indexOf('+') > -1) var symbol = '+';
-        else var symbol = '-';
-        var modify = parseInt(cliche.split(symbol)[1].replace(/[^0-9-]/g, ''));
-        if (cliche.indexOf('+') > -1) var NEWresult = result + modify;
-        else var NEWresult = result - modify;
-        return (parse(' %s%s: %s', symbol, modify, NEWresult));
-    } else return '';
 }
 
 function typeEmoji(num) {
@@ -171,6 +162,9 @@ function typeEmoji(num) {
             break;
         case 6:
             id = '726851451019722882';
+            break;
+        default:
+            id = '726851299152232515'
             break;
     }
     return parse('<:d%s:%s>', num, id);
