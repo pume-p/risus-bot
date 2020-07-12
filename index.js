@@ -12,10 +12,6 @@ var ch;
 var connected = false;
 client.once('ready', () => {
     console.log('Ready!\n---');
-
-    for (var i = 1; i <= 6; i++) {
-        console.log(client.emojis.cache.find(emoji => emoji.name === 'd' + i));
-    }
     fs.readdir(musicFolder, (err, files) => music = files);
     lodge = client.channels.cache.get('685745431107338275');
     updatestat();
@@ -94,7 +90,7 @@ function rollall(message, TEAMmode) {
                 }
                 for (var i = 0; i < dices; i++) {
                     var random = Math.floor(Math.random() * 6) + 1;
-                    eachdice += ':d' + random + ':';
+                    eachdice += typeEmoji(random);
                     if (TEAMmode)
                         if (random == 6) TEAMscore6s++;
                         else random = 0;
@@ -153,4 +149,29 @@ function modification(cliche, result) {
         else var NEWresult = result - modify;
         return (parse(' %s%s: %s', symbol, modify, NEWresult));
     } else return '';
+}
+
+function typeEmoji(num) {
+    var id;
+    switch (1) {
+        case 1:
+            id = '726851299152232515';
+            break;
+        case 2:
+            id = '726851357784408207';
+            break;
+        case 3:
+            id = '726851383789355028';
+            break;
+        case 4:
+            id = '726851415179395132';
+            break;
+        case 5:
+            id = '726851433693184042';
+            break;
+        case 6:
+            id = '726851451019722882';
+            break;
+    }
+    return parse('<:d%s:%s>', num, id);
 }
