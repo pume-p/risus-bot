@@ -85,19 +85,19 @@ function rollall(message, TEAMmode) {
                 dices = parseInt(cliche.split(' ')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
                 if (isNaN(dices)) return;
                 if (dices > 50) {
-                    allroll += parse('%s - !เกินขีดจำกัด50\n', cliche);
+                    allroll += parse('> *%s - !เกินขีดจำกัด50*\n', cliche);
                     return;
                 }
                 for (var i = 0; i < dices; i++) {
                     var random = Math.floor(Math.random() * 6) + 1;
-                    eachdice += random + ' ';
+                    eachdice += ':d' + random + ':';
                     if (TEAMmode)
                         if (random == 6) TEAMscore6s++;
                         else random = 0;
                     result += random;
                 }
                 if (!TEAMmode) modifier = modification(cliche, result);
-                allroll += parse('%s:%s%s\n', eachdice, result, modifier);
+                allroll += parse('> **%s:%s%s**\n', eachdice, result, modifier);
                 return;
             }
             var bracket = '('
@@ -109,27 +109,27 @@ function rollall(message, TEAMmode) {
             dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
             if (isNaN(dices)) return;
             if (dices > 50) {
-                allroll += parse('%s - !เกินขีดจำกัด50\n', cliche);
+                allroll += parse('> *%s - !เกินขีดจำกัด50*\n', cliche);
                 return;
             }
             for (var i = 0; i < dices; i++) {
                 var random = Math.floor(Math.random() * 6) + 1;
-                eachdice += random + ' ';
+                eachdice += ':d' + random + ':';
                 if (TEAMmode)
                     if (random == 6) TEAMscore6s++;
                     else random = 0;
                 result += random;
             }
             modifier = modification(cliche, result);
-            allroll += parse('%s%s: %s:%s%s\n', cliche.split(bracket2)[0], bracket2, eachdice, result, modifier);
+            allroll += parse('> **%s%s: %s:%s%s**\n', cliche.split(bracket2)[0], bracket2, eachdice, result, modifier);
         } catch (e) {} finally {}
     });
     if (allroll.length > 0) {
         var TEAMscore = '';
         if (TEAMmode)
-            TEAMscore = parse('TEAM= %s* =%s', TEAMscore6s, TEAMscore6s * 6);
+            TEAMscore = parse('> ***TEAM= %s\\* =%s***', TEAMscore6s, TEAMscore6s * 6);
         console.log(parse('%s - %s\n%s\n%s\n---', message.member.displayName, message.channel.name, message.content, allroll));
-        message.channel.send('```' + allroll + TEAMscore + '```');
+        message.channel.send(allroll + TEAMscore);
     }
 }
 
