@@ -12,6 +12,10 @@ var ch;
 var connected = false;
 client.once('ready', () => {
     console.log('Ready!\n---');
+
+    for (var i = 1; i <= 6; i++) {
+        console.log(client.emojis.cache.find(emoji => emoji.name === 'd' + i));
+    }
     fs.readdir(musicFolder, (err, files) => music = files);
     lodge = client.channels.cache.get('685745431107338275');
     updatestat();
@@ -97,7 +101,7 @@ function rollall(message, TEAMmode) {
                     result += random;
                 }
                 if (!TEAMmode) modifier = modification(cliche, result);
-                allroll += parse('> **%s:%s%s**\n', eachdice, result, modifier);
+                allroll += parse('> **%s :%s%s**\n', eachdice, result, modifier);
                 return;
             }
             var bracket = '('
@@ -121,7 +125,7 @@ function rollall(message, TEAMmode) {
                 result += random;
             }
             modifier = modification(cliche, result);
-            allroll += parse('> **%s%s: %s:%s%s**\n', cliche.split(bracket2)[0], bracket2, eachdice, result, modifier);
+            allroll += parse('> **%s%s: %s :%s%s**\n', cliche.split(bracket2)[0], bracket2, eachdice, result, modifier);
         } catch (e) {} finally {}
     });
     if (allroll.length > 0) {
@@ -129,6 +133,7 @@ function rollall(message, TEAMmode) {
         if (TEAMmode)
             TEAMscore = parse('> ***TEAM= %s\\* =%s***', TEAMscore6s, TEAMscore6s * 6);
         console.log(parse('%s - %s\n%s\n%s\n---', message.member.displayName, message.channel.name, message.content, allroll));
+        allroll.replace()
         message.channel.send(allroll + TEAMscore);
     }
 }
