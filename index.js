@@ -2,15 +2,21 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 client.login(process.env.token);
 
-var music = ['AHIT-7.mp3', 'AHIT-14.mp3', 'AHIT-23.mp3', 'AHIT-25.mp3', 'AHIT-66.mp3', 'AHITB-4.mp3', 'AHITB-7.mp3', 'AHITB-9.mp3', 'AHITB-100.mp3', 'Z-LS-3.mp3'];
+var music = []//['AHIT-7.mp3', 'AHIT-14.mp3', 'AHIT-23.mp3', 'AHIT-25.mp3', 'AHIT-66.mp3', 'AHITB-4.mp3', 'AHITB-7.mp3', 'AHITB-9.mp3', 'AHITB-100.mp3', 'Z-LS-3.mp3'];
+const musicFolder = './LodgeMusic/';
+const fs = require('fs');
 
 var playing = false;
 var lodge;
+var statCategory;
 var ch;
 var connected = false;
 client.once('ready', () => {
     console.log('Ready!\n---');
+    fs.readdir(musicFolder, (err, files) => music.push(files));
     lodge = client.channels.cache.get('685745431107338275');
+    statCategory = client.channels.cache.get('731715856840785951');
+    updatestat();
     lodge.join().then(connection => {
         ch = connection;
         connected = true;
@@ -54,7 +60,16 @@ client.on('message', message => {
 
 client.on('guildMemberAdd', member => {
     member.send('**ยินดีต้อนรับสู่Risusiverse Thai!**');
+    updatestat();
 });
+
+client.on('guildMemberRemove', () => {
+    updatestat();
+});
+
+function updatestat() {
+    if (connected) statCategory.setName('total member : ' + client.guilds.cache.get('685745431107338271').memberCount.toString())
+}
 
 function rollall(message, TEAMmode) {
     var cliches = message.content.split('\n');
