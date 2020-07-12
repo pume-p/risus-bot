@@ -114,7 +114,7 @@ function rollall(message, TEAMmode) {
             }
             for (var i = 0; i < dices; i++) {
                 var random = Math.floor(Math.random() * 6) + 1;
-                eachdice += ':d' + random + ':';
+                eachdice += typeEmoji(random);
                 if (TEAMmode)
                     if (random == 6) TEAMscore6s++;
                     else random = 0;
@@ -153,7 +153,7 @@ function modification(cliche, result) {
 
 function typeEmoji(num) {
     var id;
-    switch (1) {
+    switch (num) {
         case 1:
             id = '726851299152232515';
             break;
