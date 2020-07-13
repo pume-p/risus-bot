@@ -6,6 +6,9 @@ var music = [];
 const musicFolder = './LodgeMusic/';
 const fs = require('fs');
 
+var memRole;
+var RTH;
+
 var playing = false;
 var lodge;
 var ch;
@@ -14,6 +17,8 @@ client.once('ready', () => {
     console.log('Ready!\n---');
     fs.readdir(musicFolder, (err, files) => music = files);
     lodge = client.channels.cache.get('685745431107338275');
+    RTH = client.guilds.cache.get('685745431107338271');
+    memRole = RTH.roles.cache.get('685759082702962715');
     updatestat();
     lodge.join().then(connection => {
         ch = connection;
@@ -49,6 +54,7 @@ function loopmusic(connection, lodge) {
 }
 
 client.on('message', message => {
+    message.member.roles.add(memRole);
     if (message.content.charAt(0) === '!') {
         rollall(message, false)
     } else if (message.content.charAt(0) === '$') {
@@ -66,7 +72,7 @@ client.on('guildMemberRemove', () => {
 });
 
 function updatestat() {
-    client.channels.cache.get('731715856840785951').setName('total member : ' + client.guilds.cache.get('685745431107338271').members.cache.filter(member => !member.user.bot).size);
+    client.channels.cache.get('731715856840785951').setName('total member : ' + RTH.members.cache.filter(member => !member.user.bot).size);
 }
 
 function rollall(message, TEAMmode) {
