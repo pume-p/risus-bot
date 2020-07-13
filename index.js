@@ -54,10 +54,9 @@ function loopmusic(connection, lodge) {
 }
 
 client.on('message', message => {
-    try {
-        if (message.author.bot) return;
-        message.member.roles.add(memRole);
-    } catch (e) {} finally {}
+    if (message.type != 'DEFAULT') return;
+    if (message.author.bot) return;
+    message.member.roles.add(memRole);
     if (message.content.charAt(0) === '!') {
         rollall(message, false)
     } else if (message.content.charAt(0) === '$') {
