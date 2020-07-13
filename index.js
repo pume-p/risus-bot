@@ -92,12 +92,12 @@ function rollall(message, TEAMmode) {
             if (cliche.indexOf('(') + cliche.indexOf('[') < 0) {
                 dices = parseInt(cliche.split(' ')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
                 if (isNaN(dices)) return;
+                if (cliche.indexOf('+') > -1)
+                    dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
                 if (dices > 50) {
                     allroll += parse('> *%s - !เกินขีดจำกัด50*\n', cliche);
                     return;
                 }
-                if (cliche.indexOf('+') > -1)
-                    dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
                 for (var i = 0; i < dices; i++) {
                     var random = Math.floor(Math.random() * 6) + 1;
                     eachdice += typeEmoji(random);
@@ -117,12 +117,12 @@ function rollall(message, TEAMmode) {
                 if (cliche.indexOf(']') > -1) bracket2 = ']';
             dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
             if (isNaN(dices)) return;
+            if (cliche.indexOf('+') > -1)
+                dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
             if (dices > 50) {
                 allroll += parse('> *%s - !เกินขีดจำกัด50*\n', cliche);
                 return;
             }
-            if (cliche.indexOf('+') > -1)
-                dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
             for (var i = 0; i < dices; i++) {
                 var random = Math.floor(Math.random() * 6) + 1;
                 eachdice += typeEmoji(random);
