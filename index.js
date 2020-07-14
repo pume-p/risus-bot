@@ -74,7 +74,7 @@ client.on('guildMemberRemove', () => {
 });
 
 function updatestat() {
-    client.channels.cache.get('731715856840785951').setName('total member : ' + RTH.fetchMembers.roles.get(memRole).members.size);
+    client.channels.cache.get('731715856840785951').setName('total member : ' + RTH.members.cache.filter(member => !member.memRole).size);
 }
 
 function rollall(message, TEAMmode) {
