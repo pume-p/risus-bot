@@ -33,11 +33,13 @@ client.on('voiceStateUpdate', () => {
 });
 
 function CheckUserInLodge() {
-    if (lodge.members.size > 1 && !playing) {
-        loopmusic(ch, lodge);
-        playing = true;
-        console.log('Start playing music in Lodge\n---');
-    }
+    try {
+        if (lodge.members.size > 1 && !playing) {
+            loopmusic(ch, lodge);
+            playing = true;
+            console.log('Start playing music in Lodge\n---');
+        }
+    } catch (e) {} finally {}
 }
 
 function loopmusic(connection, lodge) {
