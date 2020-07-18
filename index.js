@@ -59,6 +59,7 @@ client.on('message', message => {
     if (message.type != 'DEFAULT') return;
     if (message.author.bot) return;
     message.member.roles.add(memRole);
+    updatestat();
     if (message.content.charAt(0) === '!') {
         rollall(message, false)
     } else if (message.content.charAt(0) === '$') {
@@ -68,7 +69,6 @@ client.on('message', message => {
 
 client.on('guildMemberAdd', member => {
     member.send('**ยินดีต้อนรับสู่Risusiverse Thai!**');
-    updatestat();
 });
 
 client.on('guildMemberRemove', () => {
@@ -76,7 +76,7 @@ client.on('guildMemberRemove', () => {
 });
 
 function updatestat() {
-    client.channels.cache.get('731715856840785951').setName('total member : ' + memRole.members.size);
+    client.channels.cache.get('731715856840785951').setName('main | member : ' + memRole.members.size);
 }
 
 function rollall(message, TEAMmode) {
