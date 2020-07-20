@@ -6,9 +6,9 @@ var music = [];
 const musicFolder = './LodgeMusic/';
 const fs = require('fs');
 
+var RTH;
 var memRole;
 var gusRole;
-var RTH;
 
 var playing = false;
 var lodge;
@@ -35,26 +35,26 @@ client.on('voiceStateUpdate', () => {
 });
 
 function CheckUserInLodge() {
-    try {
-        if (lodge.members.size > 1 && !playing) {
-            loopmusic(ch, lodge);
-            playing = true;
-            console.log('Start playing music in Lodge\n---');
-        }
-    } catch (e) {} finally {}
+    if (lodge.members.size > 1 && !playing) {
+        loopmusic(ch, lodge);
+        playing = true;
+        console.log('Start playing music in Lodge\n---');
+    }
 }
 
 function loopmusic(connection, lodge) {
-    const dispatcher = connection.play(musicFolder + music[Math.floor(Math.random() * music.length)], {
-        volume: 0.275
-    });
-    dispatcher.on('finish', () => {
-        console.log('music finish playing\n---');
-        if (lodge.members.size > 1) {
-            loopmusic(connection, lodge);
-            console.log('restarting music\n---');
-        } else playing = false;
-    });
+    try {
+        const dispatcher = connection.play(musicFolder + music[Math.floor(Math.random() * music.length)], {
+            volume: 0.275
+        });
+        dispatcher.on('finish', () => {
+            console.log('music finish playing\n---');
+            if (lodge.members.size > 1) {
+                loopmusic(connection, lodge);
+                console.log('restarting music\n---');
+            } else playing = false;
+        });
+    } catch (e) {} finally {}
 }
 
 client.on('message', message => {
@@ -72,8 +72,12 @@ client.on('message', message => {
 
 client.on('guildMemberAdd', member => {
     member.send('**ยินดีต้อนรับสู่Risusiverse Thai!**');
-    if (member.user.bot) return;
+    if (member.user.bot) {
+        member.roles.add(RTH.roles.cache.get('685760520946843694'));
+        return;
+    }
     member.roles.add(gusRole);
+    client.channels.cache.get('685761491760447518').send('**ยินดีต้อนรับสมาชิกใหม่<<@' + member.id + '>>สู่Risusiverse Thai!**');
 });
 
 client.on('guildMemberRemove', () => {
