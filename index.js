@@ -7,6 +7,7 @@ const musicFolder = './LodgeMusic/';
 const fs = require('fs');
 
 var memRole;
+var gusRole;
 var RTH;
 
 var playing = false;
@@ -19,6 +20,7 @@ client.once('ready', () => {
     lodge = client.channels.cache.get('685745431107338275');
     RTH = client.guilds.cache.get('685745431107338271');
     memRole = RTH.roles.cache.get('685759082702962715');
+    gusRole = RTH.roles.cache.get('734830200944066591');
     updatestat();
     lodge.join().then(connection => {
         ch = connection;
@@ -59,6 +61,7 @@ client.on('message', message => {
     if (message.type != 'DEFAULT') return;
     if (message.author.bot) return;
     message.member.roles.add(memRole);
+    message.member.roles.remove(gusRole);
     updatestat();
     if (message.content.charAt(0) === '!') {
         rollall(message, false)
@@ -69,6 +72,8 @@ client.on('message', message => {
 
 client.on('guildMemberAdd', member => {
     member.send('**ยินดีต้อนรับสู่Risusiverse Thai!**');
+    if (member.user.bot) return;
+    member.roles.add(gusRole);
 });
 
 client.on('guildMemberRemove', () => {
