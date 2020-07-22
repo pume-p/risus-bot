@@ -28,7 +28,7 @@ client.once('ready', () => {
     gusRole = RTH.roles.cache.get('734830200944066591');
 
     //update
-    //RTH.members.forEach(member => {if(member)}); 
+    RTH.members.cache.filter(members => members.roles.cache.size == 1).forEach(member => joinSever(member)); 
     updatestat();
     lodge.join().then(connection => {
         ch = connection;
@@ -36,7 +36,7 @@ client.once('ready', () => {
         console.log('Lodge joined\n---');
         CheckUserInLodge();
     });
-    console.log(RTH.members.cache.filter(members => members.roles.cache.size == 1).size);
+    
     //loop
     /*setInterval(function () {
         if (infiLobby.every(ThereAnyone)) {
