@@ -10,17 +10,23 @@ var RTH;
 var memRole;
 var gusRole;
 
+var infiLobby = [];
+
 var playing = false;
 var lodge;
 var ch;
 var connected = false;
 client.once('ready', () => {
     console.log('Ready!\n---');
+    //setup
     fs.readdir(musicFolder, (err, files) => music = files);
-    lodge = client.channels.cache.get('685745431107338275');
     RTH = client.guilds.cache.get('685745431107338271');
+    lodge = RTH.channels.cache.get('685745431107338275');
+    infiLobby.push(RTH.channels.cache.get('729738385681547365'));
     memRole = RTH.roles.cache.get('685759082702962715');
     gusRole = RTH.roles.cache.get('734830200944066591');
+
+    //update
     updatestat();
     lodge.join().then(connection => {
         ch = connection;
@@ -28,34 +34,26 @@ client.once('ready', () => {
         console.log('Lodge joined\n---');
         CheckUserInLodge();
     });
+
+    //loop
+    setInterval(function () {
+        if (infiLobby.every(ThereAnyone)) {
+            var newLobby = RTH.channels.create('Lobby-' + infiLobby.length, {
+                type: 'voice',
+                position: infiLobby[infiLobby.length - 1].position
+            });
+            infiLobby.push(newLobby);
+        } else {
+            var emptyroom = [];
+            infiLobby.forEach(function (lobby) {
+                if (!ThereAnyone(lobby)) emptyroom.push(lobby);
+            })
+            if (emptyroom.length > 1)
+                for (var i = 1; i < emptyroom.length; i++)
+                    emptyroom[i].delete();
+        }
+    }, 60 * 1000);
 });
-
-client.on('voiceStateUpdate', () => {
-    if (connected) CheckUserInLodge();
-});
-
-function CheckUserInLodge() {
-    if (lodge.members.size > 1 && !playing) {
-        loopmusic(ch, lodge);
-        playing = true;
-        console.log('Start playing music in Lodge\n---');
-    }
-}
-
-function loopmusic(connection, lodge) {
-    try {
-        const dispatcher = connection.play(musicFolder + music[Math.floor(Math.random() * music.length)], {
-            volume: 0.275
-        });
-        dispatcher.on('finish', () => {
-            console.log('music finish playing\n---');
-            if (lodge.members.size > 1) {
-                loopmusic(connection, lodge);
-                console.log('restarting music\n---');
-            } else playing = false;
-        });
-    } catch (e) {} finally {}
-}
 
 client.on('message', message => {
     if (message.type != 'DEFAULT') return;
@@ -88,13 +86,51 @@ function updatestat() {
     client.channels.cache.get('731715856840785951').setName('main | member : ' + memRole.members.size);
 }
 
+//INFILOBBY
+
+function ThereAnyone(lobby) {
+    return lobby.members.size > 0;
+}
+
+//MUSIC CONTROL
+
+client.on('voiceStateUpdate', () => {
+    if (connected) CheckUserInLodge();
+});
+
+function CheckUserInLodge() {
+    if (lodge.members.size > 1 && !playing) {
+        loopmusic(ch, lodge);
+        playing = true;
+        console.log('Start playing music in Lodge\n---');
+    }
+}
+
+function loopmusic(connection, lodge) {
+    try {
+        const dispatcher = connection.play(musicFolder + music[Math.floor(Math.random() * music.length)], {
+            volume: 0.275
+        });
+        dispatcher.on('finish', () => {
+            console.log('music finish playing\n---');
+            if (lodge.members.size > 1) {
+                loopmusic(connection, lodge);
+                console.log('restarting music\n---');
+            } else playing = false;
+        });
+    } catch (e) {} finally {}
+}
+
+//DICE CONTROL
 function rollall(message, TEAMmode) {
     var cliches = message.content.split('\n');
     cliches[0] = cliches[0].slice(1);
     var allroll = '';
     var TEAMscore6s = 0;
+    var rolled = 0;
     cliches.forEach(function (cliche) {
         try {
+            if (rolled > 20) return;
             if (cliche.length < 1) return;
             var result = 0;
             var eachdice = '';
@@ -106,7 +142,7 @@ function rollall(message, TEAMmode) {
                 if (cliche.indexOf('+') > -1)
                     dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
                 if (dices > 50) {
-                    allroll += parse('> *%s - !เกินขีดจำกัด50*\n', cliche);
+                    allroll += `> *${cliche} - !เกินขีดจำกัด50*\n`;
                     return;
                 }
                 for (var i = 0; i < dices; i++) {
@@ -117,7 +153,8 @@ function rollall(message, TEAMmode) {
                         else random = 0;
                     result += random;
                 }
-                allroll += parse('> **%s :%s%s**\n', eachdice, result, modifier);
+                allroll += `> **${eachdice} :${result}${modifier}**\n`;
+                rolled++;
                 return;
             }
             var bracket = '('
@@ -131,7 +168,7 @@ function rollall(message, TEAMmode) {
             if (cliche.indexOf('+') > -1)
                 dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
             if (dices > 50) {
-                allroll += parse('> *%s - !เกินขีดจำกัด50*\n', cliche);
+                allroll += `> *${cliche} - !เกินขีดจำกัด50*\n`;
                 return;
             }
             for (var i = 0; i < dices; i++) {
@@ -142,23 +179,18 @@ function rollall(message, TEAMmode) {
                     else random = 0;
                 result += random;
             }
-            allroll += parse('> **%s%s: %s :%s%s**\n', cliche.split(bracket2)[0], bracket2, eachdice, result, modifier);
+            allroll += `> **${cliche.split(bracket2)[0]}${bracket2}: ${eachdice} :${result}${modifier}**\n`;
+            rolled++;
         } catch (e) {} finally {}
     });
     if (allroll.length > 0) {
         var TEAMscore = '';
         if (TEAMmode)
-            TEAMscore = parse('> ***TEAM= %s\\* =%s***', TEAMscore6s, TEAMscore6s * 6);
-        console.log(parse('%s - %s\n%s\n%s\n---', message.member.displayName, message.channel.name, message.content, allroll));
+            TEAMscore = `> ***TEAM= ${TEAMscore6s}\\* =${TEAMscore6s * 6}***`;
+        console.log(`${message.member.displayName} - ${message.channel.name}\n${message.content}\n${allroll}\n---`);
         allroll.replace()
         message.channel.send(allroll + TEAMscore);
     }
-}
-
-function parse(str) {
-    var args = [].slice.call(arguments, 1),
-        i = 0;
-    return str.replace(/%s/g, () => args[i++]);
 }
 
 function typeEmoji(num) {
@@ -186,5 +218,5 @@ function typeEmoji(num) {
             id = '726851299152232515'
             break;
     }
-    return parse('<:d%s:%s>', num, id);
+    return `<:d${num}:${id}>`;
 }
