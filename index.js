@@ -18,6 +18,7 @@ var ch;
 var connected = false;
 client.once('ready', () => {
     console.log('Ready!\n---');
+    
     //setup
     fs.readdir(musicFolder, (err, files) => music = files);
     RTH = client.guilds.cache.get('685745431107338271');
@@ -35,7 +36,7 @@ client.once('ready', () => {
         console.log('Lodge joined\n---');
         CheckUserInLodge();
     });
-
+    console.log(RTH.members.cache.filter(members => members.roles.cache.size == 1).size);
     //loop
     /*setInterval(function () {
         if (infiLobby.every(ThereAnyone)) {
