@@ -27,6 +27,7 @@ client.once('ready', () => {
     gusRole = RTH.roles.cache.get('734830200944066591');
 
     //update
+    //RTH.members.forEach(member => {if(member)}); 
     updatestat();
     lodge.join().then(connection => {
         ch = connection;
@@ -61,6 +62,8 @@ client.on('message', message => {
     message.member.roles.add(memRole);
     message.member.roles.remove(gusRole);
     updatestat();
+
+    //ROLL
     if (message.content.charAt(0) === '!') {
         rollall(message, false)
     } else if (message.content.charAt(0) === '$') {
@@ -68,7 +71,16 @@ client.on('message', message => {
     }
 });
 
-client.on('guildMemberAdd', member => {
+
+//ROLE &WELCOME
+
+client.on('guildMemberRemove', member => {
+    updatestat();
+});
+
+client.on('guildMemberAdd', member => joinSever(member));
+
+function joinSever(member) {
     member.send('**ยินดีต้อนรับสู่Risusiverse Thai!**');
     if (member.user.bot) {
         member.roles.add(RTH.roles.cache.get('685760520946843694'));
@@ -76,21 +88,22 @@ client.on('guildMemberAdd', member => {
     }
     member.roles.add(gusRole);
     client.channels.cache.get('685761491760447518').send('**ยินดีต้อนรับสมาชิกใหม่<<@' + member.id + '>>สู่Risusiverse Thai!**');
-});
+}
 
-client.on('guildMemberRemove', () => {
-    updatestat();
-});
+
+//STAT
 
 function updatestat() {
     client.channels.cache.get('731715856840785951').setName('main | member : ' + memRole.members.size);
 }
+
 
 //INFILOBBY
 
 function ThereAnyone(lobby) {
     return lobby.members.size > 0;
 }
+
 
 //MUSIC CONTROL
 
@@ -121,7 +134,9 @@ function loopmusic(connection, lodge) {
     } catch (e) {} finally {}
 }
 
+
 //DICE CONTROL
+
 function rollall(message, TEAMmode) {
     var cliches = message.content.split('\n');
     cliches[0] = cliches[0].slice(1);
@@ -129,7 +144,7 @@ function rollall(message, TEAMmode) {
     var rolled = 0;
     cliches.forEach(function (cliche) {
         try {
-            if (rolled > 15) return;
+            if (rolled >= 15) return;
             if (cliche.length < 1) return;
             var result = 0;
             var eachdice = '';
@@ -166,8 +181,8 @@ function rollall(message, TEAMmode) {
             if (isNaN(dices)) return;
             if (cliche.indexOf('+') > -1)
                 dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
-            if (dices > 50) {
-                sendMsgUnder2000(`> *${cliche} - !เกินขีดจำกัด50*`, false, message);
+            if (dices > 30) {
+                sendMsgUnder2000(`> *${cliche} - !เกินขีดจำกัด30*`, false, message);
                 return;
             }
             for (var i = 0; i < dices; i++) {
@@ -203,7 +218,7 @@ function sendMsgUnder2000(text, final, message) {
         message.channel.send(allText);
         allText = '';
     }
-    allText += text + '\n';
+    if (!final) allText += text + '\n';
 }
 
 function typeEmoji(num) {
