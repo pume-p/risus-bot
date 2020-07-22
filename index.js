@@ -36,7 +36,7 @@ client.once('ready', () => {
     });
 
     //loop
-    setInterval(function () {
+    /*setInterval(function () {
         if (infiLobby.every(ThereAnyone)) {
             var newLobby = RTH.channels.create('Lobby-' + infiLobby.length, {
                 type: 'voice',
@@ -52,7 +52,7 @@ client.once('ready', () => {
                 for (var i = 1; i < emptyroom.length; i++)
                     emptyroom[i].delete();
         }
-    }, 60 * 1000);
+    }, 60 * 1000);*/
 });
 
 client.on('message', message => {
@@ -125,12 +125,11 @@ function loopmusic(connection, lodge) {
 function rollall(message, TEAMmode) {
     var cliches = message.content.split('\n');
     cliches[0] = cliches[0].slice(1);
-    var allroll = '';
     var TEAMscore6s = 0;
     var rolled = 0;
     cliches.forEach(function (cliche) {
         try {
-            if (rolled > 20) return;
+            if (rolled > 15) return;
             if (cliche.length < 1) return;
             var result = 0;
             var eachdice = '';
@@ -141,8 +140,8 @@ function rollall(message, TEAMmode) {
                 if (isNaN(dices)) return;
                 if (cliche.indexOf('+') > -1)
                     dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
-                if (dices > 50) {
-                    allroll += `> *${cliche} - !เกินขีดจำกัด50*\n`;
+                if (dices > 30) {
+                    message.channel.send(`> *${cliche} - !เกินขีดจำกัด30*`);
                     return;
                 }
                 for (var i = 0; i < dices; i++) {
@@ -153,7 +152,7 @@ function rollall(message, TEAMmode) {
                         else random = 0;
                     result += random;
                 }
-                allroll += `> **${eachdice} :${result}${modifier}**\n`;
+                message.channel.send(`> **${eachdice} :${result}${modifier}**`);
                 rolled++;
                 return;
             }
@@ -168,7 +167,7 @@ function rollall(message, TEAMmode) {
             if (cliche.indexOf('+') > -1)
                 dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
             if (dices > 50) {
-                allroll += `> *${cliche} - !เกินขีดจำกัด50*\n`;
+                message.channel.send(`> *${cliche} - !เกินขีดจำกัด50*`);
                 return;
             }
             for (var i = 0; i < dices; i++) {
@@ -179,18 +178,15 @@ function rollall(message, TEAMmode) {
                     else random = 0;
                 result += random;
             }
-            allroll += `> **${cliche.split(bracket2)[0]}${bracket2}: ${eachdice} :${result}${modifier}**\n`;
+            message.channel.send(`> **${cliche.split(bracket2)[0]}${bracket2}: ${eachdice} :${result}${modifier}**`);
             rolled++;
         } catch (e) {} finally {}
     });
-    if (allroll.length > 0) {
-        var TEAMscore = '';
-        if (TEAMmode)
-            TEAMscore = `> ***TEAM= ${TEAMscore6s}\\* =${TEAMscore6s * 6}***`;
-        console.log(`${message.member.displayName} - ${message.channel.name}\n${message.content}\n${allroll}\n---`);
-        allroll.replace()
-        message.channel.send(allroll + TEAMscore);
-    }
+    var TEAMscore = '';
+    if (TEAMmode)
+        TEAMscore = `> ***TEAM= ${TEAMscore6s}\\* =${TEAMscore6s * 6}***`;
+    message.channel.send(TEAMscore);
+    console.log(`${message.member.displayName} - ${message.channel.name}\n${message.content}\n---`);
 }
 
 function typeEmoji(num) {
