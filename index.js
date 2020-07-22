@@ -141,7 +141,7 @@ function rollall(message, TEAMmode) {
                 if (cliche.indexOf('+') > -1)
                     dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
                 if (dices > 30) {
-                    message.channel.send(`> *${cliche} - !เกินขีดจำกัด30*`);
+                    sendMsgUnder2000(`> *${cliche} - !เกินขีดจำกัด30*`, false, message);
                     return;
                 }
                 for (var i = 0; i < dices; i++) {
@@ -152,7 +152,7 @@ function rollall(message, TEAMmode) {
                         else random = 0;
                     result += random;
                 }
-                message.channel.send(`> **${eachdice} :${result}${modifier}**`);
+                sendMsgUnder2000(`> **${eachdice} :${result}${modifier}**`, false, message);
                 rolled++;
                 return;
             }
@@ -167,7 +167,7 @@ function rollall(message, TEAMmode) {
             if (cliche.indexOf('+') > -1)
                 dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
             if (dices > 50) {
-                message.channel.send(`> *${cliche} - !เกินขีดจำกัด50*`);
+                sendMsgUnder2000(`> *${cliche} - !เกินขีดจำกัด50*`, false, message);
                 return;
             }
             for (var i = 0; i < dices; i++) {
@@ -178,15 +178,32 @@ function rollall(message, TEAMmode) {
                     else random = 0;
                 result += random;
             }
-            message.channel.send(`> **${cliche.split(bracket2)[0]}${bracket2}: ${eachdice} :${result}${modifier}**`);
+            sendMsgUnder2000(`> **${cliche.split(bracket2)[0]}${bracket2}: ${eachdice} :${result}${modifier}**`, false, message);
             rolled++;
         } catch (e) {} finally {}
     });
     var TEAMscore = '';
     if (TEAMmode)
         TEAMscore = `> ***TEAM= ${TEAMscore6s}\\* =${TEAMscore6s * 6}***`;
-    message.channel.send(TEAMscore);
+    sendMsgUnder2000(TEAMscore, true, message);
     console.log(`${message.member.displayName} - ${message.channel.name}\n${message.content}\n---`);
+}
+
+var allText = '';
+
+function sendMsgUnder2000(text, final, message) {
+    if (allText.length + text.length >= 2000 || final) {
+        if (final) {
+            if (allText.length + text.length >= 2000) {
+                message.channel.send(allText);
+                allText = '';
+            }
+            allText += text + '\n'
+        }
+        message.channel.send(allText);
+        allText = '';
+    }
+    allText += text + '\n';
 }
 
 function typeEmoji(num) {
