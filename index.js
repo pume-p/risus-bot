@@ -38,7 +38,7 @@ client.once('ready', () => {
     
     //loop
     setInterval(function () {
-        var infiLobby = RTH.channels.find(channel => channel.name.startsWith("Lobby-"));
+        var infiLobby = RTH.channels.cache.find(channel => channel.name.startsWith("Lobby-"));
         console.log(infiLobby);
         /*if (infiLobby.every(ThereAnyone)) {
             var newLobby = RTH.channels.create('Lobby-' + infiLobby.length, {
