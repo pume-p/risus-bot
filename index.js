@@ -17,7 +17,7 @@ var ch;
 var connected = false;
 client.once('ready', () => {
     console.log('Ready!\n---');
-    
+
     //setup
     fs.readdir(musicFolder, (err, files) => music = files);
     RTH = client.guilds.cache.get('685745431107338271');
@@ -35,23 +35,23 @@ client.once('ready', () => {
         console.log('Lodge joined\n---');
         CheckUserInLodge();
     });*/
-    var infiLobby = [];
-    for (var i = 0; true; i++) {
-        try{
-        infiLobby.push(RTH.channels.cache.finds(channel => channel.name === 'Lobby-'+i));} catch (e) {
-            break;
-        } finally {}
-    }
-        console.log(infiLobby);
+
     //loop
-    /*setInterval(function () {
-        var infiLobby = RTH.channels.cache.find(channel => channel.name.startsWith("Lobby-"));
-        console.log(infiLobby);
+    setInterval(function () {
+        var infiLobby = [];
+        for (var i = 0; true; i++) {
+            var lobby = RTH.channels.cache.find(channel => channel.name === 'Lobby-' + i);
+            if (lobby == undefined)
+                break;
+            infiLobby.push(lobby);
+        }
+
         if (infiLobby.every(ThereAnyone)) {
+            console.log('New Lobby Created - ' + infiLobby.length + '\n---');
             var newLobby = RTH.channels.create('Lobby-' + infiLobby.length, {
                 type: 'voice',
                 parent: MainCat,
-                position: infiLobby[infiLobby.length - 1].position
+                position: infiLobby.length
             });
             infiLobby.push(newLobby);
         } else {
@@ -62,8 +62,16 @@ client.once('ready', () => {
             if (emptyroom.length > 1)
                 for (var i = 1; i < emptyroom.length; i++)
                     emptyroom[i].delete();
+            var i = 0;
+            infiLobby.forEach(function (lobby) {
+                for (var j = 1; j < emptyroom.length; j++)
+                    if (emptyroom[j] == lobby) return true;
+                lobby.setName('Lobby-' + i);
+                console.log(i + ' ' + lobby);
+                i++;
+            })
         }
-    }, 60 * 1000);*/
+    }, 20 * 1000);
 });
 
 /*client.on('message', message => {
