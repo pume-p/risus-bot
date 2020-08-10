@@ -35,12 +35,13 @@ client.once('ready', () => {
         console.log('Lodge joined\n---');
         CheckUserInLodge();
     });*/
-    
+    var infiLobby = RTH.channels.cache.find(channel => channel.name.startsWith("Lobby-"));
+        console.log(infiLobby);
     //loop
-    setInterval(function () {
+    /*setInterval(function () {
         var infiLobby = RTH.channels.cache.find(channel => channel.name.startsWith("Lobby-"));
         console.log(infiLobby);
-        /*if (infiLobby.every(ThereAnyone)) {
+        if (infiLobby.every(ThereAnyone)) {
             var newLobby = RTH.channels.create('Lobby-' + infiLobby.length, {
                 type: 'voice',
                 parent: MainCat,
@@ -55,8 +56,8 @@ client.once('ready', () => {
             if (emptyroom.length > 1)
                 for (var i = 1; i < emptyroom.length; i++)
                     emptyroom[i].delete();
-        }*/
-    }, 60 * 1000);
+        }
+    }, 60 * 1000);*/
 });
 
 /*client.on('message', message => {
