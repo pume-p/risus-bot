@@ -55,8 +55,8 @@ client.once('ready', () => {
             if (emptyroom.length > 1)
                 for (var i = 1; i < emptyroom.length; i++)
                     emptyroom[i].delete();
-        }
-    }, 60 * 1000);*/
+        }*/
+    }, 60 * 1000);
 });
 
 /*client.on('message', message => {
