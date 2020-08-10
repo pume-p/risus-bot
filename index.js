@@ -35,7 +35,13 @@ client.once('ready', () => {
         console.log('Lodge joined\n---');
         CheckUserInLodge();
     });*/
-    var infiLobby = RTH.channels.cache.find(channel => channel.name.startsWith("Lobby-"));
+    var infiLobby = [];
+    for (var i = 0; true; i++) {
+        try{
+        infiLobby.push(RTH.channels.cache.finds(channel => channel.name === 'Lobby-'+i));} catch (e) {
+            break;
+        } finally {}
+    }
         console.log(infiLobby);
     //loop
     /*setInterval(function () {
