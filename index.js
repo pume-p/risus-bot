@@ -7,10 +7,9 @@ const musicFolder = './LodgeMusic/';
 const fs = require('fs');
 
 var RTH;
+var MainCat;
 var memRole;
 var gusRole;
-
-var infiLobby = [];
 
 var playing = false;
 var lodge;
@@ -22,26 +21,29 @@ client.once('ready', () => {
     //setup
     fs.readdir(musicFolder, (err, files) => music = files);
     RTH = client.guilds.cache.get('685745431107338271');
+    MainCat = RTH.channels.cache.get('731715856840785951');
     lodge = RTH.channels.cache.get('685745431107338275');
-    infiLobby.push(RTH.channels.cache.get('729738385681547365'));
     memRole = RTH.roles.cache.get('685759082702962715');
     gusRole = RTH.roles.cache.get('734830200944066591');
 
     //update
-    RTH.members.cache.filter(members => members.roles.cache.size == 1).forEach(member => joinSever(member)); 
+    /*RTH.members.cache.filter(members => members.roles.cache.size == 1).forEach(member => joinSever(member)); 
     updatestat();
     lodge.join().then(connection => {
         ch = connection;
         connected = true;
         console.log('Lodge joined\n---');
         CheckUserInLodge();
-    });
+    });*/
     
     //loop
-    /*setInterval(function () {
-        if (infiLobby.every(ThereAnyone)) {
+    setInterval(function () {
+        var infiLobby = RTH.channels.find(channel => channel.name.startsWith("Lobby-"));
+        console.log(infiLobby);
+        /*if (infiLobby.every(ThereAnyone)) {
             var newLobby = RTH.channels.create('Lobby-' + infiLobby.length, {
                 type: 'voice',
+                parent: MainCat,
                 position: infiLobby[infiLobby.length - 1].position
             });
             infiLobby.push(newLobby);
@@ -57,7 +59,7 @@ client.once('ready', () => {
     }, 60 * 1000);*/
 });
 
-client.on('message', message => {
+/*client.on('message', message => {
     if (message.type != 'DEFAULT') return;
     if (message.author.bot) return;
     message.member.roles.add(memRole);
@@ -70,16 +72,16 @@ client.on('message', message => {
     } else if (message.content.charAt(0) === '$') {
         rollall(message, true)
     }
-});
+});*/
 
 
 //ROLE &WELCOME
 
-client.on('guildMemberRemove', member => {
+/*client.on('guildMemberRemove', member => {
     updatestat();
-});
+});*/
 
-client.on('guildMemberAdd', member => joinSever(member));
+//client.on('guildMemberAdd', member => joinSever(member));
 
 function joinSever(member) {
     member.send('**ยินดีต้อนรับสู่Risusiverse Thai!**');
@@ -95,7 +97,7 @@ function joinSever(member) {
 //STAT
 
 function updatestat() {
-    client.channels.cache.get('731715856840785951').setName('main | member : ' + memRole.members.size);
+    MainCat.setName('main | member : ' + memRole.members.size);
 }
 
 
