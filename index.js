@@ -2,6 +2,12 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 client.login(process.env.token);
 
+const GoogleSpreadsheet = require('google-spreadsheet');
+const {
+    promisify
+} = require('util');
+const creds = require(process.env.creds);
+
 var music = [];
 const musicFolder = './LodgeMusic/';
 const fs = require('fs');
@@ -15,6 +21,7 @@ var playing = false;
 var lodge;
 var ch;
 var connected = false;
+
 client.once('ready', () => {
     console.log('Ready!\n---');
 
@@ -67,27 +74,27 @@ client.once('ready', () => {
                 for (var j = 1; j < emptyroom.length; j++)
                     if (emptyroom[j] == lobby) return true;
                 lobby.setName('Lobby-' + i);
-                console.log(i + ' ' + lobby);
                 i++;
             })
         }
     }, 20 * 1000);
 });
 
-/*client.on('message', message => {
+client.on('message', message => {
     if (message.type != 'DEFAULT') return;
     if (message.author.bot) return;
-    message.member.roles.add(memRole);
-    message.member.roles.remove(gusRole);
-    updatestat();
+    Log(message.createdAt, message.createdTimestamp, message.author.username, message.author.id, message.channel, message.content);
+    /*    message.member.roles.add(memRole);
+        message.member.roles.remove(gusRole);
+        updatestat();
 
-    //ROLL
-    if (message.content.charAt(0) === '!') {
-        rollall(message, false)
-    } else if (message.content.charAt(0) === '$') {
-        rollall(message, true)
-    }
-});*/
+        //ROLL
+        if (message.content.charAt(0) === '!') {
+            rollall(message, false)
+        } else if (message.content.charAt(0) === '$') {
+            rollall(message, true)
+        }*/
+});
 
 
 //ROLE &WELCOME
@@ -122,6 +129,24 @@ function ThereAnyone(lobby) {
     return lobby.members.size > 0;
 }
 
+//GOOGLESHEETDATABASE
+
+async function Log(Date, Time, Username, UserID, Channel, Content) {
+    const doc = new GoogleSpreadsheet('1MtAc1F0qxDztIhE9HQTmy3KEXh8g3gKs9DNR18M8EjU');
+    await promisify(doc.useServiceAccountAuth)(creds);
+    const info = await promisify(doc.getInfo)();
+    const LogSheet = info.worksheets[0];
+
+    const row = {
+        Time: Time,
+        Username: Username,
+        UserID: UserID,
+        Channel: Channel,
+        Content: Content
+    }
+
+    await promisify(LogSheet.addRow)(row);
+}
 
 //MUSIC CONTROL
 
