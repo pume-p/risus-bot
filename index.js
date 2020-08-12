@@ -6,7 +6,7 @@ const GoogleSpreadsheet = require('google-spreadsheet');
 const {
     promisify
 } = require('util');
-const creds = require(process.env.creds);
+const creds = require('./google-credentials.json');
 
 var music = [];
 const musicFolder = './LodgeMusic/';
