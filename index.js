@@ -130,9 +130,9 @@ function ThereAnyone(lobby) {
 }
 
 //GOOGLESHEETDATABASE
-
+//FIX NEED
 async function Log(Date, Time, Username, UserID, Channel, Content) {
-    const doc = new GoogleSpreadsheet('1MtAc1F0qxDztIhE9HQTmy3KEXh8g3gKs9DNR18M8EjU');
+    /*const doc = new GoogleSpreadsheet('1MtAc1F0qxDztIhE9HQTmy3KEXh8g3gKs9DNR18M8EjU');
     await promisify(doc.useServiceAccountAuth)(creds);
     const info = await promisify(doc.getInfo)();
     const LogSheet = info.worksheets[0];
@@ -145,7 +145,7 @@ async function Log(Date, Time, Username, UserID, Channel, Content) {
         Content: Content
     }
 
-    await promisify(LogSheet.addRow)(row);
+    await promisify(LogSheet.addRow)(row);*/
 }
 
 //MUSIC CONTROL
