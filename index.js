@@ -141,26 +141,30 @@ function CreateNewGame(Type, Name) {
         return 'ชื่อนั้นยาวเกินไป';
     RTH.channels.create(`${CreateGameRoomID()}-✔-${RoomtypeEmoji(Type)}-${Name}`, {
         type: 'category',
-        //possition: ,
         permissionOverwrites: [{
             id: '685760520946843694',
             allow: 'VIEW_CHANNEL'
         }]
+    }).then(function (NewGameRoom) {
+        NewGameRoom.setPosition(3)
     });
     return 'สร้างสำเร็จ';
 }
 
-function GetGameRoomIDs() {
-    TakenIds = [];
+function GetGameRooms() {
+    cats = [];
     RTH.channels.cache.forEach(function (channel) {
         if (!(channel.type === 'category' && channel.name.indexOf('-') > -1)) return;
-        TakenIds.push(channel.name.split('-')[0]);
+        cats.push(channel);
     })
-    return TakenIds;
+    return cats;
 }
 
 function CreateGameRoomID() {
-    var TakenIds = GetGameRoomIDs();
+    var TakenIds = [];
+    GetGameRooms().forEach(function (cat) {
+        TakenIds.push(cat.name.split('-')[0]);
+    });
     for (var i = 1; true; i++) {
         var id = i.toString();
         if (i < 10)
