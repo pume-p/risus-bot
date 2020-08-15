@@ -2,11 +2,11 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 client.login(process.env.token);
 
-const GoogleSpreadsheet = require('google-spreadsheet');
+/*const GoogleSpreadsheet = require('google-spreadsheet');
 const {
     promisify
 } = require('util');
-const creds = require('./google-credentials.json');
+const creds = require('./google-credentials.json');*/
 
 var music = [];
 const musicFolder = './LodgeMusic/';
@@ -44,7 +44,7 @@ client.once('ready', () => {
     });*/
 
     //loop
-    setInterval(function () {
+    /*setInterval(function () {
         var infiLobby = [];
         for (var i = 0; true; i++) {
             var lobby = RTH.channels.cache.find(channel => channel.name === 'Lobby-' + i);
@@ -55,12 +55,11 @@ client.once('ready', () => {
 
         if (infiLobby.every(ThereAnyone)) {
             console.log('New Lobby Created - ' + infiLobby.length + '\n---');
-            var newLobby = RTH.channels.create('Lobby-' + infiLobby.length, {
+            RTH.channels.create('Lobby-' + infiLobby.length, {
                 type: 'voice',
                 parent: MainCat,
                 position: infiLobby.length
             });
-            infiLobby.push(newLobby);
         } else {
             var emptyroom = [];
             infiLobby.forEach(function (lobby) {
@@ -77,13 +76,18 @@ client.once('ready', () => {
                 i++;
             })
         }
-    }, 20 * 1000);
+    }, 20 * 1000);*/
 });
 
 client.on('message', message => {
     if (message.type != 'DEFAULT') return;
     if (message.author.bot) return;
     Log(message.createdAt, message.createdTimestamp, message.author.username, message.author.id, message.channel, message.content);
+
+    if (message.channel.id == '735060157003989003')
+        if (message.content.startsWith('+'))
+            message.channel.send(CreateNewGame(message.content.charAt(1), message.content.slice(2)));
+
     /*    message.member.roles.add(memRole);
         message.member.roles.remove(gusRole);
         updatestat();
@@ -115,7 +119,6 @@ function joinSever(member) {
     client.channels.cache.get('685761491760447518').send('**ยินดีต้อนรับสมาชิกใหม่<<@' + member.id + '>>สู่Risusiverse Thai!**');
 }
 
-
 //STAT
 
 function updatestat() {
@@ -127,6 +130,57 @@ function updatestat() {
 
 function ThereAnyone(lobby) {
     return lobby.members.size > 0;
+}
+
+//GAMEMANGER
+
+function CreateNewGame(Type, Name) {
+    if (!(Type == 'O' || Type == 'A' || Type == 'C'))
+        return 'ไม่สามารถอ่านประเภทของเกมได้, กดอ่านเพิ่มเติมตรงหัวข้อChannel';
+    if (Name.length > 60)
+        return 'ชื่อนั้นยาวเกินไป';
+    RTH.channels.create(`${CreateGameRoomID()}-✔-${RoomtypeEmoji(Type)}-${Name}`, {
+        type: 'category',
+        //possition: ,
+        permissionOverwrites: [{
+            id: '685760520946843694',
+            allow: 'VIEW_CHANNEL'
+        }]
+    });
+    return 'สร้างสำเร็จ';
+}
+
+function GetGameRoomIDs() {
+    TakenIds = [];
+    RTH.channels.cache.forEach(function (channel) {
+        if (!(channel.type === 'category' && channel.name.indexOf('-') > -1)) return;
+        TakenIds.push(channel.name.split('-')[0]);
+    })
+    return TakenIds;
+}
+
+function CreateGameRoomID() {
+    var TakenIds = GetGameRoomIDs();
+    for (var i = 1; true; i++) {
+        var id = i.toString();
+        if (i < 10)
+            id = '0' + i;
+        if (TakenIds.some(function (TakenId) {
+                if (TakenId == id) return true;
+            })) continue;
+        else return id;
+    }
+}
+
+function RoomtypeEmoji(char) {
+    switch (char) {
+        case 'O':
+            return '📜';
+        case 'A':
+            return '🧾';
+        case 'C':
+            return '📄';
+    }
 }
 
 //GOOGLESHEETDATABASE
