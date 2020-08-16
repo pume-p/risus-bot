@@ -31,7 +31,7 @@ client.once('ready', () => {
     gusRole = RTH.roles.cache.get('734830200944066591');
 
     //update
-    RTH.members.cache.filter(members => members.roles.cache.size == 1).forEach(member => joinSever(member)); 
+    RTH.members.cache.filter(members => members.roles.cache.size == 1).forEach(member => joinSever(member));
     updatestat();
     lodge.join().then(connection => {
         ch = connection;
@@ -50,7 +50,9 @@ client.once('ready', () => {
             infiLobby.push(lobby);
         }
 
-        if (infiLobby.every(ThereAnyone)) {
+        if (infiLobby.every(function (lobby) {
+                return lobby.members.size > 0;
+            })) {
             console.log('New Lobby Created - ' + infiLobby.length + '\n---');
             RTH.channels.create('Lobby-' + infiLobby.length, {
                 type: 'voice',
@@ -61,7 +63,7 @@ client.once('ready', () => {
         } else {
             var emptyroom = [];
             infiLobby.forEach(function (lobby) {
-                if (!ThereAnyone(lobby)) emptyroom.push(lobby);
+                if (!lobby.members.size > 0) emptyroom.push(lobby);
             })
             if (emptyroom.length > 1)
                 for (var i = 1; i < emptyroom.length; i++)
@@ -89,7 +91,7 @@ client.on('message', message => {
             message.channel.send(CreateNewGame(message.content.charAt(1), message.content.slice(2)));
             return;
         }
-    
+
     if (message.content.charAt(0) === '!') {
         rollall(message, false)
     } else if (message.content.charAt(0) === '$') {
@@ -121,13 +123,6 @@ function joinSever(member) {
 
 function updatestat() {
     MainCat.setName('main | member : ' + memRole.members.size);
-}
-
-
-//INFILOBBY
-
-function ThereAnyone(lobby) {
-    return lobby.members.size > 0;
 }
 
 //GAMEMANGER
@@ -241,7 +236,7 @@ function rollall(message, TEAMmode) {
                 }
                 for (var i = 0; i < dices; i++) {
                     var random = Math.floor(Math.random() * 6) + 1;
-                    eachdice += typeEmoji(random);
+                    eachdice += DiceEmoji(random);
                     if (TEAMmode)
                         if (random == 6) TEAMscore6s++;
                         else random = 0;
@@ -267,7 +262,7 @@ function rollall(message, TEAMmode) {
             }
             for (var i = 0; i < dices; i++) {
                 var random = Math.floor(Math.random() * 6) + 1;
-                eachdice += typeEmoji(random);
+                eachdice += DiceEmoji(random);
                 if (TEAMmode)
                     if (random == 6) TEAMscore6s++;
                     else random = 0;
@@ -301,7 +296,7 @@ function sendMsgUnder2000(text, final, message) {
     if (!final) allText += text + '\n';
 }
 
-function typeEmoji(num) {
+function DiceEmoji(num) {
     var id;
     switch (num) {
         case 1:
