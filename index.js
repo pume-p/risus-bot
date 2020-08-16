@@ -79,8 +79,6 @@ client.once('ready', () => {
 client.on('message', message => {
     if (message.type != 'DEFAULT') return;
     if (message.author.bot) return;
-    Log(message.createdAt, message.createdTimestamp, message.author.username, message.author.id, message.channel, message.content);
-
     /*    message.member.roles.add(memRole);
         message.member.roles.remove(gusRole);*/
     updatestat();
