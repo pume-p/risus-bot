@@ -29,7 +29,7 @@ client.once('ready', () => {
     lodge = RTH.channels.cache.get('685745431107338275');
     memRole = RTH.roles.cache.get('685759082702962715');
     gusRole = RTH.roles.cache.get('734830200944066591');
-
+    return;//X
     //update
     RTH.members.cache.filter(members => members.roles.cache.size == 1).forEach(member => joinSever(member));
     updatestat();
@@ -79,7 +79,7 @@ client.once('ready', () => {
     }, 20 * 1000);
 });
 
-client.on('message', message => {
+client.on('message', message => {return;//X
     if (message.type != 'DEFAULT') return;
     if (message.author.bot) return;
     /*    message.member.roles.add(memRole);
