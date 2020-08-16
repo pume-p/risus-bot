@@ -54,8 +54,9 @@ client.once('ready', () => {
             console.log('New Lobby Created - ' + infiLobby.length + '\n---');
             RTH.channels.create('Lobby-' + infiLobby.length, {
                 type: 'voice',
-                parent: MainCat,
-                position: infiLobby.length
+                parent: MainCat
+            }).then(function (NewLobby) {
+                NewLobby.setPosition(infiLobby.length)
             });
         } else {
             var emptyroom = [];
