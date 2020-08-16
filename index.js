@@ -2,12 +2,6 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 client.login(process.env.token);
 
-/*const GoogleSpreadsheet = require('google-spreadsheet');
-const {
-    promisify
-} = require('util');
-const creds = require('./google-credentials.json');*/
-
 var music = [];
 const musicFolder = './LodgeMusic/';
 const fs = require('fs');
@@ -26,6 +20,9 @@ client.once('ready', () => {
     console.log('Ready!\n---');
 
     //setup
+    client.user.setActivity('THE POWER GAME', {
+        type: 'LISTENING'
+    });
     fs.readdir(musicFolder, (err, files) => music = files);
     RTH = client.guilds.cache.get('685745431107338271');
     MainCat = RTH.channels.cache.get('731715856840785951');
@@ -34,17 +31,17 @@ client.once('ready', () => {
     gusRole = RTH.roles.cache.get('734830200944066591');
 
     //update
-    /*RTH.members.cache.filter(members => members.roles.cache.size == 1).forEach(member => joinSever(member)); 
+    RTH.members.cache.filter(members => members.roles.cache.size == 1).forEach(member => joinSever(member)); 
     updatestat();
     lodge.join().then(connection => {
         ch = connection;
         connected = true;
         console.log('Lodge joined\n---');
         CheckUserInLodge();
-    });*/
+    });
 
     //loop
-    /*setInterval(function () {
+    setInterval(function () {
         var infiLobby = [];
         for (var i = 0; true; i++) {
             var lobby = RTH.channels.cache.find(channel => channel.name === 'Lobby-' + i);
@@ -76,7 +73,7 @@ client.once('ready', () => {
                 i++;
             })
         }
-    }, 20 * 1000);*/
+    }, 20 * 1000);
 });
 
 client.on('message', message => {
@@ -84,32 +81,34 @@ client.on('message', message => {
     if (message.author.bot) return;
     Log(message.createdAt, message.createdTimestamp, message.author.username, message.author.id, message.channel, message.content);
 
-    if (message.channel.id == '735060157003989003')
-        if (message.content.startsWith('+'))
-            message.channel.send(CreateNewGame(message.content.charAt(1), message.content.slice(2)));
-
     /*    message.member.roles.add(memRole);
-        message.member.roles.remove(gusRole);
-        updatestat();
+        message.member.roles.remove(gusRole);*/
+    updatestat();
 
-        //ROLL
-        if (message.content.charAt(0) === '!') {
-            rollall(message, false)
-        } else if (message.content.charAt(0) === '$') {
-            rollall(message, true)
-        }*/
+    if (message.channel.id == '735060157003989003')
+        if (message.content.startsWith('+')) {
+            message.channel.send(CreateNewGame(message.content.charAt(1), message.content.slice(2)));
+            return;
+        }
+    
+    if (message.content.charAt(0) === '!') {
+        rollall(message, false)
+    } else if (message.content.charAt(0) === '$') {
+        rollall(message, true)
+    }
 });
 
 
 //ROLE &WELCOME
 
-/*client.on('guildMemberRemove', member => {
+client.on('guildMemberRemove', member => {
     updatestat();
-});*/
+});
 
-//client.on('guildMemberAdd', member => joinSever(member));
+client.on('guildMemberAdd', member => joinSever(member));
 
 function joinSever(member) {
+    return; //hiatus
     member.send('**ยินดีต้อนรับสู่Risusiverse Thai!**');
     if (member.user.bot) {
         member.roles.add(RTH.roles.cache.get('685760520946843694'));
@@ -185,25 +184,6 @@ function RoomtypeEmoji(char) {
         case 'C':
             return '📄';
     }
-}
-
-//GOOGLESHEETDATABASE
-//FIX NEED
-async function Log(Date, Time, Username, UserID, Channel, Content) {
-    /*const doc = new GoogleSpreadsheet('1MtAc1F0qxDztIhE9HQTmy3KEXh8g3gKs9DNR18M8EjU');
-    await promisify(doc.useServiceAccountAuth)(creds);
-    const info = await promisify(doc.getInfo)();
-    const LogSheet = info.worksheets[0];
-
-    const row = {
-        Time: Time,
-        Username: Username,
-        UserID: UserID,
-        Channel: Channel,
-        Content: Content
-    }
-
-    await promisify(LogSheet.addRow)(row);*/
 }
 
 //MUSIC CONTROL
