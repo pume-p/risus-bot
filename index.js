@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-client.login('NzI5MjgwODMwODIzNzI3MTg3.XwI5qw.uvS5MA6_5vNCoJ57HLFWnRhptC8'); //process.env.token);
+client.login(process.env.token);
 
 var music = [];
 const musicFolder = './LodgeMusic/';
