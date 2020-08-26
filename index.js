@@ -276,7 +276,7 @@ function joinSever(member) {
 //STAT
 
 function updatestat() {
-    MainCat.setName('main | member : ' + memRole.members.size);
+    MainCat.setName('▬ main | member : ' + memRole.members.size + ' ▬');
 }
 
 //GAMEMANGER
