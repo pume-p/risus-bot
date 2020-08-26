@@ -9,6 +9,8 @@ const fs = require('fs');
 var RTH;
 var MainCat;
 var Gamecen;
+var LOG;
+
 var memRole;
 var gusRole;
 var botRole;
@@ -29,6 +31,7 @@ client.once('ready', () => {
     MainCat = RTH.channels.cache.get('731715856840785951');
     lodge = RTH.channels.cache.get('685745431107338275');
     Gamecen = RTH.channels.cache.get('733718518754836490');
+    LOG = RTH.channels.cache.get('748200435701121035');
     memRole = RTH.roles.cache.get('685759082702962715');
     gusRole = RTH.roles.cache.get('734830200944066591');
     botRole = RTH.roles.cache.get('685760520946843694');
@@ -83,7 +86,6 @@ client.once('ready', () => {
 });
 
 client.on('message', message => { //return;//X
-    const LOG = RTH.channels.cache.get('748200435701121035');
     if (message.channel !== LOG) LOG.send(`${message.author.username} : ${message.channel} - ${message.content}`).catch(console.error);
     if (message.type !== 'DEFAULT') return;
     if (message.author.bot) return;
@@ -254,7 +256,11 @@ client.on('message', message => { //return;//X
 
 //ROLE &WELCOME
 
-client.on('guildMemberRemove', member => updatestat());
+client.on('guildMemberRemove', member => {
+    updatestat();
+    const wanrNum = member.roles.cache.find(r => r.name.indexOf('Warning:') > -1);
+    if(wanrNum) LOG.send(`${member.user.username} - ${wanrNum}`).catch(console.error);
+});
 
 client.on('guildMemberAdd', member => joinSever(member));
 
