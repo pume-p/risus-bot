@@ -257,19 +257,19 @@ client.on('message', message => { //return;//X
 client.on('guildMemberRemove', member => {
     updatestat();
     const wanrNum = member.roles.cache.find(r => r.name.indexOf('Warning:') > -1);
-    if(wanrNum) RTH.channels.cache.get('748200435701121035').send(`${member.user.username} - ${wanrNum}`).catch(console.error);
+    if (wanrNum) RTH.channels.cache.get('748200435701121035').send(`${member.user.username} - ${wanrNum}`).catch(console.error);
 });
 
 client.on('guildMemberAdd', member => joinSever(member));
 
 function joinSever(member) {
-    member.send('> **แจ้งเตือนสมาชิก!**\n' +
-        '> **คือว่า Serverเรานั้นบังคับใช้ Push to Talk (กดเพื่อพูด)**\n' +
-        '> **ดังนั้นการจะพูดในServerได้ จะต้องSetModeพูด เป็น Push to Talk**');
     if (member.user.bot) {
         member.roles.add(botRole);
         return;
     }
+    member.send('> **แจ้งเตือนสมาชิก!**\n' +
+        '> **คือว่า Serverเรานั้นบังคับใช้ Push to Talk (กดเพื่อพูด)**\n' +
+        '> **ดังนั้นการจะพูดในServerได้ จะต้องSetModeพูด เป็น Push to Talk**');
     member.roles.add(gusRole);
     client.channels.cache.get('685761491760447518').send(new Discord.MessageEmbed()
         .setColor('#2ecc71')
