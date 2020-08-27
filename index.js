@@ -517,7 +517,13 @@ function loopmusic(connection, lodge, PrevMusic) {
             if (lodge.members.size > 1) {
                 loopmusic(connection, lodge, CurrentMusic);
                 console.log('restarting music\n---');
-            } else playing = false;
+            } else {
+                playing = false;
+                client.user.setActivity('-', {
+                    type: 'PLAYING',
+                    url: 'https://sites.google.com/site/risusiverseth/home'
+                });
+            }
         });
     } catch (e) {} finally {}
 }
