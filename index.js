@@ -205,7 +205,7 @@ client.on('message', message => { //return;//X
                         GR.setName(NAME.slice(0, 3) + '✔' + NAME.slice(4)).then(() => GR.setPosition(Gamecen.position + 1)).catch(console.error);
                         return;
                     case 'add-channel':
-                        if (!(args[0] && args[1] && args[2] && (args[0] === 't' || args[0] === 'v') && (args[1] >= 1 && args[1] <= 5) && (args[2].length >= 3 && args[2].length <= 60))) {
+                        if (!(args[0] && args[1] && args[2] && (args[0] === 't' || args[0] === 'v') && (args[1] >= 1 && args[1] <= 5) && (args[2].length >= 2 && args[2].length <= 60))) {
                             message.channel.send('> **รายละเอียดไม่ครบ!**\n' +
                                 '> **`&add-channel [t/v] [1/2/3/4/5] [ชื่อห้อง]`**\n' +
                                 '> **t - ห้องข้อความ / v - ห้องพูดคุย**\n' +
@@ -353,8 +353,9 @@ function CreateNewGame(Type, Name, Creator) {
             }).then(NewGameRoom => {
                 NewGameRoom.setPosition(Gamecen.position + 1);
                 GRCreateChannel(ID, NewGameRoom, 'console', 'ห้องควบคุม Game Room | & เพื่อดูคำสั่ง', false, 5, true, Role, GMRole);
-                GRCreateChannel(ID, NewGameRoom, 'member', 'ห้องรับ/ออก สมาชิก | & เพื่อดูคำสั่ง', false, 1, true, Role, GMRole);
+                GRCreateChannel(ID, NewGameRoom, 'member', 'ห้องรับ/ออก สมาชิก | &join เพื่อเข้า / &leave เพื่อออก', false, 1, true, Role, GMRole);
                 GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, false, Role, GMRole, `<@${Creator.id}>`);
+                GRCreateChannel(ID, NewGameRoom, 'pc', '', false, 2, false, Role, GMRole);
                 GRCreateChannel(ID, NewGameRoom, 'chat', '', false, 2, false, Role, GMRole);
                 GRCreateChannel(ID, NewGameRoom, 'talk', '', true, 2, false, Role, GMRole);
             });
