@@ -478,7 +478,7 @@ client.on("channelUpdate", (oldChannel, newChannel) => {
 });
 
 client.on("messageReactionAdd", (messageReaction, user) => {
-    if (!messageReaction.emoji === '✅') return;
+    if (!messageReaction.emoji.name === '✅') return;
     if (!messageReaction.message.channel.name.slice(2) === '-0-member') return;
     const ID = messageReaction.message.channel.name.split('-')[0];
     if (messageReaction.message.member.roles.cache.find(r => r.name === `Game:${ID}`)) return;
