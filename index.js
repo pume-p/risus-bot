@@ -79,7 +79,10 @@ client.once('ready', () => {
 
 client.on('message', message => { //return;//X
     const LOG = RTH.channels.cache.get('748200435701121035');
-    if (message.channel !== LOG) LOG.send(`${message.author.username} : ${message.channel} - ${message.content}`).catch(console.error);
+    if (message.channel !== LOG) {
+        const content = message.content.replace(/@</gi, '');
+        LOG.send(`${message.author.username} (${message.author.id}) : ${message.channel} - ${content}`).catch(console.error);
+    }
     if (message.type !== 'DEFAULT') return;
     if (message.author.bot) return;
     message.member.roles.add(memRole);
