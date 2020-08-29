@@ -38,12 +38,7 @@ client.once('ready', () => {
     //update
     RTH.members.cache.filter(members => members.roles.cache.size === 1).forEach(member => joinSever(member));
     updatestat();
-    lodge.join().then(connection => {
-        ch = connection;
-        connected = true;
-        console.log('Lodge joined\n---');
-        CheckUserInLodge();
-    });
+    StartVC();
 
     //loop
     setInterval(() => {
@@ -135,6 +130,12 @@ client.on('message', message => { //return;//X
                 }
                 message.channel.send('> **`% [+/-, จำนวนWarning] [@ผู้จะแก้จำนวนWarning]`**');
                 return;
+            }
+            break;
+        case '731743829207547954':
+            if (message.content.startsWith('$#$')) {
+                lodge.leave();
+                StartVC();
             }
     }
 
@@ -491,6 +492,15 @@ client.on("messageReactionAdd", (messageReaction, user) => {
 client.on('voiceStateUpdate', () => {
     if (connected) CheckUserInLodge();
 });
+
+function StartVC() {
+    lodge.join().then(connection => {
+        ch = connection;
+        connected = true;
+        console.log('Lodge joined\n---');
+        CheckUserInLodge();
+    });
+}
 
 function CheckUserInLodge() {
     if (lodge.members.size > 1 && !playing) {
