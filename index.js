@@ -80,7 +80,7 @@ client.once('ready', () => {
 client.on('message', message => { //return;//X
     const LOG = RTH.channels.cache.get('748200435701121035');
     if (message.channel !== LOG) {
-        LOG.send(`${message.author.username} (${message.author.id}) : ${message.channel} - \`${message.content}\``).catch(console.error);
+        LOG.send(`${message.author.username} (||${message.author.id}||) : ${message.channel} - \`${message.content}\``).catch(console.error);
     }
     if (message.type !== 'DEFAULT') return;
     if (message.author.bot) return;
