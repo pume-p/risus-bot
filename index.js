@@ -136,7 +136,11 @@ client.on('message', message => { //return;//X
             break;
         case '731743829207547954':
             if (message.content.startsWith('$#$')) {
-                lodge.leave().then(() => StartVC());
+                if (message.content.startsWith('$#$X')) {
+                    StartVC();
+                } else
+                    lodge.leave().then(() => StartVC());
+                return;
             }
     }
 
