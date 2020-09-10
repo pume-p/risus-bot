@@ -470,7 +470,7 @@ function GRSetPerm(channel, IsVoice, permLv, NonGmPower, Role, GMRole) {
     }
 }
 
-client.on("channelUpdate", (oldChannel, newChannel) => {
+client.on('channelUpdate', (oldChannel, newChannel) => {
     if (!(newChannel.type === 'text' || newChannel.type === 'voice')) return;
     if (!(newChannel.parent !== null && newChannel.parent.name.indexOf('-') > -1)) return;
     let nID = '';
@@ -481,9 +481,9 @@ client.on("channelUpdate", (oldChannel, newChannel) => {
     }
 });
 
-client.on("messageReactionAdd", (messageReaction, user) => {
-    if (!messageReaction.emoji.name === '✅') return;
-    if (!messageReaction.message.channel.name.slice(2) === '-0-member') return;
+client.on('messageReactionAdd', (messageReaction, user) => {
+    if (messageReaction.emoji.name != '✅') return;
+    if (messageReaction.message.channel.name.slice(2) !== '-0-member') return;
     const ID = messageReaction.message.channel.name.split('-')[0];
     if (messageReaction.message.member.roles.cache.find(r => r.name === `Game:${ID}`)) return;
     if (RTH.member(user).roles.cache.find(r => r.name === `Game_GM:${ID}`)) {
