@@ -601,7 +601,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s) {
         TEAMscore6s: TEAMscore6s
     }
     for (let i = 0; i < dices; i++) {
-        const random = Math.floor(Math.random() * 6) + 1;
+        let random = Math.floor(Math.random() * 6) + 1;
         returnMsg.eachdice += DiceEmoji(random);
         if (TEAMmode)
             if (random === 6) returnMsg.TEAMscore6s++;
@@ -613,16 +613,16 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s) {
 
 var allText = '';
 
-function sendMsgUnder2000(text, final, message) {
+function sendMsgUnder2000(text, final, ch) {
     if (allText.length + text.length >= 2000 || final) {
         if (final) {
             if (allText.length + text.length >= 2000) {
-                message.channel.send(allText);
+                ch.channel.send(allText);
                 allText = '';
             }
             allText += text + '\n'
         }
-        message.channel.send(allText);
+        ch.channel.send(allText);
         allText = '';
     }
     if (!final) allText += text + '\n';
