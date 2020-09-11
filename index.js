@@ -325,7 +325,7 @@ function CreateNewGame(Type, Name, Creator) {
     RTH.roles.create({
         data: {
             name: 'Game_GM:' + ID,
-            color: 'f5e2c8',
+            color: '07beb8',
             position: RTH.roles.cache.get('685759790562934795').position,
             mentionable: true
         }
@@ -333,7 +333,7 @@ function CreateNewGame(Type, Name, Creator) {
         RTH.roles.create({
             data: {
                 name: 'Game:' + ID,
-                color: 'd0f4de',
+                color: '68d8d6',
                 position: RTH.roles.cache.get('744006726285787227').position,
                 mentionable: true
             }
