@@ -273,9 +273,11 @@ function joinSever(member) {
         member.roles.add(botRole);
         return;
     }
-    member.send('> **แจ้งเตือนสมาชิก!**\n' +
-        '> **คือว่า Serverเรานั้นบังคับใช้ Push to Talk (กดเพื่อพูด)**\n' +
-        '> **ดังนั้นการจะพูดในServerได้ จะต้องSetModeพูด เป็น Push to Talk**');
+    member.send('https://cdn.discordapp.com/attachments/732198249946939448/748232742306709632/welcome6.png').then(() =>
+        member.send('> **แจ้งเตือนสมาชิก!**\n' +
+            '> **คือว่า Serverเรานั้นบังคับใช้ Push to Talk (กดเพื่อพูด)**\n' +
+            '> **ดังนั้นการจะพูดในServerได้ จะต้องSetModeพูด เป็น Push to Talk**'));
+
     member.roles.add(gusRole);
     client.channels.cache.get('685761491760447518').send(new Discord.MessageEmbed()
         .setColor('#2ecc71')
