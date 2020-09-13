@@ -234,10 +234,17 @@ client.on('message', message => { //return;//X
         }
     }
 
-    if (message.content.charAt(0) === '!') {
-        rollall(message, false)
-    } else if (message.content.charAt(0) === '$') {
-        rollall(message, true)
+    if (message.content.charAt(0) === '!')
+        rollall(message, false);
+    else if (message.content.charAt(0) === '$')
+        rollall(message, true);
+    else if (message.content.charAt(0) === '%') {
+        let total = 0,
+            s = message.content.match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
+        while (s.length) {
+            total += parseFloat(s.shift());
+        }
+        message.channel.send(total);
     }
 })
 
@@ -560,7 +567,7 @@ function rollall(message, TEAMmode) {
         } catch (e) {} finally {}
     });
     let TEAMscore = '';
-    if (TEAMmode)
+    if (TEAMmode && rolled > 1)
         TEAMscore = `> ***TEAM= ${TEAMscore6s}\\* =${TEAMscore6s * 6}***`;
     sendMsgUnder2000(TEAMscore, true, message);
     console.log(`${message.member.displayName} - ${message.channel.name}\n${message.content}\n---`);
