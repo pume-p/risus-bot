@@ -44,7 +44,7 @@ client.once('ready', () => {
     setInterval(() => {
         let infiLobby = [];
         for (let i = 0; true; i++) {
-            const lobby = RTH.channels.cache.find(channel => channel.name === 'Lobby-' + i);
+            const lobby = RTH.channels.cache.find(channel => channel.name === 'Lobby ' + i);
             if (lobby === undefined)
                 break;
             infiLobby.push(lobby);
@@ -54,7 +54,7 @@ client.once('ready', () => {
                 return lobby.members.size > 0;
             })) {
             console.log('New Lobby Created - ' + infiLobby.length + '\n---');
-            RTH.channels.create('Lobby-' + infiLobby.length, {
+            RTH.channels.create('Lobby ' + infiLobby.length, {
                 type: 'voice',
                 parent: MainCat
             }).then(NewLobby => NewLobby.setPosition(infiLobby.length));
@@ -70,7 +70,7 @@ client.once('ready', () => {
             infiLobby.forEach(lobby => {
                 for (let j = 1; j < emptyroom.length; j++)
                     if (emptyroom[j] === lobby) return true;
-                lobby.setName('Lobby-' + i);
+                lobby.setName('Lobby ' + i);
                 i++;
             })
         }
