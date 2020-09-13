@@ -151,7 +151,7 @@ client.on('message', message => { //return;//X
         const NAME = GR.name;
         const ID = NAME.split('-')[0];
         switch (message.channel.name.slice(2)) {
-            case '-0-member':
+            case '-0-player':
                 if (message.member.roles.cache.find(r => r.name === `Game_GM:${ID}`)) {
                     message.channel.send(`> **GM ไม่สามารถใช้คำสั่งใน<\#${message.channel.id}>ได้!**\n` +
                         '> **คุณทำได้เฉพาะรับผู้เล่นเข้า Game Room ผ่านการReactที่เครื่องหมาย :white_check_mark:**');
@@ -192,7 +192,7 @@ client.on('message', message => { //return;//X
                             message.channel.send('> **ผู้เล่นไม่ได้เป็นผู้เล่นของ Game Room นี้!**');
                             return;
                         }
-                        RTH.channels.cache.find(channel => channel.name === `${ID}-0-member`).send(`> **<@${kickMem.id}> ได้ถูกลบออกจาก Game Room โดย <@${message.member.id}>!**`);
+                        RTH.channels.cache.find(channel => channel.name === `${ID}-0-player`).send(`> **<@${kickMem.id}> ได้ถูกลบออกจาก Game Room โดย <@${message.member.id}>!**`);
                         kickMem.roles.remove(KMemRole);
                         return;
                     case 'add-channel':
@@ -463,7 +463,7 @@ function GRSetPerm(channel, IsVoice, permLv, NonGmPower, Role, GMRole) {
 
 client.on('messageReactionAdd', (messageReaction, user) => {
     if (messageReaction.emoji.name != '✅') return;
-    if (messageReaction.message.channel.name.slice(2) !== '-0-member') return;
+    if (messageReaction.message.channel.name.slice(2) !== '-0-player') return;
     const ID = messageReaction.message.channel.name.split('-')[0];
     if (messageReaction.message.member.roles.cache.find(r => r.name === `Game:${ID}`)) return;
     if (RTH.member(user).roles.cache.find(r => r.name === `Game_GM:${ID}`)) {
