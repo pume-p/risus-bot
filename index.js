@@ -154,21 +154,21 @@ client.on('message', message => { //return;//X
             case '-0-member':
                 if (message.member.roles.cache.find(r => r.name === `Game_GM:${ID}`)) {
                     message.channel.send(`> **GM ไม่สามารถใช้คำสั่งใน<\#${message.channel.id}>ได้!**\n` +
-                        '> **คุณทำได้เฉพาะรับสมาชิกเข้า Game Room ผ่านการReactที่เครื่องหมาย :white_check_mark:**');
+                        '> **คุณทำได้เฉพาะรับผู้เล่นเข้า Game Room ผ่านการReactที่เครื่องหมาย :white_check_mark:**');
                     return;
                 }
                 const roleMem = message.member.roles.cache.find(r => r.name === `Game:${ID}`);
                 switch (command) {
                     case 'join':
                         if (roleMem) {
-                            message.channel.send('> **คุณเป็นสมาชิกอยู่แล้ว!**')
+                            message.channel.send('> **คุณเป็นผู้เล่นอยู่แล้ว!**')
                             return;
                         }
                         message.react('✅');
                         return;
                     case 'leave':
                         if (!roleMem) {
-                            message.channel.send('> **คุณไม่ได้เป็นสมาชิกของ Game Room นี้!**')
+                            message.channel.send('> **คุณไม่ได้เป็นผู้เล่นของ Game Room นี้!**')
                             return;
                         }
                         message.channel.send(`> **<@${message.member.id}> ได้ทำการออกจาก Game Room!**`);
@@ -189,7 +189,7 @@ client.on('message', message => { //return;//X
                         }
                         const KMemRole = kickMem.roles.cache.find(r => r.name === `Game:${ID}`);
                         if (!KMemRole) {
-                            message.channel.send('> **ผู้เล่นไม่ได้เป็นสมาชิกของ Game Room นี้!**');
+                            message.channel.send('> **ผู้เล่นไม่ได้เป็นผู้เล่นของ Game Room นี้!**');
                             return;
                         }
                         RTH.channels.cache.find(channel => channel.name === `${ID}-0-member`).send(`> **<@${kickMem.id}> ได้ถูกลบออกจาก Game Room โดย <@${message.member.id}>!**`);
@@ -201,9 +201,9 @@ client.on('message', message => { //return;//X
                                 '> **`&add-channel [t/v] [1/2/3/4/5] [ชื่อห้อง]`**\n' +
                                 '> **t - ห้องข้อความ / v - ห้องพูดคุย**\n' +
                                 '> **1 - ทุกคนใช้ห้องได้**\n' +
-                                '> **2 - เฉพาะสมาชิกใช้ห้องได้**\n' +
+                                '> **2 - เฉพาะผู้เล่นใช้ห้องได้**\n' +
                                 '> **3 - เฉพาะGMใช้ห้องได้**\n' +
-                                '> **4 - เฉพาะสมาชิกที่เห็นห้อง**\n' +
+                                '> **4 - เฉพาะผู้เล่นที่เห็นห้อง**\n' +
                                 '> **5 - เฉพาะGMที่เห็นห้อง**');
                             return;
                         }
@@ -287,9 +287,9 @@ function updatestat() {
 
 function CreateNewGame(Type, Name, Creator) {
     let newRoom = '';
-    if (Creator.roles.cache.filter(r => r.name.indexOf('GM') > -1).size >= 2 && !Creator.roles.cache.get('685759790562934795'))
+    if (Creator.roles.cache.filter(r => r.name.indexOf('GM') > -1).size >= 1 && !Creator.roles.cache.get('685759790562934795'))
         return {
-            t: '**คุณไม่สามารถคุม Game Room มากกว่า2ได้!**\n' +
+            t: '**คุณไม่สามารถคุม Game Room มากกว่า1ได้!**\n' +
                 '(เฉพาะ Game Master+)',
             suss: false
         };
@@ -335,7 +335,7 @@ function CreateNewGame(Type, Name, Creator) {
             Creator.roles.add(djRole);
 
             const allowperm = ['SEND_MESSAGES', 'VIEW_CHANNEL', 'SPEAK', 'CONNECT'];
-            RTH.channels.create(`${ID}-${GREmojiType(Type)}-${Name}`, {
+            RTH.channels.create(`${ID}-${GREmojiType(Type)}${Name}`, {
                 type: 'category',
                 permissionOverwrites: [{
                     id: botRole.id,
@@ -353,9 +353,9 @@ function CreateNewGame(Type, Name, Creator) {
             }).then(NewGameRoom => {
                 NewGameRoom.setPosition(Gamecen.position + 1);
                 GRCreateChannel(ID, NewGameRoom, 'console', 'ห้องควบคุม Game Room | & เพื่อดูคำสั่ง', false, 5, 1, Role, GMRole);
-                GRCreateChannel(ID, NewGameRoom, 'member', 'ห้องรับ/ออก สมาชิก | &join เพื่อเข้า / &leave เพื่อออก | GMกด✅เพื่อรับสมาชิก', false, 1, 2, Role, GMRole);
-                GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, 0, Role, GMRole, `<@${Creator.id}>`);
-                GRCreateChannel(ID, NewGameRoom, 'roll', '', false, 2, 0, Role, GMRole);
+                GRCreateChannel(ID, NewGameRoom, 'player', 'ห้องรับ/ออก ผู้เล่น | &join เพื่อเข้า / &leave เพื่อออก | GMกด✅เพื่อรับผู้เล่น', false, 1, 2, Role, GMRole);
+                GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, 2, Role, GMRole, `<@${Creator.id}>`);
+                GRCreateChannel(ID, NewGameRoom, 'roll', 'ห้องchatเกม!', false, 2, 0, Role, GMRole);
                 GRCreateChannel(ID, NewGameRoom, 'talk', '', true, 2, 0, Role, GMRole);
             });
         })
@@ -411,7 +411,10 @@ function GRCreateChannel(ID, NewGameRoom, name, topic, IsVoice, permLv, NonGmPow
         topic: topic
     }).then(NewChannel => {
         GRSetPerm(NewChannel, IsVoice, permLv, NonGmPower, Role, GMRole)
-        if (Type === 'text' && MentionGM) NewChannel.send(MentionGM);
+        if (Type === 'text' && MentionGM) NewChannel.send(MentionGM +
+            '\nเมื่อสร้างแล้ว (ตัวอย่างเกมแบบOneshot)\n' +
+            'สิ่งที่คุณอยากทำต่อไปคือ\n' +
+            ': __เนื้อหาคราวๆ, แนวเกม, วันที่&เวลาเริ่มถึงจบ, เงื่อนไขตัวละคร, รายชื่อผู้เล่น(+จำนวนผู้เล่น)__');
     });
 }
 
@@ -457,17 +460,6 @@ function GRSetPerm(channel, IsVoice, permLv, NonGmPower, Role, GMRole) {
     }
     return;
 }
-
-client.on('channelUpdate', (oldChannel, newChannel) => {
-    if (!(newChannel.type === 'text' || newChannel.type === 'voice')) return;
-    if (!(newChannel.parent !== null && newChannel.parent.name.indexOf('-') > -1)) return;
-    let nID = '';
-    if (newChannel.name.split('-')[2]) nID = newChannel.name.slice(0, -1 * newChannel.name.split('-')[2].length);
-    if (oldChannel.name.split('-')[2]) {
-        const oID = oldChannel.name.slice(0, -1 * oldChannel.name.split('-')[2].length);
-        if (nID !== oID) newChannel.setName(oldChannel.name).catch(console.error);
-    }
-});
 
 client.on('messageReactionAdd', (messageReaction, user) => {
     if (messageReaction.emoji.name != '✅') return;
@@ -704,3 +696,14 @@ case 'change-type':
                         }
                         GR.setName(NAME.slice(0, 3) + '✔' + NAME.slice(4)).then(() => GR.setPosition(Gamecen.position + 1)).catch(console.error);
                         return;*/
+
+/*client.on('channelUpdate', (oldChannel, newChannel) => {
+    if (!(newChannel.type === 'text' || newChannel.type === 'voice')) return;
+    if (!(newChannel.parent !== null && newChannel.parent.name.indexOf('-') > -1)) return;
+    let nID = '';
+    if (newChannel.name.split('-')[2]) nID = newChannel.name.slice(0, -1 * newChannel.name.split('-')[2].length);
+    if (oldChannel.name.split('-')[2]) {
+        const oID = oldChannel.name.slice(0, -1 * oldChannel.name.split('-')[2].length);
+        if (nID !== oID) newChannel.setName(oldChannel.name).catch(console.error);
+    }
+});*/
