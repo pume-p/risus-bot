@@ -391,7 +391,6 @@ function GREmojiType(char) {
         case 'C':
             return '📖';
     }
-
 }
 
 function GRCreateChannel(ID, NewGameRoom, name, topic, IsVoice, permLv, NonGmPower, Role, GMRole, MentionGM) {
