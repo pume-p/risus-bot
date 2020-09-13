@@ -591,6 +591,8 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s) {
     if (isNaN(dices)) return;
     if (cliche.indexOf('+') > -1)
         dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
+    else if (cliche.indexOf('-') > -1)
+        dices -= parseInt(cliche.split('-')[1].replace(/[^0-9-]/g, ''));
     if (dices > 30) {
         sendMsgUnder2000(`> *${cliche} - !เกินขีดจำกัด30*`, false, message);
         return;
