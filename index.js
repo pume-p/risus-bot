@@ -413,7 +413,7 @@ function GRCreateChannel(ID, NewGameRoom, name, topic, IsVoice, permLv, NonGmPow
         GRSetPerm(NewChannel, IsVoice, permLv, NonGmPower, Role, GMRole)
         if (Type === 'text' && MentionGM) NewChannel.send(MentionGM +
             '\nเมื่อสร้างแล้ว (ตัวอย่างเกมแบบOneshot)\n' +
-            'สิ่งที่คุณอยากทำต่อไปคือ\n' +
+            'สิ่งที่คุณอยากเขียนลงไปคือ\n' +
             ': __เนื้อหาคราวๆ, แนวเกม, วันที่&เวลาเริ่มถึงจบ, เงื่อนไขตัวละคร, รายชื่อผู้เล่น(+จำนวนผู้เล่น)__');
     });
 }
