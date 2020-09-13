@@ -243,7 +243,7 @@ client.on('message', message => { //return;//X
                     default:
                         message.channel.send('> **`&remove [@ผู้เล่นที่จะลบออก]` - ลบผู้เล่นออกจาก Game Room**\n' +
                             '> **`&close/open` - ปิดเปิดการรับสมาชิก**\n' +
-                            '> **`&add-channel [t/v] [1/2/3/4/5] [ชื่อห้อง]` - เพิ่มChannelใหม่**\n' +
+                            '> **`&add-channel [t/v] [1/2/3/4/5] [ชื่อห้อง]` - เพิ่มChannelใหม่** (พิมเพื่อเช็คสิทธิ1-5)\n' +
                             '> **`&disband` - ลบ Game Room**');
                 }
                 return;
@@ -276,7 +276,7 @@ function joinSever(member) {
     member.send('https://cdn.discordapp.com/attachments/732198249946939448/748232742306709632/welcome6.png').then(() =>
         member.send('> **แจ้งเตือนสมาชิก!**\n' +
             '> **คือว่า Serverเรานั้นบังคับใช้ Push to Talk (กดเพื่อพูด)**\n' +
-            '> **ดังนั้นการจะพูดในServerได้ จะต้องSetModeพูด เป็น Push to Talk**\n'+
+            '> **ดังนั้นการจะพูดในServerได้ จะต้องSetModeพูด เป็น Push to Talk**\n' +
             '\n> **แล้วก็! ขอให้ตั้งชื่อเล่นในServer ด้วยเครื่องหมาย <>**'));
 
     member.roles.add(gusRole);
@@ -361,11 +361,11 @@ function CreateNewGame(Type, Name, Creator) {
                 }]
             }).then(NewGameRoom => {
                 NewGameRoom.setPosition(Gamecen.position + 1);
-                GRCreateChannel(ID, NewGameRoom, 'console', 'ห้องควบคุม Game Room | & เพื่อดูคำสั่ง', false, 5, true, Role, GMRole);
-                GRCreateChannel(ID, NewGameRoom, 'member', 'ห้องรับ/ออก สมาชิก | &join เพื่อเข้า / &leave เพื่อออก', false, 1, true, Role, GMRole);
-                GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, false, Role, GMRole, `<@${Creator.id}>`);
-                GRCreateChannel(ID, NewGameRoom, 'roll', '', false, 2, false, Role, GMRole);
-                GRCreateChannel(ID, NewGameRoom, 'talk', '', true, 2, false, Role, GMRole);
+                GRCreateChannel(ID, NewGameRoom, 'console', 'ห้องควบคุม Game Room | & เพื่อดูคำสั่ง', false, 5, 1, Role, GMRole);
+                GRCreateChannel(ID, NewGameRoom, 'member', 'ห้องรับ/ออก สมาชิก | &join เพื่อเข้า / &leave เพื่อออก | GMกด✅เพื่อรับสมาชิก', false, 1, 2, Role, GMRole);
+                GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, 0, Role, GMRole, `<@${Creator.id}>`);
+                GRCreateChannel(ID, NewGameRoom, 'roll', '', false, 2, 0, Role, GMRole);
+                GRCreateChannel(ID, NewGameRoom, 'talk', '', true, 2, 0, Role, GMRole);
             });
         })
     );
@@ -414,7 +414,7 @@ function GRCreateChannel(ID, NewGameRoom, name, topic, IsVoice, permLv, NonGmPow
     let permID = permLv;
     let Type = 'text';
     if (IsVoice) Type = 'voice';
-    if (NonGmPower) permID = 0;
+    if (NonGmPower >= 1) permID = 0;
     RTH.channels.create(`${ID}-${permID}-${name}`, {
         parent: NewGameRoom,
         type: Type,
@@ -426,50 +426,46 @@ function GRCreateChannel(ID, NewGameRoom, name, topic, IsVoice, permLv, NonGmPow
 }
 
 function GRSetPerm(channel, IsVoice, permLv, NonGmPower, Role, GMRole) {
-    let permAcess = {
+    let REMOVEpermAcess = {
         VIEW_CHANNEL: false
     };
-    let permInteract = {
+    let REMOVEpermInteract = {
         SEND_MESSAGES: false
     };
     if (IsVoice) {
-        permAcess = {
+        REMOVEpermAcess = {
             CONNECT: false
         };
-        permInteract = {
+        REMOVEpermInteract = {
             SPEAK: false
         };
     }
-    if (permLv !== 0) {
-        channel.updateOverwrite(GMRole, {
-            MANAGE_CHANNELS: true
-        });
-        channel.updateOverwrite(modRole, {
-            MANAGE_CHANNELS: true
-        });
-    };
     switch (permLv) {
         case 2:
-            channel.updateOverwrite(RTH.roles.everyone, permInteract);
+            channel.updateOverwrite(RTH.roles.everyone, REMOVEpermInteract);
             break;
         case 3:
-            channel.updateOverwrite(RTH.roles.everyone, permInteract);
-            channel.updateOverwrite(Role, permInteract);
+            channel.updateOverwrite(RTH.roles.everyone, REMOVEpermInteract);
+            channel.updateOverwrite(Role, REMOVEpermInteract);
             break;
         case 4:
-            channel.updateOverwrite(RTH.roles.everyone, permAcess);
+            channel.updateOverwrite(RTH.roles.everyone, REMOVEpermAcess);
             break;
         case 5:
-            channel.updateOverwrite(RTH.roles.everyone, permAcess);
-            channel.updateOverwrite(Role, permAcess);
+            channel.updateOverwrite(RTH.roles.everyone, REMOVEpermAcess);
+            channel.updateOverwrite(Role, REMOVEpermAcess);
             break;
     }
-    if (NonGmPower) {
-        channel.updateOverwrite(botRole, permAcess);
-        channel.updateOverwrite(GMRole, {
-            MANAGE_MESSAGES: false
-        });
+    switch (NonGmPower) {
+        case 0:
+            channel.updateOverwrite(GMRole, {
+                MANAGE_CHANNELS: true
+            });
+            break;
+        case 2:
+            channel.updateOverwrite(botRole, REMOVEpermAcess);
     }
+    return;
 }
 
 client.on('channelUpdate', (oldChannel, newChannel) => {
