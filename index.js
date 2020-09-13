@@ -150,7 +150,6 @@ client.on('message', message => { //return;//X
         const GR = message.channel.parent;
         const NAME = GR.name;
         const ID = NAME.split('-')[0];
-        const isOpen = NAME.charAt(3) === '✔';
         switch (message.channel.name.slice(2)) {
             case '-0-member':
                 if (message.member.roles.cache.find(r => r.name === `Game_GM:${ID}`)) {
@@ -196,20 +195,6 @@ client.on('message', message => { //return;//X
                         RTH.channels.cache.find(channel => channel.name === `${ID}-0-member`).send(`> **<@${kickMem.id}> ได้ถูกลบออกจาก Game Room โดย <@${message.member.id}>!**`);
                         kickMem.roles.remove(KMemRole);
                         return;
-                    case 'close':
-                        if (!isOpen) {
-                            message.channel.send('> **Game Room มีสถานะปิดอยู่แล้ว!**');
-                            return;
-                        }
-                        GR.setName(NAME.slice(0, 3) + '❌' + NAME.slice(4)).then(() => GR.setPosition(RTH.channels.cache.get('748103478253060106').position + 1)).catch(console.error);
-                        return;
-                    case 'open':
-                        if (isOpen) {
-                            message.channel.send('> **Game Room มีสถานะเปิดอยู่แล้ว!**');
-                            return;
-                        }
-                        GR.setName(NAME.slice(0, 3) + '✔' + NAME.slice(4)).then(() => GR.setPosition(Gamecen.position + 1)).catch(console.error);
-                        return;
                     case 'add-channel':
                         if (!(args[0] && args[1] && args[2] && (args[0] === 't' || args[0] === 'v') && (args[1] >= 1 && args[1] <= 5) && (args[2].length >= 2 && args[2].length <= 60))) {
                             message.channel.send('> **รายละเอียดไม่ครบ!**\n' +
@@ -242,7 +227,6 @@ client.on('message', message => { //return;//X
                         return;
                     default:
                         message.channel.send('> **`&remove [@ผู้เล่นที่จะลบออก]` - ลบผู้เล่นออกจาก Game Room**\n' +
-                            '> **`&close/open` - ปิดเปิดการรับสมาชิก**\n' +
                             '> **`&add-channel [t/v] [1/2/3/4/5] [ชื่อห้อง]` - เพิ่มChannelใหม่** (พิมเพื่อเช็คสิทธิ1-5)\n' +
                             '> **`&disband` - ลบ Game Room**');
                 }
@@ -344,7 +328,7 @@ function CreateNewGame(Type, Name, Creator) {
             Creator.roles.add(djRole);
 
             const allowperm = ['SEND_MESSAGES', 'VIEW_CHANNEL', 'SPEAK', 'CONNECT'];
-            RTH.channels.create(`${ID}-✔-${GREmojiType(Type)}-${Name}`, {
+            RTH.channels.create(`${ID}-${GREmojiType(Type)}-${Name}`, {
                 type: 'category',
                 permissionOverwrites: [{
                     id: botRole.id,
@@ -563,8 +547,8 @@ function rollall(message, TEAMmode) {
                 rolled++;
                 return;
             }
-            const bracket = '('
-            const bracket2 = ')'
+            let bracket = '(';
+            let bracket2 = ')';
             if (cliche.indexOf('(') < 0)
                 if (cliche.indexOf('[') > -1) bracket = '[';
             if (cliche.indexOf(')') < 0)
@@ -697,4 +681,20 @@ case 'change-type':
     }NAME.charAt(5)
     const newNAME = NAME.slice(0, 3) + NAME.slice(4);
     GR.setName(newNAME.slice(0, 5) + GREmojiType(args[0]) + newNAME.slice(5)).catch(console.error);
-    return;*/
+    return;
+    
+
+                        case 'close':
+                        if (!isOpen) {
+                            message.channel.send('> **Game Room มีสถานะปิดอยู่แล้ว!**');
+                            return;
+                        }
+                        GR.setName(NAME.slice(0, 3) + '❌' + NAME.slice(4)).then(() => GR.setPosition(RTH.channels.cache.get('748103478253060106').position + 1)).catch(console.error);
+                        return;
+                    case 'open':
+                        if (isOpen) {
+                            message.channel.send('> **Game Room มีสถานะเปิดอยู่แล้ว!**');
+                            return;
+                        }
+                        GR.setName(NAME.slice(0, 3) + '✔' + NAME.slice(4)).then(() => GR.setPosition(Gamecen.position + 1)).catch(console.error);
+                        return;*/
