@@ -57,7 +57,7 @@ client.once('ready', () => {
             RTH.channels.create('Lobby ' + infiLobby.length, {
                 type: 'voice',
                 parent: MainCat
-            }).then(NewLobby => NewLobby.setPosition(infiLobby.length));
+            }).then(NewLobby => NewLobby.setPosition(infiLobby.length + 1));
         } else {
             let emptyroom = [];
             infiLobby.forEach(lobby => {
