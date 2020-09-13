@@ -276,7 +276,8 @@ function joinSever(member) {
     member.send('https://cdn.discordapp.com/attachments/732198249946939448/748232742306709632/welcome6.png').then(() =>
         member.send('> **แจ้งเตือนสมาชิก!**\n' +
             '> **คือว่า Serverเรานั้นบังคับใช้ Push to Talk (กดเพื่อพูด)**\n' +
-            '> **ดังนั้นการจะพูดในServerได้ จะต้องSetModeพูด เป็น Push to Talk**'));
+            '> **ดังนั้นการจะพูดในServerได้ จะต้องSetModeพูด เป็น Push to Talk**\n'+
+            '\n> **แล้วก็! ขอให้ตั้งชื่อเล่นในServer ด้วยเครื่องหมาย <>**'));
 
     member.roles.add(gusRole);
     client.channels.cache.get('685761491760447518').send(new Discord.MessageEmbed()
@@ -363,8 +364,7 @@ function CreateNewGame(Type, Name, Creator) {
                 GRCreateChannel(ID, NewGameRoom, 'console', 'ห้องควบคุม Game Room | & เพื่อดูคำสั่ง', false, 5, true, Role, GMRole);
                 GRCreateChannel(ID, NewGameRoom, 'member', 'ห้องรับ/ออก สมาชิก | &join เพื่อเข้า / &leave เพื่อออก', false, 1, true, Role, GMRole);
                 GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, false, Role, GMRole, `<@${Creator.id}>`);
-                GRCreateChannel(ID, NewGameRoom, 'pc', '', false, 2, false, Role, GMRole);
-                GRCreateChannel(ID, NewGameRoom, 'chat', '', false, 2, false, Role, GMRole);
+                GRCreateChannel(ID, NewGameRoom, 'roll', '', false, 2, false, Role, GMRole);
                 GRCreateChannel(ID, NewGameRoom, 'talk', '', true, 2, false, Role, GMRole);
             });
         })
