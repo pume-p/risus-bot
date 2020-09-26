@@ -554,8 +554,8 @@ function rollall(message, TEAMmode) {
             }
             if (cliche.indexOf(')') < 0) {
                 if (cliche.indexOf(']') > -1) bracket2 = ']';
-                else if (cliche.indexOf('>') > -1) bracket = '>';
-                else if (cliche.indexOf('}') > -1) bracket = '}';
+                else if (cliche.indexOf('>') > -1) bracket2 = '>';
+                else if (cliche.indexOf('}') > -1) bracket2 = '}';
             }
             dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
             returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s);
