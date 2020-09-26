@@ -537,7 +537,7 @@ function rollall(message, TEAMmode) {
             if (cliche.length < 1) return;
             let dices = 0;
             let returnMsg;
-            if (cliche.indexOf('(') + cliche.indexOf('[') < 0) {
+            if (cliche.indexOf('(') + cliche.indexOf('[') + cliche.indexOf('<') + cliche.indexOf('{') < 0) {
                 dices = parseInt(cliche.split(' ')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
                 returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s);
                 TEAMscore6s = returnMsg.TEAMscore6s;
@@ -547,10 +547,16 @@ function rollall(message, TEAMmode) {
             }
             let bracket = '(';
             let bracket2 = ')';
-            if (cliche.indexOf('(') < 0)
+            if (cliche.indexOf('(') < 0) {
                 if (cliche.indexOf('[') > -1) bracket = '[';
-            if (cliche.indexOf(')') < 0)
+                else if (cliche.indexOf('<') > -1) bracket = '<';
+                else if (cliche.indexOf('{') > -1) bracket = '{';
+            }
+            if (cliche.indexOf(')') < 0) {
                 if (cliche.indexOf(']') > -1) bracket2 = ']';
+                else if (cliche.indexOf('>') > -1) bracket = '>';
+                else if (cliche.indexOf('}') > -1) bracket = '}';
+            }
             dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
             returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s);
             TEAMscore6s = returnMsg.TEAMscore6s;
