@@ -234,10 +234,17 @@ client.on('message', message => { //return;//X
         }
     }
 
-    if (message.content.charAt(0) === '!')
-        rollall(message, false);
-    else if (message.content.charAt(0) === '$')
-        rollall(message, true);
+    let deadlyMode = false;
+    let rollcommmand = message.content;
+    if (message.content.charAt(0) === '*') {
+        deadlyMode = true;
+        rollcommmand = rollcommmand.slice(1);
+    }
+
+    if (rollcommmand === '!')
+        rollall(message, false, deadlyMode);
+    else if (rollcommmand === '$')
+        rollall(message, true, deadlyMode);
     else if (message.content.charAt(0) === '%') {
         let total = 0,
             s = message.content.match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
@@ -526,7 +533,7 @@ function loopmusic(connection, lodge, PrevMusic) {
 
 //DICE CONTROL
 
-function rollall(message, TEAMmode) {
+function rollall(message, TEAMmode, DeadlyMode) {
     let cliches = message.content.split('\n');
     cliches[0] = cliches[0].slice(1);
     let TEAMscore6s = 0;
