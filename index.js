@@ -590,11 +590,11 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DeadlyMode) {
         sendMsgUnder2000(`> *${cliche} - !เกินขีดจำกัด30*`, false, message);
         return;
     }
+    let resultInt = 0;
     let returnMsg = {
         eachdice: '',
-        resultInt: 0,
+        result: '',
         TEAMscore6s: TEAMscore6s,
-        result: ''
     }
     for (let i = 0; i < dices; i++) {
         let random = Math.floor(Math.random() * 6) + 1;
@@ -603,9 +603,9 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DeadlyMode) {
             if (random === 6) returnMsg.TEAMscore6s++;
             else random = 0;
         if (!DeadlyMode)
-            returnMsg.resultInt += random;
-        else if (returnMsg.resultInt < random)
-            returnMsg.resultInt = random;
+            resultInt += random;
+        else if (resultInt < random)
+            resultInt = random;
     }
     if (!DeadlyMode)
         returnMsg.result = resultInt;
