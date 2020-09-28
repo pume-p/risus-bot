@@ -241,9 +241,9 @@ client.on('message', message => { //return;//X
         rollcommmand = rollcommmand.slice(1);
     }
 
-    if (rollcommmand === '!')
+    if (rollcommmand.charAt(0) === '!')
         rollall(message, false, deadlyMode);
-    else if (rollcommmand === '$')
+    else if (rollcommmand.charAt(0) === '$')
         rollall(message, true, deadlyMode);
     else if (message.content.charAt(0) === '%') {
         let total = 0,
@@ -535,7 +535,9 @@ function loopmusic(connection, lodge, PrevMusic) {
 
 function rollall(message, TEAMmode, DeadlyMode) {
     let cliches = message.content.split('\n');
-    cliches[0] = cliches[0].slice(1);
+    if (DeadlyMode)
+        cliches[0] = cliches[0].slice(2);
+    else cliches[0] = cliches[0].slice(1);
     let TEAMscore6s = 0;
     let rolled = 0;
     cliches.forEach(cliche => {
@@ -546,7 +548,7 @@ function rollall(message, TEAMmode, DeadlyMode) {
             let returnMsg;
             if (cliche.indexOf('(') + cliche.indexOf('[') + cliche.indexOf('<') + cliche.indexOf('{') < 0) {
                 dices = parseInt(cliche.split(' ')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
-                returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s);
+                returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DeadlyMode);
                 TEAMscore6s = returnMsg.TEAMscore6s;
                 sendMsgUnder2000(`> **${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
                 rolled++;
@@ -565,7 +567,7 @@ function rollall(message, TEAMmode, DeadlyMode) {
                 else if (cliche.indexOf('}') > -1) bracket2 = '}';
             }
             dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
-            returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s);
+            returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DeadlyMode);
             TEAMscore6s = returnMsg.TEAMscore6s;
             sendMsgUnder2000(`> **${cliche.split(bracket2)[0]}${bracket2}: ${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
             rolled++;
@@ -578,7 +580,7 @@ function rollall(message, TEAMmode, DeadlyMode) {
     console.log(`${message.member.displayName} - ${message.channel.name}\n${message.content}\n---`);
 }
 
-function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s) {
+function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DeadlyMode) {
     if (isNaN(dices)) return;
     if (cliche.indexOf('+') > -1)
         dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
