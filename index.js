@@ -592,8 +592,9 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DeadlyMode) {
     }
     let returnMsg = {
         eachdice: '',
-        result: 0,
-        TEAMscore6s: TEAMscore6s
+        resultInt: 0,
+        TEAMscore6s: TEAMscore6s,
+        result: ''
     }
     for (let i = 0; i < dices; i++) {
         let random = Math.floor(Math.random() * 6) + 1;
@@ -601,8 +602,15 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DeadlyMode) {
         if (TEAMmode)
             if (random === 6) returnMsg.TEAMscore6s++;
             else random = 0;
-        returnMsg.result += random;
+        if (!DeadlyMode)
+            returnMsg.resultInt += random;
+        else if (returnMsg.resultInt < random)
+            returnMsg.resultInt = random;
     }
+    if (!DeadlyMode)
+        returnMsg.result = resultInt;
+    else
+        returnMsg.result = DiceEmoji(resultInt);
     return returnMsg;
 }
 
