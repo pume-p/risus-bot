@@ -575,7 +575,10 @@ function rollall(message, TEAMmode, DeadlyMode) {
     });
     let TEAMscore = '';
     if (TEAMmode && rolled > 1)
-        TEAMscore = `> ***TEAM= ${TEAMscore6s}\\* =${TEAMscore6s * 6}***`;
+        if (!DeadlyMode)
+            TEAMscore = `> ***TEAM= ${TEAMscore6s}\\* =${TEAMscore6s * 6}***`;
+        else
+            TEAMscore = `> ***TEAM= ${DiceEmoji(TEAMscore6s)}***`;
     sendMsgUnder2000(TEAMscore, true, message);
     console.log(`${message.member.displayName} - ${message.channel.name}\n${message.content}\n---`);
 }
@@ -609,8 +612,11 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DeadlyMode) {
     }
     if (!DeadlyMode)
         returnMsg.result = resultInt;
-    else
+    else {
         returnMsg.result = ' ' + DiceEmoji(resultInt);
+        if (returnMsg.TEAMscore6s < resultInt)
+            returnMsg.TEAMscore6s = resultInt;
+    }
     return returnMsg;
 }
 
