@@ -222,13 +222,13 @@ client.on('message', message => { //return;//X
                         RTH.roles.cache.forEach(role => {
                             if (role.name.endsWith(ID)) role.delete();
                         });
-                        /*GR.children.forEach(channel => channel.overwritePermissions([
+                        GR.children.forEach(channel => channel.overwritePermissions([
                             {
                                 id: RTH.id,
                                 deny: ['VIEW_CHANNEL'],
                             }
-                        ])).then(() =>*/
-                        GR.children.forEach(channel => channel.delete().then(() =>
+                        ])).then(() =>
+                        GR.children.forEach(channel => channel.delete()).then(() =>
                         GR.delete()));
                         return;
                     default:
