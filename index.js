@@ -222,8 +222,14 @@ client.on('message', message => { //return;//X
                         RTH.roles.cache.forEach(role => {
                             if (role.name.endsWith(ID)) role.delete();
                         });
-                        GR.children.forEach(channel => channel.delete());
-                        GR.delete();
+                        /*GR.children.forEach(channel => channel.overwritePermissions([
+                            {
+                                id: RTH.id,
+                                deny: ['VIEW_CHANNEL'],
+                            }
+                        ])).then(() =>*/
+                        GR.children.forEach(channel => channel.delete().then(() =>
+                        GR.delete()));
                         return;
                     default:
                         message.channel.send('> **`&remove [@ผู้เล่นที่จะลบออก]` - ลบผู้เล่นออกจาก Game Room**\n' +
@@ -433,9 +439,6 @@ function GRSetPerm(channel, IsVoice, permLv, NonGmPower, Role, GMRole) {
         SEND_MESSAGES: false
     };
     if (IsVoice) {
-        REMOVEpermAcess = {
-            CONNECT: false
-        };
         REMOVEpermInteract = {
             SPEAK: false
         };
@@ -601,7 +604,11 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DeadlyMode) {
     }
     for (let i = 0; i < dices; i++) {
         let random = Math.floor(Math.random() * 6) + 1;
-        returnMsg.eachdice += DiceEmoji(random);
+        if (!TEAMmode || random === 6)
+            returnMsg.eachdice += DiceEmoji(random);
+        else
+            returnMsg.eachdice += GrayDiceEmoji(random);
+
         if (TEAMmode && !DeadlyMode)
             if (random === 6) returnMsg.TEAMscore6s++;
             else random = 0;
@@ -663,6 +670,31 @@ function DiceEmoji(num) {
             break;
     }
     return `<:d${num}:${id}>`;
+}
+
+function GrayDiceEmoji(num) {
+    let id = '';
+    switch (num) {
+        case 2:
+            id = '760313662707335178';
+            break;
+        case 3:
+            id = '760313684815380480s';
+            break;
+        case 4:
+            id = '760313708424855562';
+            break;
+        case 5:
+            id = '760313730688352306';
+            break;
+        case 6:
+            id = '760313749763915808';
+            break;
+        default:
+            id = '760313638807404566'
+            break;
+    }
+    return `<:g${num}:${id}>`;
 }
 
 //console feature 
