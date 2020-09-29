@@ -598,7 +598,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DeadlyMode) {
     }
     for (let i = 0; i < dices; i++) {
         let random = Math.floor(Math.random() * 6) + 1;
-        if (!TEAMmode || random === 6)
+        if (!TEAMmode || random === 6 || DeadlyMode)
             returnMsg.eachdice += DiceEmoji(random);
         else
             returnMsg.eachdice += GrayDiceEmoji(random);
