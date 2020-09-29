@@ -222,14 +222,8 @@ client.on('message', message => { //return;//X
                         RTH.roles.cache.forEach(role => {
                             if (role.name.endsWith(ID)) role.delete();
                         });
-                        GR.children.forEach(channel => channel.overwritePermissions([
-                            {
-                                id: RTH.id,
-                                deny: ['VIEW_CHANNEL'],
-                            }
-                        ])).then(() =>
-                        GR.children.forEach(channel => channel.delete()).then(() =>
-                        GR.delete()));
+                        GR.children.forEach(channel => channel.delete());
+                        GR.delete();
                         return;
                     default:
                         message.channel.send('> **`&remove [@ผู้เล่นที่จะลบออก]` - ลบผู้เล่นออกจาก Game Room**\n' +
