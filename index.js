@@ -679,7 +679,7 @@ function GrayDiceEmoji(num) {
             id = '760313662707335178';
             break;
         case 3:
-            id = '760313684815380480s';
+            id = '760313684815380480';
             break;
         case 4:
             id = '760313708424855562';
