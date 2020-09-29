@@ -14,6 +14,7 @@ var gusRole;
 var botRole;
 var modRole;
 var djRole;
+var gmRole;
 
 var playing = false;
 var lodge;
@@ -34,6 +35,7 @@ client.once('ready', () => {
     botRole = RTH.roles.cache.get('685760520946843694');
     modRole = RTH.roles.cache.get('726052487257391125');
     djRole = RTH.roles.cache.get('747273333090812024');
+    gmRole = RTH.roles.cache.get('760441106160287744');
 
     //update
     RTH.members.cache.filter(members => members.roles.cache.size === 1).forEach(member => joinSever(member));
@@ -86,7 +88,10 @@ client.on('message', message => { //return;//X
     if (message.author.bot) return;
     message.member.roles.add(memRole);
     message.member.roles.remove(gusRole);
-    if (!message.member.roles.cache.find(r => r.name.indexOf('GM') > -1)) message.member.roles.remove(djRole);
+    if (!message.member.roles.cache.find(r => r.name.indexOf('Game_GM:') > -1)) {
+        message.member.roles.remove(djRole);
+        message.member.roles.remove(gmRole);
+    };
     updatestat();
 
     switch (message.channel.id) {
@@ -340,6 +345,7 @@ function CreateNewGame(Type, Name, Creator) {
             Creator.roles.add(GMRole);
             Creator.roles.add(Role);
             Creator.roles.add(djRole);
+            Creator.roles.add(gmRole);
 
             const allowperm = ['SEND_MESSAGES', 'VIEW_CHANNEL', 'SPEAK', 'CONNECT'];
             RTH.channels.create(`${ID}-${GREmojiType(Type)}${Name}`, {
