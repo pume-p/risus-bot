@@ -666,7 +666,7 @@ function DiceEmoji(num) {
             id = '726851451019722882';
             break;
         default:
-            id = '726851299152232515'
+            id = '726851299152232515';
             break;
     }
     return `<:d${num}:${id}>`;
@@ -691,7 +691,7 @@ function GrayDiceEmoji(num) {
             id = '760313749763915808';
             break;
         default:
-            id = '760313638807404566'
+            id = '760313638807404566';
             break;
     }
     return `<:g${num}:${id}>`;
