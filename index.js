@@ -640,7 +640,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode) {
             break;
         case 2:
             if (resultInt === 0)
-                returnMsg.result = '***** ก้าวหน้าสำเร็จ!*****';
+                returnMsg.result = '** ***ก้าวหน้าสำเร็จ!*';
             else
                 returnMsg.result = ' ไม่สำเร็จ';
     }
