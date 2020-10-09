@@ -251,7 +251,7 @@ client.on('message', message => { //return;//X
 
     if (rollcommmand.charAt(0) === '!')
         rollall(message, false, diceMode);
-    else if (rollcommmand.charAt(0) === '$')
+    else if (rollcommmand.charAt(0) === '$' && diceMode !== 2)
         rollall(message, true, diceMode);
     else if (message.content.charAt(0) === '%') {
         let total = 0,
@@ -627,7 +627,6 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode) {
             case 2:
                 if ((random % 2) !== 0)
                     resultInt = 1;
-
         }
     }
     switch (DiceMode) {
@@ -641,7 +640,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode) {
             break;
         case 2:
             if (resultInt === 0)
-                returnMsg.result = '*** ก้าวหน้าสำเร็จ!***';
+                returnMsg.result = '***** ก้าวหน้าสำเร็จ!***';
             else
                 returnMsg.result = ' ไม่สำเร็จ';
     }
