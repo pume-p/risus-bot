@@ -239,17 +239,20 @@ client.on('message', message => { //return;//X
         }
     }
 
-    let deadlyMode = false;
+    let diceMode = 0;
     let rollcommmand = message.content;
     if (message.content.charAt(0) === '*') {
-        deadlyMode = true;
+        diceMode = 1;
+        rollcommmand = rollcommmand.slice(1);
+    } else if (message.content.charAt(0) === '^') {
+        diceMode = 2;
         rollcommmand = rollcommmand.slice(1);
     }
 
     if (rollcommmand.charAt(0) === '!')
-        rollall(message, false, deadlyMode);
+        rollall(message, false, diceMode);
     else if (rollcommmand.charAt(0) === '$')
-        rollall(message, true, deadlyMode);
+        rollall(message, true, diceMode);
     else if (message.content.charAt(0) === '%') {
         let total = 0,
             s = message.content.match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
@@ -537,9 +540,9 @@ function loopmusic(connection, lodge, PrevMusic) {
 
 //DICE CONTROL
 
-function rollall(message, TEAMmode, DeadlyMode) {
+function rollall(message, TEAMmode, DiceMode) {
     let cliches = message.content.split('\n');
-    if (DeadlyMode)
+    if (DiceMode !== 0)
         cliches[0] = cliches[0].slice(2);
     else cliches[0] = cliches[0].slice(1);
     let TEAMscore6s = 0;
@@ -552,7 +555,7 @@ function rollall(message, TEAMmode, DeadlyMode) {
             let returnMsg;
             if (cliche.indexOf('(') + cliche.indexOf('[') + cliche.indexOf('<') + cliche.indexOf('{') < 0) {
                 dices = parseInt(cliche.split(' ')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
-                returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DeadlyMode);
+                returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode);
                 TEAMscore6s = returnMsg.TEAMscore6s;
                 sendMsgUnder2000(`> **${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
                 rolled++;
@@ -571,7 +574,7 @@ function rollall(message, TEAMmode, DeadlyMode) {
                 else if (cliche.indexOf('}') > -1) bracket2 = '}';
             }
             dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
-            returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DeadlyMode);
+            returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode);
             TEAMscore6s = returnMsg.TEAMscore6s;
             sendMsgUnder2000(`> **${cliche.split(bracket2)[0]}${bracket2}: ${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
             rolled++;
@@ -579,7 +582,7 @@ function rollall(message, TEAMmode, DeadlyMode) {
     });
     let TEAMscore = '';
     if (TEAMmode && rolled > 1)
-        if (!DeadlyMode)
+        if (DiceMode === 0)
             TEAMscore = `> ***TEAM= ${TEAMscore6s}\\* =${TEAMscore6s * 6}***`;
         else
             TEAMscore = `> ***TEAM= ${DiceEmoji(TEAMscore6s)}***`;
@@ -587,7 +590,7 @@ function rollall(message, TEAMmode, DeadlyMode) {
     console.log(`${message.member.displayName} - ${message.channel.name}\n${message.content}\n---`);
 }
 
-function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DeadlyMode) {
+function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode) {
     if (isNaN(dices)) return;
     if (cliche.indexOf('+') > -1)
         dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
@@ -605,25 +608,42 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DeadlyMode) {
     }
     for (let i = 0; i < dices; i++) {
         let random = Math.floor(Math.random() * 6) + 1;
-        if (!TEAMmode || random === 6 || DeadlyMode)
+        if ((!TEAMmode || random === 6 || DiceMode === 1) && (DiceMode !== 2 || (random % 2) === 0)) //สีเทาเฉพาะถ้าเป็นทีมแล้วเลขไม่เป็น6 & mode^ไม่เป็นคู่
             returnMsg.eachdice += DiceEmoji(random);
         else
             returnMsg.eachdice += GrayDiceEmoji(random);
 
-        if (TEAMmode && !DeadlyMode)
-            if (random === 6) returnMsg.TEAMscore6s++;
-            else random = 0;
-        if (!DeadlyMode)
-            resultInt += random;
-        else if (resultInt < random)
-            resultInt = random;
+        switch (DiceMode) {
+            case 0:
+                if (TEAMmode)
+                    if (random === 6) returnMsg.TEAMscore6s++;
+                    else random = 0;
+                resultInt += random;
+                break;
+            case 1:
+                if (resultInt < random)
+                    resultInt = random;
+                break;
+            case 2:
+                if ((random % 2) !== 0)
+                    resultInt = 1;
+
+        }
     }
-    if (!DeadlyMode)
-        returnMsg.result = resultInt;
-    else {
-        returnMsg.result = ' ' + DiceEmoji(resultInt);
-        if (returnMsg.TEAMscore6s < resultInt)
-            returnMsg.TEAMscore6s = resultInt;
+    switch (DiceMode) {
+        case 0:
+            returnMsg.result = resultInt;
+            break;
+        case 1:
+            returnMsg.result = ' ' + DiceEmoji(resultInt);
+            if (returnMsg.TEAMscore6s < resultInt)
+                returnMsg.TEAMscore6s = resultInt;
+            break;
+        case 2:
+            if (resultInt === 0)
+                returnMsg.result = '*** ก้าวหน้าสำเร็จ!***';
+            else
+                returnMsg.result = ' ไม่สำเร็จ';
     }
     return returnMsg;
 }
