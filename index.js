@@ -553,14 +553,14 @@ function rollall(message, TEAMmode, DiceMode) {
             if (cliche.length < 1) return;
             let dices = 0;
             let returnMsg;
-            if (cliche.indexOf('(') + cliche.indexOf('[') + cliche.indexOf('<') + cliche.indexOf('{') < 0) {
+            /*if (cliche.indexOf('(') + cliche.indexOf('[') + cliche.indexOf('<') + cliche.indexOf('{') < 0) {
                 dices = parseInt(cliche.split(' ')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
                 returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode);
                 TEAMscore6s = returnMsg.TEAMscore6s;
                 sendMsgUnder2000(`> **${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
                 rolled++;
                 return;
-            }
+            }*/
             let bracket = '(';
             let bracket2 = ')';
             if (cliche.indexOf('(') < 0) {
@@ -640,7 +640,7 @@ function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode) {
             break;
         case 2:
             if (resultInt === 0)
-                returnMsg.result = '***** ก้าวหน้าสำเร็จ!***';
+                returnMsg.result = '***** ก้าวหน้าสำเร็จ!*****';
             else
                 returnMsg.result = ' ไม่สำเร็จ';
     }
