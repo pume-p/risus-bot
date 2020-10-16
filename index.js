@@ -239,7 +239,7 @@ client.on('message', message => { //return;//X
         }
     }
 
-    let diceMode = 0;
+    /*let diceMode = 0;
     let rollcommmand = message.content;
     if (message.content.charAt(0) === '*') {
         diceMode = 1;
@@ -260,7 +260,7 @@ client.on('message', message => { //return;//X
             total += parseFloat(s.shift());
         }
         message.channel.send(total);
-    }
+    }*/
 })
 
 
@@ -538,7 +538,7 @@ function loopmusic(connection, lodge, PrevMusic) {
 }
 
 //DICE CONTROL
-
+/*
 function rollall(message, TEAMmode, DiceMode) {
     let cliches = message.content.split('\n');
     if (DiceMode !== 0)
@@ -714,7 +714,7 @@ function GrayDiceEmoji(num) {
             break;
     }
     return `<:g${num}:${id}>`;
-}
+}*/
 
 //console feature 
 /*case 'rename':
