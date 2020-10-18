@@ -216,7 +216,7 @@ client.on('message', message => { //return;//X
                         if (args[0] === 'v') IsVoice = true
                         const Role = RTH.roles.cache.find(role => role.name === `Game:${ID}`);
                         const GMRole = RTH.roles.cache.find(role => role.name === `Game_GM:${ID}`);
-                        GRCreateChannel(ID, GR, args[2], '', IsVoice, parseInt(args[1]), false, Role, GMRole, `<@${message.author.id}>`);
+                        GRCreateChannel(ID, GR, args[2], '', IsVoice, parseInt(args[1]), false, Role, GMRole);//, `<@${message.author.id}>`);
                         return;
                     case 'disband':
                         message.channel.send(`> **คุณแน่ใจนะ? ว่าต้องการจะลบ** ***Game Room ID: ${ID}}***\n` +
@@ -314,7 +314,7 @@ function CreateNewGame(Type, Name, Creator) {
                 '***"+[ประเภทเกม:O,C][ชื่อเกม]"***\n' +
                 '**เช่น:** ***"+Oบุกเข้าปราสาทจอมมาร!"***\n' +
                 '**Oneshot📜 - การเล่นครั้งเดียว**\n' +
-                '**Campaign📑 - การเล่นเรื่อยๆหลายการผจญภัย**',
+                '**Campaign📑 - เส้นเรื่องราวที่ต่อเนื่องกัน หรือการผจญภัยหลายๆตัว มักจะใช้ตัวละครเดิม**',
             suss: false
         };
     if (Name.length < 3)
