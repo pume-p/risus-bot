@@ -238,29 +238,6 @@ client.on('message', message => { //return;//X
                 return;
         }
     }
-
-    /*let diceMode = 0;
-    let rollcommmand = message.content;
-    if (message.content.charAt(0) === '*') {
-        diceMode = 1;
-        rollcommmand = rollcommmand.slice(1);
-    } else if (message.content.charAt(0) === '^') {
-        diceMode = 2;
-        rollcommmand = rollcommmand.slice(1);
-    }
-
-    if (rollcommmand.charAt(0) === '!')
-        rollall(message, false, diceMode);
-    else if (rollcommmand.charAt(0) === '$' && diceMode !== 2)
-        rollall(message, true, diceMode);
-    else if (message.content.charAt(0) === '%') {
-        let total = 0,
-            s = message.content.match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
-        while (s.length) {
-            total += parseFloat(s.shift());
-        }
-        message.channel.send(total);
-    }*/
 })
 
 
@@ -275,21 +252,22 @@ client.on('guildMemberRemove', member => {
 client.on('guildMemberAdd', member => joinSever(member));
 
 function joinSever(member) {
+    console.log('join server has been call');
     if (member.user.bot) {
         member.roles.add(botRole);
         return;
-    }
+    }console.log('join server has been call');
     member.send('https://cdn.discordapp.com/attachments/732198249946939448/748232742306709632/welcome6.png').then(() =>
         member.send('> **แจ้งเตือนสมาชิก!**\n' +
             '> **คือว่า Serverเรานั้นบังคับใช้ Push to Talk (กดเพื่อพูด)**\n' +
             '> **ดังนั้นการจะพูดในServerได้ จะต้องSetModeพูด เป็น Push to Talk**\n' +
             '\n> **แล้วก็! ขอให้ตั้งชื่อเล่นในServer ด้วยเครื่องหมาย <>**'));
-
-    member.roles.add(gusRole);
-    client.channels.cache.get('685761491760447518').send(new Discord.MessageEmbed()
+            console.log('join server has been call');
+    member.roles.add(gusRole);console.log('join server has been call');
+    RTH.channels.cache.get('685761491760447518').send(new Discord.MessageEmbed()
         .setColor('#2ecc71')
         .setAuthor(`ยินดีต้อนรับ ${member.displayName} สู่Risusiverse Thai!`, member.user.avatarURL())
-        .setDescription(member)).then(msg => msg.react('👋'));
+        .setDescription(member)).then(msg => msg.react('👋'));console.log('join server has been call');
 }
 
 //STAT
@@ -536,254 +514,3 @@ function loopmusic(connection, lodge, PrevMusic) {
         });
     } catch (e) {} finally {}
 }
-
-//DICE CONTROL
-/*
-function rollall(message, TEAMmode, DiceMode) {
-    let cliches = message.content.split('\n');
-    if (DiceMode !== 0)
-        cliches[0] = cliches[0].slice(2);
-    else cliches[0] = cliches[0].slice(1);
-    let TEAMscore6s = 0;
-    let rolled = 0;
-    cliches.forEach(cliche => {
-        try {
-            if (rolled >= 15) return;
-            if (cliche.length < 1) return;
-            let dices = 0;
-            let returnMsg;
-            if ((cliche.indexOf('(') < 0) && (cliche.indexOf('[') < 0) && (cliche.indexOf('<') < 0) && (cliche.indexOf('{') < 0)) {
-                dices = parseInt(cliche.split(' ')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
-                returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode);
-                TEAMscore6s = returnMsg.TEAMscore6s;
-                sendMsgUnder2000(`> **${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
-                rolled++;
-                return;
-            }
-            let bracket = '(';
-            let bracket2 = ')';
-            if (cliche.indexOf('(') < 0) {
-                if (cliche.indexOf('[') > -1) bracket = '[';
-                else if (cliche.indexOf('<') > -1) bracket = '<';
-                else if (cliche.indexOf('{') > -1) bracket = '{';
-            }
-            if (cliche.indexOf(')') < 0) {
-                if (cliche.indexOf(']') > -1) bracket2 = ']';
-                else if (cliche.indexOf('>') > -1) bracket2 = '>';
-                else if (cliche.indexOf('}') > -1) bracket2 = '}';
-            }
-            dices = parseInt(cliche.split(bracket)[1].split(bracket2)[0].split('/')[0].split('+')[0].split('-')[0].replace(/[^0-9-]/g, ''));
-            returnMsg = rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode);
-            TEAMscore6s = returnMsg.TEAMscore6s;
-            sendMsgUnder2000(`> **${cliche.split(bracket2)[0]}${bracket2}: ${returnMsg.eachdice} :${returnMsg.result}**`, false, message);
-            rolled++;
-        } catch (e) {} finally {}
-    });
-    let TEAMscore = '';
-    if (TEAMmode && rolled > 1)
-        if (DiceMode === 0)
-            TEAMscore = `> ***TEAM= ${TEAMscore6s}\\* =${TEAMscore6s * 6}***`;
-        else
-            TEAMscore = `> ***TEAM= ${DiceEmoji(TEAMscore6s)}***`;
-    sendMsgUnder2000(TEAMscore, true, message);
-    console.log(`${message.member.displayName} - ${message.channel.name}\n${message.content}\n---`);
-}
-
-function rollDice(dices, cliche, message, TEAMmode, TEAMscore6s, DiceMode) {
-    if (isNaN(dices)) return;
-    if (cliche.indexOf('+') > -1)
-        dices += parseInt(cliche.split('+')[1].replace(/[^0-9-]/g, ''));
-    else if (cliche.indexOf('-') > -1)
-        dices -= parseInt(cliche.split('-')[1].replace(/[^0-9-]/g, ''));
-    if (dices > 30) {
-        sendMsgUnder2000(`> *${cliche} - !เกินขีดจำกัด30*`, false, message);
-        return;
-    }
-    let resultInt = 0;
-    let returnMsg = {
-        eachdice: '',
-        result: '',
-        TEAMscore6s: TEAMscore6s,
-    }
-    for (let i = 0; i < dices; i++) {
-        let random = Math.floor(Math.random() * 6) + 1;
-        if ((!TEAMmode || random === 6 || DiceMode === 1) && (DiceMode !== 2 || (random % 2) === 0)) //สีเทาเฉพาะถ้าเป็นทีมแล้วเลขไม่เป็น6 & mode^ไม่เป็นคู่
-            returnMsg.eachdice += DiceEmoji(random);
-        else
-            returnMsg.eachdice += GrayDiceEmoji(random);
-
-        switch (DiceMode) {
-            case 0:
-                if (TEAMmode)
-                    if (random === 6) returnMsg.TEAMscore6s++;
-                    else random = 0;
-                resultInt += random;
-                break;
-            case 1:
-                if (resultInt < random)
-                    resultInt = random;
-                break;
-            case 2:
-                if ((random % 2) !== 0)
-                    resultInt = 1;
-        }
-    }
-    switch (DiceMode) {
-        case 0:
-            returnMsg.result = resultInt;
-            break;
-        case 1:
-            returnMsg.result = ' ' + DiceEmoji(resultInt);
-            if (returnMsg.TEAMscore6s < resultInt)
-                returnMsg.TEAMscore6s = resultInt;
-            break;
-        case 2:
-            if (resultInt === 0)
-                returnMsg.result = '** ***ก้าวหน้าสำเร็จ!*';
-            else
-                returnMsg.result = ' ไม่สำเร็จ';
-    }
-    return returnMsg;
-}
-
-var allText = '';
-
-function sendMsgUnder2000(text, final, ch) {
-    if (allText.length + text.length >= 2000 || final) {
-        if (final) {
-            if (allText.length + text.length >= 2000) {
-                ch.channel.send(allText);
-                allText = '';
-            }
-            allText += text + '\n'
-        }
-        ch.channel.send(allText);
-        allText = '';
-    }
-    if (!final) allText += text + '\n';
-}
-
-function DiceEmoji(num) {
-    let id = '';
-    switch (num) {
-        case 1:
-            id = '726851299152232515';
-            break;
-        case 2:
-            id = '726851357784408207';
-            break;
-        case 3:
-            id = '726851383789355028';
-            break;
-        case 4:
-            id = '726851415179395132';
-            break;
-        case 5:
-            id = '726851433693184042';
-            break;
-        case 6:
-            id = '726851451019722882';
-            break;
-        default:
-            id = '726851299152232515';
-            break;
-    }
-    return `<:d${num}:${id}>`;
-}
-
-function GrayDiceEmoji(num) {
-    let id = '';
-    switch (num) {
-        case 2:
-            id = '760313662707335178';
-            break;
-        case 3:
-            id = '760313684815380480';
-            break;
-        case 4:
-            id = '760313708424855562';
-            break;
-        case 5:
-            id = '760313730688352306';
-            break;
-        case 6:
-            id = '760313749763915808';
-            break;
-        default:
-            id = '760313638807404566';
-            break;
-    }
-    return `<:g${num}:${id}>`;
-}*/
-
-//console feature 
-/*case 'rename':
-    if (!args[0]) {
-        message.channel.send('กรุณาระบุชื่อใหม่ที่ต้องการตั้ง');
-        return;
-    } else if (message.content.substring(8).length > 60) {
-        message.channel.send('ชื่อนั้นยาวเกินไป');
-        return;
-    }
-    const nameLength = NAME.split('-')[3].length;
-    let Title = NAME;
-    if (nameLength > 0) Title = NAME.slice(0, -1 * NAME.split('-')[3].length);
-    Title += message.content.substring(8);
-    GR.setName(Title).catch(console.error);
-    return;
-case 'change-type':
-    if (!args[0] && !(args[0] === 'O' || args[0] === 'A' || args[0] === 'C')) {
-        message.channel.send('กรุณาระบุประเภทเกมที่ต้องการเปลื่ยนเป็น\n' +
-            '[O/A/C]\n' +
-            'Oneshot - การเล่นครั้งเดียว,\n' +
-            'Adventure - การเล่นหลายครั้งจนกว่าจะจบการผจญภัย,\n' +
-            'Campaign - การเล่นไปเรื่อยๆ');
-        return;
-    }
-    const currentType = GREmojiType(NAME.charAt(5));
-    if (currentType === args[0]) {
-        let fullType;
-        switch (currentType) {
-            case 'O':
-                fullType = 'Oneshot';
-                break;
-            case 'A':
-                fullType = 'Adventure';
-                break;
-            case 'C':
-                fullType = 'Campaign';
-                break;
-        }
-        message.channel.send(`Game Room เป็นประเภท: *${fullType}* อยู่แล้ว`);
-        return;
-    }NAME.charAt(5)
-    const newNAME = NAME.slice(0, 3) + NAME.slice(4);
-    GR.setName(newNAME.slice(0, 5) + GREmojiType(args[0]) + newNAME.slice(5)).catch(console.error);
-    return;
-    
-
-                        case 'close':
-                        if (!isOpen) {
-                            message.channel.send('> **Game Room มีสถานะปิดอยู่แล้ว!**');
-                            return;
-                        }
-                        GR.setName(NAME.slice(0, 3) + '❌' + NAME.slice(4)).then(() => GR.setPosition(RTH.channels.cache.get('748103478253060106').position + 1)).catch(console.error);
-                        return;
-                    case 'open':
-                        if (isOpen) {
-                            message.channel.send('> **Game Room มีสถานะเปิดอยู่แล้ว!**');
-                            return;
-                        }
-                        GR.setName(NAME.slice(0, 3) + '✔' + NAME.slice(4)).then(() => GR.setPosition(Gamecen.position + 1)).catch(console.error);
-                        return;*/
-
-/*client.on('channelUpdate', (oldChannel, newChannel) => {
-    if (!(newChannel.type === 'text' || newChannel.type === 'voice')) return;
-    if (!(newChannel.parent !== null && newChannel.parent.name.indexOf('-') > -1)) return;
-    let nID = '';
-    if (newChannel.name.split('-')[2]) nID = newChannel.name.slice(0, -1 * newChannel.name.split('-')[2].length);
-    if (oldChannel.name.split('-')[2]) {
-        const oID = oldChannel.name.slice(0, -1 * oldChannel.name.split('-')[2].length);
-        if (nID !== oID) newChannel.setName(oldChannel.name).catch(console.error);
-    }
-});*/
