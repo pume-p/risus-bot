@@ -216,7 +216,7 @@ client.on('message', message => { //return;//X
                         if (args[0] === 'v') IsVoice = true
                         const Role = RTH.roles.cache.find(role => role.name === `Game:${ID}`);
                         const GMRole = RTH.roles.cache.find(role => role.name === `Game_GM:${ID}`);
-                        GRCreateChannel(ID, GR, args[2], '', IsVoice, parseInt(args[1]), false, Role, GMRole);//, `<@${message.author.id}>`);
+                        GRCreateChannel(ID, GR, args[2], '', IsVoice, parseInt(args[1]), false, Role, GMRole); //, `<@${message.author.id}>`);
                         return;
                     case 'disband':
                         message.channel.send(`> **คุณแน่ใจนะ? ว่าต้องการจะลบ** ***Game Room ID: ${ID}}***\n` +
@@ -251,7 +251,7 @@ client.on('guildMemberRemove', member => {
 
 client.on('guildMemberAdd', member => joinSever(member));
 
-function joinSever(member) {console.log('call?S');
+function joinSever(member) {
     if (member.user.bot) {
         member.roles.add(botRole);
         return;
@@ -469,6 +469,10 @@ client.on('voiceStateUpdate', () => {
 });
 
 function StartVC() {
+    client.user.setActivity('Risus v2.01', {
+        type: 'PLAYING',
+        url: 'https://sites.google.com/site/risusiverseth/home'
+    });
     lodge.join().then(connection => {
         ch = connection;
         connected = true;
