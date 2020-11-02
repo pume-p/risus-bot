@@ -271,8 +271,8 @@ function joinSever(member) {console.log('call?S');
 
 //STAT
 
-function updatestat() {// memRole.members.size
-    MainCat.setName('▬ main | member : ' + RTH.members.filter(member => !member.user.bot).size + ' ▬');
+function updatestat() {
+    MainCat.setName('▬ main | member : ' + memRole.members.size + ' ▬');
 }
 
 //GAMEMANGER
