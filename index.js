@@ -272,7 +272,9 @@ function joinSever(member) {
 //STAT
 
 function updatestat() {
-    MainCat.setName('▬ main | member : ' + memRole.members.size + ' ▬');
+    // memRole.members.size
+    //guild.members.filter(member => !member.user.bot).size
+    MainCat.setName('▬ main | member : ' + RTH.members.cache.filter(member => member.roles.cache.get(memRole.id)).size + ' ▬');
 }
 
 //GAMEMANGER
