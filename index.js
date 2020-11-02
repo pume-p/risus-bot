@@ -251,29 +251,28 @@ client.on('guildMemberRemove', member => {
 
 client.on('guildMemberAdd', member => joinSever(member));
 
-function joinSever(member) {
-    console.log('join server has been call');
+function joinSever(member) {console.log('call?S');
     if (member.user.bot) {
         member.roles.add(botRole);
         return;
-    }console.log('join server has been call');
+    }
     member.send('https://cdn.discordapp.com/attachments/732198249946939448/748232742306709632/welcome6.png').then(() =>
         member.send('> **แจ้งเตือนสมาชิก!**\n' +
             '> **คือว่า Serverเรานั้นบังคับใช้ Push to Talk (กดเพื่อพูด)**\n' +
             '> **ดังนั้นการจะพูดในServerได้ จะต้องSetModeพูด เป็น Push to Talk**\n' +
             '\n> **แล้วก็! ขอให้ตั้งชื่อเล่นในServer ด้วยเครื่องหมาย <>**'));
-            console.log('join server has been call');
-    member.roles.add(gusRole);console.log('join server has been call');
-    RTH.channels.cache.get('685761491760447518').send(new Discord.MessageEmbed()
+
+    member.roles.add(gusRole);
+    client.channels.cache.get('685761491760447518').send(new Discord.MessageEmbed()
         .setColor('#2ecc71')
         .setAuthor(`ยินดีต้อนรับ ${member.displayName} สู่Risusiverse Thai!`, member.user.avatarURL())
-        .setDescription(member)).then(msg => msg.react('👋'));console.log('join server has been call');
+        .setDescription(member)).then(msg => msg.react('👋'));
 }
 
 //STAT
 
-function updatestat() {
-    MainCat.setName('▬ main | member : ' + memRole.members.size + ' ▬');
+function updatestat() {// memRole.members.size
+    MainCat.setName('▬ main | member : ' + RTH.members.filter(member => !member.user.bot).size + ' ▬');
 }
 
 //GAMEMANGER
