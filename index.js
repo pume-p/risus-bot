@@ -21,6 +21,9 @@ var lodge;
 var ch;
 var connected = false;
 
+//
+// yo, to whoever are looking at this code
+// the code is supper old. I learn js just to write discord bot lol.
 client.once('ready', () => {
     console.log('Ready!\n---');
 
@@ -200,6 +203,44 @@ client.on('message', message => { //return;//X
                         RTH.channels.cache.find(channel => channel.name === `${ID}-0-player`).send(`> **<@${kickMem.id}> ได้ถูกลบออกจาก Game Room โดย <@${message.member.id}>!**`);
                         kickMem.roles.remove(KMemRole);
                         return;
+                    case 'v_activity':
+                        const vadMem = message.mentions.members.first();
+                        if (!vadMem) {
+                            message.channel.send('> **`&v_activity [@ผู้เล่นที่จะให้สิทธ์เสียง]`**');
+                            return;
+                        }
+                        const MvadRole = vadkMem.roles.cache.find(r => r.name === `Game:${ID}`);
+                        if (!MvadRole) {
+                            message.channel.send('> **ผู้เล่นไม่ได้เป็นผู้เล่นของ Game Room นี้!**');
+                            return;
+                        }
+                        const vadRole = vadkMem.roles.cache.find(r => r.name === `Game_Talk:${ID}`);
+                        if (vadRole) {
+                            message.channel.send('> **ผู้เล่นมีสิทธ์เสียงใน Game Room นี้อยู่แล้ว!**');
+                            return;
+                        }
+                        RTH.channels.cache.find(channel => channel.name === `${ID}-0-player`).send(`> **<@${vadMem.id}> ได้รับสิทธ์เสียง โดย <@${message.member.id}>!**`);
+                        vadMem.roles.add(RTH.roles.cache.find(role => role.name === `Game_Talk:${ID}`));
+                        return;
+                    case 'v_activity_remove':
+                        const vadMem = message.mentions.members.first();
+                        if (!vadMem) {
+                            message.channel.send('> **`&v_activity_remove [@ผู้เล่นที่จะลบสิทธ์เสียงออก]`**');
+                            return;
+                        }
+                        const MvadRole = vadkMem.roles.cache.find(r => r.name === `Game:${ID}`);
+                        if (!MvadRole) {
+                            message.channel.send('> **ผู้เล่นไม่ได้เป็นผู้เล่นของ Game Room นี้!**');
+                            return;
+                        }
+                        const vadRole = vadkMem.roles.cache.find(r => r.name === `Game_Talk:${ID}`);
+                        if (!vadRole) {
+                            message.channel.send('> **ผู้เล่นไม่ได้มีสิทธ์เสียงใน Game Room นี้!**');
+                            return;
+                        }
+                        RTH.channels.cache.find(channel => channel.name === `${ID}-0-player`).send(`> **<@${vadMem.id}> ได้ถูกลบสิทธ์เสียง โดย <@${message.member.id}>!**`);
+                        vadMem.roles.remove(vadRole);
+                        return;
                     case 'add-channel':
                         if (!(args[0] && args[1] && args[2] && (args[0] === 't' || args[0] === 'v') && (args[1] >= 1 && args[1] <= 5) && (args[2].length >= 2 && args[2].length <= 60))) {
                             message.channel.send('> **รายละเอียดไม่ครบ!**\n' +
@@ -323,38 +364,48 @@ function CreateNewGame(Type, Name, Creator) {
                 position: RTH.roles.cache.get('744006726285787227').position,
                 mentionable: true
             }
-        }).then(Role => {
-            Creator.roles.add(GMRole);
-            Creator.roles.add(Role);
-            Creator.roles.add(djRole);
-            Creator.roles.add(gmRole);
+        }).then(Role =>
+            RTH.roles.create({
+                data: {
+                    name: 'Game_Talk:' + ID,
+                    color: '68b6d8',
+                    position: RTH.roles.cache.get('744006726285787227').position
+                }
+            }).then(TalkRole => {
+                Creator.roles.add(GMRole);
+                Creator.roles.add(Role);
+                Creator.roles.add(djRole);
+                Creator.roles.add(gmRole);
 
-            const allowperm = ['SEND_MESSAGES', 'VIEW_CHANNEL', 'SPEAK', 'CONNECT'];
-            RTH.channels.create(`${ID}-${GREmojiType(Type)}${Name}`, {
-                type: 'category',
-                permissionOverwrites: [{
-                    id: botRole.id,
-                    allow: allowperm.concat(['MANAGE_MESSAGES'])
-                }, {
-                    id: modRole.id,
-                    allow: allowperm.concat(['MANAGE_MESSAGES', 'MANAGE_CHANNELS'])
-                }, {
-                    id: GMRole.id,
-                    allow: allowperm.concat(['MANAGE_MESSAGES', 'PRIORITY_SPEAKER'])
-                }, {
-                    id: Role.id,
-                    allow: allowperm
-                }]
-            }).then(NewGameRoom => {
-                NewGameRoom.setPosition(Gamecen.position + 1);
-                GRCreateChannel(ID, NewGameRoom, 'console', 'ห้องควบคุม Game Room | & เพื่อดูคำสั่ง', false, 5, 1, Role, GMRole);
-                GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, 2, Role, GMRole, `<@${Creator.id}>`);
-                GRCreateChannel(ID, NewGameRoom, 'player', 'ห้องรับ/ออก ผู้เล่น | &join เพื่อเข้า / &leave เพื่อออก | GMกด✅เพื่อรับผู้เล่น', false, 1, 2, Role, GMRole);
-                GRCreateChannel(ID, NewGameRoom, 'roll', 'ห้องchatเกม!', false, 2, 0, Role, GMRole);
-                GRCreateChannel(ID, NewGameRoom, 'talk', '', true, 2, 0, Role, GMRole);
-            });
-        })
-    );
+                const allowperm = ['SEND_MESSAGES', 'VIEW_CHANNEL', 'SPEAK', 'CONNECT'];
+                RTH.channels.create(`${ID}-${GREmojiType(Type)}${Name}`, {
+                    type: 'category',
+                    permissionOverwrites: [{
+                        id: botRole.id,
+                        allow: allowperm.concat(['MANAGE_MESSAGES'])
+                    }, {
+                        id: modRole.id,
+                        allow: allowperm.concat(['MANAGE_MESSAGES', 'MANAGE_CHANNELS'])
+                    }, {
+                        id: GMRole.id,
+                        allow: allowperm.concat(['MANAGE_MESSAGES', 'PRIORITY_SPEAKER'])
+                    }, {
+                        id: Role.id,
+                        allow: allowperm
+                    }, {
+                        id: TalkRole.id,
+                        allow: ['USE_VAD']
+                    }]
+                }).then(NewGameRoom => {
+                    NewGameRoom.setPosition(Gamecen.position + 1);
+                    GRCreateChannel(ID, NewGameRoom, 'console', 'ห้องควบคุม Game Room | & เพื่อดูคำสั่ง', false, 5, 1, Role, GMRole);
+                    GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, 2, Role, GMRole, `<@${Creator.id}>`);
+                    GRCreateChannel(ID, NewGameRoom, 'player', 'ห้องรับ/ออก ผู้เล่น | &join เพื่อเข้า / &leave เพื่อออก | GMกด✅เพื่อรับผู้เล่น', false, 1, 2, Role, GMRole);
+                    GRCreateChannel(ID, NewGameRoom, 'roll', 'ห้องchatเกม!', false, 2, 0, Role, GMRole);
+                    GRCreateChannel(ID, NewGameRoom, 'talk', '', true, 2, 0, Role, GMRole);
+                });
+            })
+        ));
 
     return {
         t: '**สร้างสำเร็จ!**',
