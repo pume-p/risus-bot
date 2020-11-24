@@ -223,23 +223,23 @@ client.on('message', message => { //return;//X
                         vadMem.roles.add(RTH.roles.cache.find(role => role.name === `Game_Talk:${ID}`));
                         return;
                     case 'v_activity_remove':
-                        const vadMem = message.mentions.members.first();
-                        if (!vadMem) {
+                        const vadMemX = message.mentions.members.first();
+                        if (!vadMemX) {
                             message.channel.send('> **`&v_activity_remove [@ผู้เล่นที่จะลบสิทธ์เสียงออก]`**');
                             return;
                         }
-                        const MvadRole = vadkMem.roles.cache.find(r => r.name === `Game:${ID}`);
-                        if (!MvadRole) {
+                        const MvadRoleX = vadkMem.roles.cache.find(r => r.name === `Game:${ID}`);
+                        if (!MvadRoleX) {
                             message.channel.send('> **ผู้เล่นไม่ได้เป็นผู้เล่นของ Game Room นี้!**');
                             return;
                         }
-                        const vadRole = vadkMem.roles.cache.find(r => r.name === `Game_Talk:${ID}`);
-                        if (!vadRole) {
+                        const vadRoleX = vadkMem.roles.cache.find(r => r.name === `Game_Talk:${ID}`);
+                        if (!vadRoleX) {
                             message.channel.send('> **ผู้เล่นไม่ได้มีสิทธ์เสียงใน Game Room นี้!**');
                             return;
                         }
-                        RTH.channels.cache.find(channel => channel.name === `${ID}-0-player`).send(`> **<@${vadMem.id}> ได้ถูกลบสิทธ์เสียง โดย <@${message.member.id}>!**`);
-                        vadMem.roles.remove(vadRole);
+                        RTH.channels.cache.find(channel => channel.name === `${ID}-0-player`).send(`> **<@${vadMemX.id}> ได้ถูกลบสิทธ์เสียง โดย <@${message.member.id}>!**`);
+                        vadMemX.roles.remove(vadRoleX);
                         return;
                     case 'add-channel':
                         if (!(args[0] && args[1] && args[2] && (args[0] === 't' || args[0] === 'v') && (args[1] >= 1 && args[1] <= 5) && (args[2].length >= 2 && args[2].length <= 60))) {
