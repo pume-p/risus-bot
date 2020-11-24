@@ -209,12 +209,12 @@ client.on('message', message => { //return;//X
                             message.channel.send('> **`&v_activity [@ผู้เล่นที่จะให้สิทธ์เสียง]`**');
                             return;
                         }
-                        const MvadRole = vadkMem.roles.cache.find(r => r.name === `Game:${ID}`);
+                        const MvadRole = vadMem.roles.cache.find(r => r.name === `Game:${ID}`);
                         if (!MvadRole) {
                             message.channel.send('> **ผู้เล่นไม่ได้เป็นผู้เล่นของ Game Room นี้!**');
                             return;
                         }
-                        const vadRole = vadkMem.roles.cache.find(r => r.name === `Game_Talk:${ID}`);
+                        const vadRole = vadMem.roles.cache.find(r => r.name === `Game_Talk:${ID}`);
                         if (vadRole) {
                             message.channel.send('> **ผู้เล่นมีสิทธ์เสียงใน Game Room นี้อยู่แล้ว!**');
                             return;
@@ -228,12 +228,12 @@ client.on('message', message => { //return;//X
                             message.channel.send('> **`&v_activity_remove [@ผู้เล่นที่จะลบสิทธ์เสียงออก]`**');
                             return;
                         }
-                        const MvadRoleX = vadkMem.roles.cache.find(r => r.name === `Game:${ID}`);
+                        const MvadRoleX = vadMemX.roles.cache.find(r => r.name === `Game:${ID}`);
                         if (!MvadRoleX) {
                             message.channel.send('> **ผู้เล่นไม่ได้เป็นผู้เล่นของ Game Room นี้!**');
                             return;
                         }
-                        const vadRoleX = vadkMem.roles.cache.find(r => r.name === `Game_Talk:${ID}`);
+                        const vadRoleX = vadMemX.roles.cache.find(r => r.name === `Game_Talk:${ID}`);
                         if (!vadRoleX) {
                             message.channel.send('> **ผู้เล่นไม่ได้มีสิทธ์เสียงใน Game Room นี้!**');
                             return;
@@ -359,19 +359,19 @@ function CreateNewGame(Type, Name, Creator) {
     }).then(GMRole =>
         RTH.roles.create({
             data: {
-                name: 'Game:' + ID,
-                color: '68d8d6',
+                name: 'Game_Talk:' + ID,
+                color: '68b6d8',
                 position: RTH.roles.cache.get('744006726285787227').position,
                 mentionable: true
             }
-        }).then(Role =>
+        }).then(TalkRole =>
             RTH.roles.create({
                 data: {
-                    name: 'Game_Talk:' + ID,
-                    color: '68b6d8',
+                    name: 'Game:' + ID,
+                    color: '68d8d6',
                     position: RTH.roles.cache.get('744006726285787227').position
                 }
-            }).then(TalkRole => {
+            }).then(Role => {
                 Creator.roles.add(GMRole);
                 Creator.roles.add(Role);
                 Creator.roles.add(djRole);
