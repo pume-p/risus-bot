@@ -363,15 +363,15 @@ function CreateNewGame(Type, Name, Creator) {
             data: {
                 name: 'Game_Talk:' + ID,
                 color: '68b6d8',
-                position: RTH.roles.cache.get('744006726285787227').position,
-                mentionable: true
+                position: RTH.roles.cache.get('744006726285787227').position
             }
         }).then(TalkRole =>
             RTH.roles.create({
                 data: {
                     name: 'Game:' + ID,
                     color: '68d8d6',
-                    position: RTH.roles.cache.get('744006726285787227').position
+                    position: RTH.roles.cache.get('744006726285787227').position,
+                    mentionable: true
                 }
             }).then(Role => {
                 Creator.roles.add(GMRole);
