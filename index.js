@@ -159,7 +159,7 @@ client.on('message', message => { //return;//X
         const NAME = GR.name;
         const ID = NAME.split('-')[0];
         switch (message.channel.name.slice(2)) {
-            case '-0-player':
+            case '-player':
                 if (message.member.roles.cache.find(r => r.name === `Game_GM:${ID}`)) {
                     message.channel.send(`> **GM ไม่สามารถใช้คำสั่งใน<\#${message.channel.id}>ได้!**\n` +
                         '> **คุณทำได้เฉพาะรับผู้เล่นเข้า Game Room ผ่านการReactที่เครื่องหมาย :white_check_mark:**');
@@ -187,7 +187,7 @@ client.on('message', message => { //return;//X
                             '> **`&leave [ข้อความ]` - ออกจาก Game Room**');
                 }
                 return;
-            case '-0-console':
+            case '-console':
                 switch (command) {
                     case 'remove':
                         const kickMem = message.mentions.members.first();
@@ -200,49 +200,49 @@ client.on('message', message => { //return;//X
                             message.channel.send('> **ผู้เล่นไม่ได้เป็นผู้เล่นของ Game Room นี้!**');
                             return;
                         }
-                        RTH.channels.cache.find(channel => channel.name === `${ID}-0-player`).send(`> **<@${kickMem.id}> ได้ถูกลบออกจาก Game Room โดย <@${message.member.id}>!**`);
+                        RTH.channels.cache.find(channel => channel.name === `${ID}-player`).send(`> **<@${kickMem.id}> ได้ถูกลบออกจาก Game Room โดย <@${message.member.id}>!**`);
                         kickMem.roles.remove(KMemRole);
                         return;
-                    case 'v_activity':
-                        const vadMem = message.mentions.members.first();
-                        if (!vadMem) {
-                            message.channel.send('> **`&v_activity [@ผู้เล่นที่จะให้สิทธ์เสียง]`**');
+                        /*case 'v_activity':
+                            const vadMem = message.mentions.members.first();
+                            if (!vadMem) {
+                                message.channel.send('> **`&v_activity [@ผู้เล่นที่จะให้สิทธ์เสียง]`**');
+                                return;
+                            }
+                            const MvadRole = vadMem.roles.cache.find(r => r.name === `Game:${ID}`);
+                            if (!MvadRole) {
+                                message.channel.send('> **ผู้เล่นไม่ได้เป็นผู้เล่นของ Game Room นี้!**');
+                                return;
+                            }
+                            const vadRole = vadMem.roles.cache.find(r => r.name === `Game_Talk:${ID}`);
+                            if (vadRole) {
+                                message.channel.send('> **ผู้เล่นมีสิทธ์เสียงใน Game Room นี้อยู่แล้ว!**');
+                                return;
+                            }
+                            RTH.channels.cache.find(channel => channel.name === `${ID}-0-player`).send(`> **<@${vadMem.id}> ได้รับสิทธ์เสียง โดย <@${message.member.id}>!**`);
+                            vadMem.roles.add(RTH.roles.cache.find(role => role.name === `Game_Talk:${ID}`));
                             return;
-                        }
-                        const MvadRole = vadMem.roles.cache.find(r => r.name === `Game:${ID}`);
-                        if (!MvadRole) {
-                            message.channel.send('> **ผู้เล่นไม่ได้เป็นผู้เล่นของ Game Room นี้!**');
-                            return;
-                        }
-                        const vadRole = vadMem.roles.cache.find(r => r.name === `Game_Talk:${ID}`);
-                        if (vadRole) {
-                            message.channel.send('> **ผู้เล่นมีสิทธ์เสียงใน Game Room นี้อยู่แล้ว!**');
-                            return;
-                        }
-                        RTH.channels.cache.find(channel => channel.name === `${ID}-0-player`).send(`> **<@${vadMem.id}> ได้รับสิทธ์เสียง โดย <@${message.member.id}>!**`);
-                        vadMem.roles.add(RTH.roles.cache.find(role => role.name === `Game_Talk:${ID}`));
-                        return;
-                    case 'v_activity_remove':
-                        const vadMemX = message.mentions.members.first();
-                        if (!vadMemX) {
-                            message.channel.send('> **`&v_activity_remove [@ผู้เล่นที่จะลบสิทธ์เสียงออก]`**');
-                            return;
-                        }
-                        const MvadRoleX = vadMemX.roles.cache.find(r => r.name === `Game:${ID}`);
-                        if (!MvadRoleX) {
-                            message.channel.send('> **ผู้เล่นไม่ได้เป็นผู้เล่นของ Game Room นี้!**');
-                            return;
-                        }
-                        const vadRoleX = vadMemX.roles.cache.find(r => r.name === `Game_Talk:${ID}`);
-                        if (!vadRoleX) {
-                            message.channel.send('> **ผู้เล่นไม่ได้มีสิทธ์เสียงใน Game Room นี้!**');
-                            return;
-                        }
-                        RTH.channels.cache.find(channel => channel.name === `${ID}-0-player`).send(`> **<@${vadMemX.id}> ได้ถูกลบสิทธ์เสียง โดย <@${message.member.id}>!**`);
-                        vadMemX.roles.remove(vadRoleX);
-                        return;
-                    case 'add-channel':
-                        if (!(args[0] && args[1] && args[2] && (args[0] === 't' || args[0] === 'v') && (args[1] >= 1 && args[1] <= 5) && (args[2].length >= 2 && args[2].length <= 60))) {
+                        case 'v_activity_remove':
+                            const vadMemX = message.mentions.members.first();
+                            if (!vadMemX) {
+                                message.channel.send('> **`&v_activity_remove [@ผู้เล่นที่จะลบสิทธ์เสียงออก]`**');
+                                return;
+                            }
+                            const MvadRoleX = vadMemX.roles.cache.find(r => r.name === `Game:${ID}`);
+                            if (!MvadRoleX) {
+                                message.channel.send('> **ผู้เล่นไม่ได้เป็นผู้เล่นของ Game Room นี้!**');
+                                return;
+                            }
+                            const vadRoleX = vadMemX.roles.cache.find(r => r.name === `Game_Talk:${ID}`);
+                            if (!vadRoleX) {
+                                message.channel.send('> **ผู้เล่นไม่ได้มีสิทธ์เสียงใน Game Room นี้!**');
+                                return;
+                            }
+                            RTH.channels.cache.find(channel => channel.name === `${ID}-0-player`).send(`> **<@${vadMemX.id}> ได้ถูกลบสิทธ์เสียง โดย <@${message.member.id}>!**`);
+                            vadMemX.roles.remove(vadRoleX);
+                            return;*/
+                    case 'tc':
+                        /*if (!(args[0] && args[1] && args[2] && (args[0] === 't' || args[0] === 'v') && (args[1] >= 1 && args[1] <= 5) && (args[2].length >= 2 && args[2].length <= 60))) {
                             message.channel.send('> **รายละเอียดไม่ครบ!**\n' +
                                 '> **`&add-channel [t/v] [1/2/3/4/5] [ชื่อห้อง]`**\n' +
                                 '> **t - ห้องข้อความ / v - ห้องพูดคุย**\n' +
@@ -250,14 +250,30 @@ client.on('message', message => { //return;//X
                                 '> **2 - เฉพาะผู้เล่นใช้ห้องได้**\n' +
                                 '> **3 - เฉพาะGMใช้ห้องได้**\n' +
                                 '> **4 - เฉพาะผู้เล่นที่เห็นห้อง**\n' +
-                                '> **5 - เฉพาะGMที่เห็นห้อง**');
+                                '> **5 - เฉพาะGMที่เห็นห้อง**'); */
+                        if (!(args[0] && args[1] && (args[0] >= 1 && args[0] <= 2) && (args[1].length >= 1 && args[1].length <= 60))) {
+                            message.channel.send('> **รายละเอียดไม่ครบ!**\n' +
+                                '> **`&add-channel [1/2] [ชื่อห้อง]`**\n' +
+                                '> **1 - ผู้เล่นส่งข้อความได้**\n' +
+                                '> **2 - เฉพาะGMส่งข้อความได้**');
                             return;
                         }
-                        let IsVoice = false;
-                        if (args[0] === 'v') IsVoice = true
+                        const IsVoice = false;
+                        //if (args[0] === 'v') IsVoice = true
                         const Role = RTH.roles.cache.find(role => role.name === `Game:${ID}`);
                         const GMRole = RTH.roles.cache.find(role => role.name === `Game_GM:${ID}`);
-                        GRCreateChannel(ID, GR, args[2], '', IsVoice, parseInt(args[1]), false, Role, GMRole); //, `<@${message.author.id}>`);
+                        let gm_only = 2;
+                        if (args[0] == 2) gm_only = 3;
+                        GRCreateChannel(ID, GR, args[1], '', IsVoice, gm_only, false, Role, GMRole); //, `<@${message.author.id}>`);
+                        return;
+                    case 'vc':
+                        if (!(args[0] && (args[0].length >= 1 && args[0].length <= 60))) {
+                            message.channel.send('> **`&vc [ชื่อห้อง]` - เพิ่มChannelเสียงใหม่**');
+                            return;
+                        }
+                        const Role = RTH.roles.cache.find(role => role.name === `Game:${ID}`);
+                        const GMRole = RTH.roles.cache.find(role => role.name === `Game_GM:${ID}`);
+                        GRCreateChannel(ID, GR, args[1], '', true, 2, false, Role, GMRole);
                         return;
                     case 'disband':
                         message.channel.send(`> **คุณแน่ใจนะ? ว่าต้องการจะลบ** ***Game Room ID: ${ID}}***\n` +
@@ -272,10 +288,12 @@ client.on('message', message => { //return;//X
                         GR.delete();
                         return;
                     default:
-                        message.channel.send('> **`&v_activity [@ผู้เล่นที่จะให้สิทธ์เสียง]` - ให้สิทธ์ในการเปิดไมค์ตลอด**\n' +
-                            '> **`&v_activity_remove [@ผู้เล่นที่จะลบสิทธ์เสียงออก]` - ลบสิทธ์การเปิดไมค์ตลอด**\n' +
+                        message.channel.send(
+                            /*'> **`&v_activity [@ผู้เล่นที่จะให้สิทธ์เสียง]` - ให้สิทธ์ในการเปิดไมค์ตลอด**\n' +
+                                                        '> **`&v_activity_remove [@ผู้เล่นที่จะลบสิทธ์เสียงออก]` - ลบสิทธ์การเปิดไมค์ตลอด**\n' +*/
                             '> **`&remove [@ผู้เล่นที่จะลบออก]` - ลบผู้เล่นออกจาก Game Room**\n' +
-                            '> **`&add-channel [t/v] [1/2/3/4/5] [ชื่อห้อง]` - เพิ่มChannelใหม่** (พิมเพื่อเช็คสิทธิ1-5)\n' +
+                            '> **`&tc [1/2] [ชื่อห้อง]` - เพิ่มChannelข้อความใหม่** (1:ผู้เล่นพิมข้อความได้, 2:เฉพาะGM)\n' +
+                            '> **`&vc [ชื่อห้อง]` - เพิ่มChannelเสียงใหม่**\n' +
                             '> **`&disband` - ลบ Game Room**');
                 }
                 return;
@@ -300,9 +318,9 @@ function joinSever(member) {
         return;
     }
     member.send('https://cdn.discordapp.com/attachments/732198249946939448/748232742306709632/welcome6.png').then(() =>
-        member.send('> **แจ้งเตือนสมาชิก!**\n' +
-            '> **คือว่า Serverเรานั้นบังคับใช้ Push to Talk (กดเพื่อพูด)**\n' +
-            '> **ดังนั้นการจะพูดในServerได้ จะต้องSetModeพูด เป็น Push to Talk**\n' +
+        member.send('> **ยินดีต้อนรับฮะ!**\n' +
+            '> **ขอให้กล่าวทักทายใน #ห้องพูดคุยทั่วไป ด้วยนะครับ - แล้วคุณจะได้โรลMember**\n' +
+            '> **หากสนใจจะเล่นRisus ณ Serverนี้ ขอให้เช็คใน #\📔แนวปฏิบัติ**\n' +
             '\n> **แล้วก็! ขอให้ตั้งชื่อเล่นในServer ด้วยเครื่องหมาย <>**'));
 
     member.roles.add(gusRole);
@@ -359,30 +377,31 @@ function CreateNewGame(Type, Name, Creator) {
             mentionable: true
         }
     }).then(GMRole =>
+        /*
+                RTH.roles.create({
+                    data: {
+                        name: 'Game_Talk:' + ID,
+                        color: '68b6d8',
+                        position: RTH.roles.cache.get('744006726285787227').position
+                    }
+                }).then(TalkRole =>*/
         RTH.roles.create({
             data: {
-                name: 'Game_Talk:' + ID,
-                color: '68b6d8',
-                position: RTH.roles.cache.get('744006726285787227').position
+                name: 'Game:' + ID,
+                color: '68d8d6',
+                position: RTH.roles.cache.get('744006726285787227').position,
+                mentionable: true
             }
-        }).then(TalkRole =>
-            RTH.roles.create({
-                data: {
-                    name: 'Game:' + ID,
-                    color: '68d8d6',
-                    position: RTH.roles.cache.get('744006726285787227').position,
-                    mentionable: true
-                }
-            }).then(Role => {
-                Creator.roles.add(GMRole);
-                Creator.roles.add(Role);
-                Creator.roles.add(djRole);
-                Creator.roles.add(gmRole);
+        }).then(Role => {
+            Creator.roles.add(GMRole);
+            Creator.roles.add(Role);
+            Creator.roles.add(djRole);
+            Creator.roles.add(gmRole);
 
-                const allowperm = ['SEND_MESSAGES', 'VIEW_CHANNEL', 'SPEAK', 'CONNECT'];
-                RTH.channels.create(`${ID}-${GREmojiType(Type)}${Name}`, {
-                    type: 'category',
-                    permissionOverwrites: [{
+            const allowperm = ['SEND_MESSAGES', 'VIEW_CHANNEL', 'SPEAK', 'CONNECT'];
+            RTH.channels.create(`${ID}-${GREmojiType(Type)}${Name}`, {
+                type: 'category',
+                permissionOverwrites: [{
                         id: botRole.id,
                         allow: allowperm.concat(['MANAGE_MESSAGES'])
                     }, {
@@ -394,20 +413,22 @@ function CreateNewGame(Type, Name, Creator) {
                     }, {
                         id: Role.id,
                         allow: allowperm
-                    }, {
-                        id: TalkRole.id,
-                        allow: ['USE_VAD']
-                    }]
-                }).then(NewGameRoom => {
-                    NewGameRoom.setPosition(Gamecen.position + 1);
-                    GRCreateChannel(ID, NewGameRoom, 'console', 'ห้องควบคุม Game Room | & เพื่อดูคำสั่ง', false, 5, 1, Role, GMRole);
-                    GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, 2, Role, GMRole, `<@${Creator.id}>`);
-                    GRCreateChannel(ID, NewGameRoom, 'player', 'ห้องรับ/ออก ผู้เล่น | &join เพื่อเข้า / &leave เพื่อออก | GMกด✅เพื่อรับผู้เล่น', false, 1, 2, Role, GMRole);
-                    GRCreateChannel(ID, NewGameRoom, 'roll', 'ห้องchatเกม!', false, 2, 0, Role, GMRole);
-                    GRCreateChannel(ID, NewGameRoom, 'talk', '', true, 2, 0, Role, GMRole);
-                });
-            })
-        ));
+                    }
+                    /*, {
+                                        id: TalkRole.id,
+                                        allow: ['USE_VAD']
+                                    }*/
+                ]
+            }).then(NewGameRoom => {
+                NewGameRoom.setPosition(Gamecen.position + 1);
+                GRCreateChannel(ID, NewGameRoom, 'console', 'ห้องควบคุม Game Room | & เพื่อดูคำสั่ง', false, 5, 1, Role, GMRole);
+                GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, 2, Role, GMRole, `<@${Creator.id}>`);
+                GRCreateChannel(ID, NewGameRoom, 'player', 'ห้องรับ/ออก ผู้เล่น | &join เพื่อเข้า / &leave เพื่อออก | GMกด✅เพื่อรับผู้เล่น', false, 1, 2, Role, GMRole);
+                GRCreateChannel(ID, NewGameRoom, 'roll', 'ห้องchatเกม!', false, 2, 0, Role, GMRole);
+                GRCreateChannel(ID, NewGameRoom, 'talk', '', true, 2, 0, Role, GMRole);
+            });
+        })
+    );
 
     return {
         t: '**สร้างสำเร็จ!**',
@@ -453,7 +474,7 @@ function GRCreateChannel(ID, NewGameRoom, name, topic, IsVoice, permLv, NonGmPow
     let Type = 'text';
     if (IsVoice) Type = 'voice';
     if (NonGmPower >= 1) permID = 0;
-    RTH.channels.create(`${ID}-${permID}-${name}`, {
+    RTH.channels.create(`${ID}-${name}`, { //`${ID}-${permID}-${name}`
         parent: NewGameRoom,
         type: Type,
         topic: topic
@@ -508,7 +529,7 @@ function GRSetPerm(channel, IsVoice, permLv, NonGmPower, Role, GMRole) {
 
 client.on('messageReactionAdd', (messageReaction, user) => {
     if (messageReaction.emoji.name != '✅') return;
-    if (messageReaction.message.channel.name.slice(2) !== '-0-player') return;
+    if (messageReaction.message.channel.name.slice(2) !== '-player') return;
     const ID = messageReaction.message.channel.name.split('-')[0];
     if (messageReaction.message.member.roles.cache.find(r => r.name === `Game:${ID}`)) return;
     if (RTH.member(user).roles.cache.find(r => r.name === `Game_GM:${ID}`)) {
