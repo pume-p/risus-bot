@@ -271,7 +271,7 @@ client.on('message', message => { //return;//X
                             message.channel.send('> **`&vc [ชื่อห้อง]` - เพิ่มChannelเสียงใหม่**');
                             return;
                         }
-                        GRCreateChannel(ID, GR, args[1], '', true, 2, false, Role, GMRole);
+                        GRCreateChannel(ID, GR, args[0], '', true, 2, false, Role, GMRole);
                         return;
                     case 'disband':
                         message.channel.send(`> **คุณแน่ใจนะ? ว่าต้องการจะลบ** ***Game Room ID: ${ID}}***\n` +
