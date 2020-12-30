@@ -188,6 +188,8 @@ client.on('message', message => { //return;//X
                 }
                 return;
             case '-console':
+                const Role = RTH.roles.cache.find(role => role.name === `Game:${ID}`);
+                const GMRole = RTH.roles.cache.find(role => role.name === `Game_GM:${ID}`);
                 switch (command) {
                     case 'remove':
                         const kickMem = message.mentions.members.first();
@@ -260,8 +262,6 @@ client.on('message', message => { //return;//X
                         }
                         const IsVoice = false;
                         //if (args[0] === 'v') IsVoice = true
-                        const Role = RTH.roles.cache.find(role => role.name === `Game:${ID}`);
-                        const GMRole = RTH.roles.cache.find(role => role.name === `Game_GM:${ID}`);
                         let gm_only = 2;
                         if (args[0] == 2) gm_only = 3;
                         GRCreateChannel(ID, GR, args[1], '', IsVoice, gm_only, false, Role, GMRole); //, `<@${message.author.id}>`);
@@ -271,8 +271,6 @@ client.on('message', message => { //return;//X
                             message.channel.send('> **`&vc [ชื่อห้อง]` - เพิ่มChannelเสียงใหม่**');
                             return;
                         }
-                        const Role = RTH.roles.cache.find(role => role.name === `Game:${ID}`);
-                        const GMRole = RTH.roles.cache.find(role => role.name === `Game_GM:${ID}`);
                         GRCreateChannel(ID, GR, args[1], '', true, 2, false, Role, GMRole);
                         return;
                     case 'disband':
