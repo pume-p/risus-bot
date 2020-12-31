@@ -199,7 +199,7 @@ client.on('message', message => { //return;//X
                         }
                         const KMemRole = kickMem.roles.cache.find(r => r.name === `Game:${ID}`);
                         if (!KMemRole) {
-                            message.channel.send('> **ผู้เล่นไม่ได้เป็นผู้เล่นของ Game Room นี้!**');
+                            message.channel.send('> **เขาไม่ได้เป็นผู้เล่นของ Game Room นี้!**');
                             return;
                         }
                         if(kickMem.roles.cache.find(r => r.name === `Game_GM:${ID}`)) {
@@ -486,7 +486,7 @@ function GRCreateChannel(ID, NewGameRoom, name, topic, IsVoice, permLv, NonGmPow
         if (Type === 'text' && MentionGM) NewChannel.send(MentionGM +
             '\nเมื่อสร้างแล้ว (ตัวอย่างเกมแบบOneshot)\n' +
             'สิ่งที่คุณอยากเขียนลงไปคือ\n' +
-            ': __เนื้อหาคราวๆ, แนวเกม, วันที่&เวลาเริ่มถึงจบ, เงื่อนไขตัวละคร, รายชื่อผู้เล่น(+จำนวนผู้เล่น)__');
+            ': __เนื้อหาคราวๆ, แนวเกม, เกมจริงจังหรือไม่จริงจัง(ในแง่Risus), วันที่&เวลาเริ่มถึงจบ, เงื่อนไขตัวละคร, รายชื่อผู้เล่น(+จำนวนผู้เล่น)__');
     });
 }
 
