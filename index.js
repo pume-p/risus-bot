@@ -202,6 +202,11 @@ client.on('message', message => { //return;//X
                             message.channel.send('> **ผู้เล่นไม่ได้เป็นผู้เล่นของ Game Room นี้!**');
                             return;
                         }
+                        if(kickMem.roles.cache.find(r => r.name === `Game_GM:${ID}`)) {
+                            message.channel.send('> **คุณลบตัวเองจากการเป็นสมาชิกไม่ได้!**');
+                            return;
+                        }
+
                         RTH.channels.cache.find(channel => channel.name === `${ID}-player`).send(`> **<@${kickMem.id}> ได้ถูกลบออกจาก Game Room โดย <@${message.member.id}>!**`);
                         kickMem.roles.remove(KMemRole);
                         return;
