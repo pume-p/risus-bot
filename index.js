@@ -188,9 +188,6 @@ client.on('message', message => { //return;//X
                 }
                 return;
             case '-console':
-                if (message.channel.id == '766249707038310440')
-                    if (!message.author.id == '240092744331165696')
-                        return;
                 const Role = RTH.roles.cache.find(role => role.name === `Game:${ID}`);
                 const GMRole = RTH.roles.cache.find(role => role.name === `Game_GM:${ID}`);
                 switch (command) {
@@ -282,6 +279,8 @@ client.on('message', message => { //return;//X
                         GRCreateChannel(ID, GR, args[0], '', true, 2, false, Role, GMRole);
                         return;
                     case 'disband':
+                        if (message.channel.id == '766249707038310440')
+                            return;
                         message.channel.send(`> **คุณแน่ใจนะ? ว่าต้องการจะลบ** ***Game Room ID: ${ID}}***\n` +
                             '> __**ประวัติข้อความทั้งหมดจะโดนลบทิ้ง**__\n' +
                             '> **ถ้าใช้งานเสร็จ หากแน่ใจให้พิม: `&%%disband%%&`**');
