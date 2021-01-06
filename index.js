@@ -188,6 +188,9 @@ client.on('message', message => { //return;//X
                 }
                 return;
             case '-console':
+                if (message.channel.name === '01-console')
+                    if (!message.author.username === 'pume_')
+                        return;
                 const Role = RTH.roles.cache.find(role => role.name === `Game:${ID}`);
                 const GMRole = RTH.roles.cache.find(role => role.name === `Game_GM:${ID}`);
                 switch (command) {
@@ -202,7 +205,7 @@ client.on('message', message => { //return;//X
                             message.channel.send('> **เขาไม่ได้เป็นผู้เล่นของ Game Room นี้!**');
                             return;
                         }
-                        if(kickMem.roles.cache.find(r => r.name === `Game_GM:${ID}`)) {
+                        if (kickMem.roles.cache.find(r => r.name === `Game_GM:${ID}`)) {
                             message.channel.send('> **คุณลบตัวเองจากการเป็นสมาชิกไม่ได้!**');
                             return;
                         }
