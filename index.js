@@ -188,8 +188,8 @@ client.on('message', message => { //return;//X
                 }
                 return;
             case '-console':
-                if (message.channel.name === '01-console')
-                    if (!message.author.username === 'pume_')
+                if (message.channel.id == '766249707038310440')
+                    if (!message.author.id == '240092744331165696')
                         return;
                 const Role = RTH.roles.cache.find(role => role.name === `Game:${ID}`);
                 const GMRole = RTH.roles.cache.find(role => role.name === `Game_GM:${ID}`);
