@@ -525,7 +525,6 @@ function GRSetPerm(channel, IsVoice, permLv, NonGmPower, Role, GMRole) {
             channel.updateOverwrite(GMRole, {
                 MANAGE_CHANNELS: true
             });
-            break;
         case 2:
             channel.updateOverwrite(botRole, REMOVEpermAcess);
     }
