@@ -525,7 +525,7 @@ function GRSetPerm(channel, IsVoice, permLv, NonGmPower, Role, GMRole) {
             channel.updateOverwrite(GMRole, {
                 MANAGE_CHANNELS: true
             });
-            channel.updateOverwrite(RTH.members.cache.find(mem => mem.id == `766644729848528916`).user, { 
+            channel.updateOverwrite(RTH.roles.cache.find(role => role.name === `Risus`), {//RTH.members.cache.find(mem => mem.id == `766644729848528916`).user, { 
                 VIEW_CHANNEL: true
             });
         case 2:
