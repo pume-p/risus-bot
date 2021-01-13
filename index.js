@@ -264,8 +264,7 @@ client.on('message', message => { //return;//X
                                 '> **1 - ผู้เล่นส่งข้อความได้**\n' +
                                 '> **2 - เฉพาะGMส่งข้อความได้**');
                             return;
-                        }
-                        ;//let IsVoice = false;
+                        }; //let IsVoice = false;
                         //if (args[0] === 'v') IsVoice = true
                         let gm_only = 2;
                         if (args[0] == 2) gm_only = 3;
@@ -275,8 +274,8 @@ client.on('message', message => { //return;//X
                         if (!(args[0] && (args[0].length >= 1 && args[0].length <= 60))) {
                             message.channel.send('> **`&vc [ชื่อห้อง]` - เพิ่มChannelเสียงใหม่**');
                             return;
-                        }                                //IsVoice, permLv, NonGmPower,
-                        GRCreateChannel(ID, GR, args[0], '', true, 0, 0, Role, GMRole);
+                        } //IsVoice, permLv, NonGmPower,
+                        GRCreateChannel(ID, GR, args[0], '', true, 2, 0, Role, GMRole);
                         return;
                     case 'disband':
                         if (message.channel.id == '766249707038310440')
@@ -429,9 +428,9 @@ function CreateNewGame(Type, Name, Creator) {
                 GRCreateChannel(ID, NewGameRoom, 'console', 'ห้องควบคุม Game Room | & เพื่อดูคำสั่ง', false, 5, 1, Role, GMRole);
                 GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, 2, Role, GMRole, `<@${Creator.id}>`);
                 GRCreateChannel(ID, NewGameRoom, 'player', 'ห้องรับ/ออก ผู้เล่น | &join เพื่อเข้า / &leave เพื่อออก | GMกด✅เพื่อรับผู้เล่น', false, 1, 2, Role, GMRole);
-                GRCreateChannel(ID, NewGameRoom, 'roll', 'ห้องchatเกม!', 0, 2, 0, Role, GMRole);
+                GRCreateChannel(ID, NewGameRoom, 'roll', 'ห้องchatเกม!', false, 2, 0, Role, GMRole);
                 GRCreateChannel(ID, NewGameRoom, 'talk', '', true, 2, 0, Role, GMRole);
-            });                                             //IsVoice, permLv, NonGmPower,
+            }); //IsVoice, permLv, NonGmPower,
         })
     );
 
@@ -525,11 +524,12 @@ function GRSetPerm(channel, IsVoice, permLv, NonGmPower, Role, GMRole) {
             channel.updateOverwrite(GMRole, {
                 MANAGE_CHANNELS: true
             });
-            channel.updateOverwrite(RTH.roles.cache.find(role => role.id == '767090190836563989'), {//RTH.members.cache.find(mem => mem.id == `766644729848528916`).user, { 
+            channel.updateOverwrite(RTH.roles.cache.find(role => role.id == '767090190836563989'), { //RTH.members.cache.find(mem => mem.id == `766644729848528916`).user, { 
                 VIEW_CHANNEL: true
             });
         case 2:
-            channel.updateOverwrite(botRole, REMOVEpermAcess);
+            if (!IsVoice)
+                channel.updateOverwrite(botRole, REMOVEpermAcess);
     }
     return;
 }
