@@ -265,18 +265,18 @@ client.on('message', message => { //return;//X
                                 '> **2 - เฉพาะGMส่งข้อความได้**');
                             return;
                         }
-                        const IsVoice = false;
+                        ;//let IsVoice = false;
                         //if (args[0] === 'v') IsVoice = true
                         let gm_only = 2;
                         if (args[0] == 2) gm_only = 3;
-                        GRCreateChannel(ID, GR, args[1], '', IsVoice, gm_only, false, Role, GMRole); //, `<@${message.author.id}>`);
+                        GRCreateChannel(ID, GR, args[1], '', false, gm_only, 0, Role, GMRole); //, `<@${message.author.id}>`);
                         return;
                     case 'vc':
                         if (!(args[0] && (args[0].length >= 1 && args[0].length <= 60))) {
                             message.channel.send('> **`&vc [ชื่อห้อง]` - เพิ่มChannelเสียงใหม่**');
                             return;
-                        }
-                        GRCreateChannel(ID, GR, args[0], '', true, 2, false, Role, GMRole);
+                        }                                //IsVoice, permLv, NonGmPower,
+                        GRCreateChannel(ID, GR, args[0], '', true, 0, 0, Role, GMRole);
                         return;
                     case 'disband':
                         if (message.channel.id == '766249707038310440')
@@ -429,9 +429,9 @@ function CreateNewGame(Type, Name, Creator) {
                 GRCreateChannel(ID, NewGameRoom, 'console', 'ห้องควบคุม Game Room | & เพื่อดูคำสั่ง', false, 5, 1, Role, GMRole);
                 GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, 2, Role, GMRole, `<@${Creator.id}>`);
                 GRCreateChannel(ID, NewGameRoom, 'player', 'ห้องรับ/ออก ผู้เล่น | &join เพื่อเข้า / &leave เพื่อออก | GMกด✅เพื่อรับผู้เล่น', false, 1, 2, Role, GMRole);
-                GRCreateChannel(ID, NewGameRoom, 'roll', 'ห้องchatเกม!', false, 2, 0, Role, GMRole);
-                GRCreateChannel(ID, NewGameRoom, 'talk', '', true, 2, false, Role, GMRole);
-            });
+                GRCreateChannel(ID, NewGameRoom, 'roll', 'ห้องchatเกม!', 0, 2, 0, Role, GMRole);
+                GRCreateChannel(ID, NewGameRoom, 'talk', '', true, 2, 0, Role, GMRole);
+            });                                             //IsVoice, permLv, NonGmPower,
         })
     );
 
