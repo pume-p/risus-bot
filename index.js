@@ -85,7 +85,7 @@ client.once('ready', () => {
 client.on('message', message => { //return;//X
     if (message.channel.type === "dm") {
         if (message.author.id == '240092744331165696')
-            sendmshtoall();
+            sendmshtoall(message.content);
         return;
     }
     const LOG = RTH.channels.cache.get('748200435701121035');
@@ -310,10 +310,10 @@ client.on('message', message => { //return;//X
     }
 })
 
-async function sendmshtoall() {
+async function sendmshtoall(text) {
     const allemem = await RTH.members.cache;
     for (const mem of allemem) {
-        await mem.send(message.content);
+        await mem.send(text);
     }
 }
 
