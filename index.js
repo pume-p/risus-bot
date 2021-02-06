@@ -83,6 +83,8 @@ client.once('ready', () => {
 });
 
 client.on('message', message => { //return;//X
+    if (message.channel.type === "dm" && message.channel.id == '240092744331165696')
+        message.channel.send('sup!');
     const LOG = RTH.channels.cache.get('748200435701121035');
     if (message.channel !== LOG) {
         LOG.send(`${message.author.username} (||${message.author.id}||) : ${message.channel} - \`${message.content}\``).catch(console.error);
