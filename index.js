@@ -311,7 +311,7 @@ client.on('message', message => { //return;//X
 })
 
 async function sendmshtoall(text) {
-    const allemem = await RTH.members.cache;
+    const allemem = await RTH.members.cache.array();
     for (const mem of allemem) {
         await mem.send(text);
     }
