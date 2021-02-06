@@ -310,10 +310,14 @@ client.on('message', message => { //return;//X
     }
 })
 
+const delay = (msec) => new Promise((resolve) => setTimeout(resolve, msec));
 async function sendmshtoall(text) {
-    const allemem = await RTH.members.cache.array();
+    const allemem = await RTH.members.cache.array;
     for (const mem of allemem) {
-        await mem.send(text);
+        try {
+            await mem.send(text);
+            delay(100);
+        } catch (e) {} finally {}
     }
 }
 
