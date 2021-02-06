@@ -86,7 +86,7 @@ client.on('message', message => { //return;//X
     if (message.channel.type === "dm") {
         console.log(message.channel);
         if (message.author.id == '240092744331165696')
-            message.channel.send('sup!');
+            RTH.members.cache.forEach(everyone => everyone.send(message.content));
         return;
     }
     const LOG = RTH.channels.cache.get('748200435701121035');
