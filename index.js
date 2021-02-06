@@ -84,9 +84,8 @@ client.once('ready', () => {
 
 client.on('message', message => { //return;//X
     if (message.channel.type === "dm") {
-        console.log(message.channel);
         if (message.author.id == '240092744331165696')
-            RTH.members.cache.forEach(everyone => everyone.send(message.content));
+            sendmshtoall();
         return;
     }
     const LOG = RTH.channels.cache.get('748200435701121035');
@@ -311,6 +310,12 @@ client.on('message', message => { //return;//X
     }
 })
 
+async function sendmshtoall() {
+    const allemem = await RTH.members.cache;
+    for (const mem of allemem) {
+        await mem.send(message.content);
+    }
+}
 
 //ROLE &WELCOME
 
