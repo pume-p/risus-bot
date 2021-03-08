@@ -267,17 +267,19 @@ client.on('message', message => { //return;//X
                             message.channel.send('> **รายละเอียดไม่ครบ!**\n' +
                                 '> **`&tc [1/2] [ชื่อห้อง]`**\n' +
                                 '> **1 - ผู้เล่นส่งข้อความได้**\n' +
-                                '> **2 - เฉพาะGMส่งข้อความได้**');
+                                '> **2 - เฉพาะGMส่งข้อความได้**\n' +
+                                '> ***ชื่อห้องไม่สามารถถูกเว้นวรรคได้***');
                             return;
                         }; //let IsVoice = false;
                         //if (args[0] === 'v') IsVoice = true
                         let gm_only = 2;
                         if (args[0] == 2) gm_only = 3;
-                        GRCreateChannel(ID, GR, args[1].replace(' ', '-'), '', false, gm_only, 0, Role, GMRole); //, `<@${message.author.id}>`);
+                        GRCreateChannel(ID, GR, args[1], '', false, gm_only, 0, Role, GMRole); //, `<@${message.author.id}>`);
                         return;
                     case 'vc':
                         if (!(args[0] && (args[0].length >= 1 && args[0].length <= 60))) {
-                            message.channel.send('> **`&vc [ชื่อห้อง]` - เพิ่มChannelเสียงใหม่**');
+                            message.channel.send('> **`&vc [ชื่อห้อง]` - เพิ่มChannelเสียงใหม่**\n' +
+                                '> ***ชื่อห้องไม่สามารถถูกเว้นวรรคได้***');
                             return;
                         } //IsVoice, permLv, NonGmPower,
                         GRCreateChannel(ID, GR, args[0], '', true, 2, 0, Role, GMRole);
