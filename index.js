@@ -21,6 +21,8 @@ var lodge;
 var ch;
 var connected = false;
 
+var risusThingScoreBoardCH;
+
 //
 // yo, to whoever are looking at this code
 // the code is supper old. I learn js just to write discord bot lol.
@@ -33,6 +35,7 @@ client.once('ready', () => {
     MainCat = RTH.channels.cache.get('731715856840785951');
     lodge = RTH.channels.cache.get('729738385681547365'); //685745431107338275
     Gamecen = RTH.channels.cache.get('733718518754836490');
+    risusThingScoreBoardCH = RTH.channels.cache.get('831413587813466152');
     memRole = RTH.roles.cache.get('685759082702962715');
     gusRole = RTH.roles.cache.get('734830200944066591');
     botRole = RTH.roles.cache.get('685760520946843694');
@@ -155,6 +158,28 @@ client.on('message', message => { //return;//X
                     lodge.leave().then(() => StartVC());
                 return;
             }
+            break;
+        case '831413587813466152':
+            let allScore;
+            as.messages.fetch("831417840371236894")
+                .then(scoretext => allScore = scoretext.content.split('\n').then(() => {
+                    for (let i = 0; i < allScore.length; i++) {
+                        if (message.author.id === allScore[i].split('!')[1].split('>')[0]) {
+                            {
+                                allScore[i] = `<!@${message.author.id}> ${parseInt(allScore[i].split(' ')[1]) + 1}`;
+                                let ret = '';
+                                allScore.forEach(oneLINER => {
+                                    ret += `${oneLINER}\n`;
+                                })
+                                scoretext.edit(ret);
+                                return;
+                            }
+                        }
+                    }
+                    scoretext.edit(`${scoretext.content}\n<!@${message.author.id}> 1`);
+                }));
+            break;
+
     }
 
     if (message.content.startsWith('&') && message.channel.parent !== null && message.channel.parent.name.indexOf('-') > -1) {
