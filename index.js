@@ -180,8 +180,8 @@ client.on('message', message => { //return;//X
                         }
                         scoretext.edit(`${scoretext.content}\n<@!${message.author.id}> 1`);
                     });
-                message.delete();
             }
+            message.delete();
             break;
 
     }
