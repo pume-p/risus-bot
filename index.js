@@ -160,25 +160,28 @@ client.on('message', message => { //return;//X
             }
             break;
         case '831413587813466152':
-            let allScore;
-            risusThingScoreBoardCH.messages.fetch("831417840371236894")
-                .then(scoretext => {
-                    allScore = scoretext.content.split('\n');
-                    for (let i = 0; i < allScore.length; i++) {
-                        if (message.author.id === allScore[i].split('!')[1].split('>')[0]) {
-                            {
-                                allScore[i] = `<@!${message.author.id}> ${parseInt(allScore[i].split(' ')[1]) + 1}`;
-                                let ret = '';
-                                allScore.forEach(oneLINER => {
-                                    ret += `${oneLINER}\n`;
-                                })
-                                scoretext.edit(ret);
-                                return;
+            if (message.content.startsWith('+')) {
+                let allScore;
+                risusThingScoreBoardCH.messages.fetch("831417840371236894")
+                    .then(scoretext => {
+                        allScore = scoretext.content.split('\n');
+                        for (let i = 0; i < allScore.length; i++) {
+                            if (message.author.id === allScore[i].split('!')[1].split('>')[0]) {
+                                {
+                                    allScore[i] = `<@!${message.author.id}> ${parseInt(allScore[i].split(' ')[1]) + 1}`;
+                                    let ret = '';
+                                    allScore.forEach(oneLINER => {
+                                        ret += `${oneLINER}\n`;
+                                    })
+                                    scoretext.edit(ret);
+                                    return;
+                                }
                             }
                         }
-                    }
-                    scoretext.edit(`${scoretext.content}\n<@!${message.author.id}> 1`);
-                });
+                        scoretext.edit(`${scoretext.content}\n<@!${message.author.id}> 1`);
+                    });
+                message.delete();
+            }
             break;
 
     }
