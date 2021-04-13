@@ -162,7 +162,8 @@ client.on('message', message => { //return;//X
         case '831413587813466152':
             let allScore;
             risusThingScoreBoardCH.messages.fetch("831417840371236894")
-                .then(scoretext => allScore = scoretext.content.split('\n').then(() => {
+                .then(scoretext => {
+                    allScore = scoretext.content.split('\n');
                     for (let i = 0; i < allScore.length; i++) {
                         if (message.author.id === allScore[i].split('!')[1].split('>')[0]) {
                             {
@@ -177,7 +178,7 @@ client.on('message', message => { //return;//X
                         }
                     }
                     scoretext.edit(`${scoretext.content}\n<@!${message.author.id}> 1`);
-                }));
+                });
             break;
 
     }
