@@ -118,6 +118,13 @@ client.on('message', message => { //return;//X
                 return;
             }
             break;
+        case '841744308204863488':
+            if (message.content.startsWith('&')) {
+                const message_array = message.content.slice(1).split('\n');
+                message.channel.send(message_array[Math.floor(Math.random() * message_array.length)]);
+                return;
+            }
+            break;
         case '731766891512856576':
             if (message.content.startsWith('%') && message.member.roles.cache.get(modRole.id)) {
                 const args = message.content.trim().split(/ +/);
