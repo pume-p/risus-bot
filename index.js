@@ -122,6 +122,7 @@ client.on('message', message => { //return;//X
             if (message.content.startsWith('&')) {
                 const message_array = message.content.slice(1).split('\n');
                 message.channel.send(message_array[Math.floor(Math.random() * message_array.length)]);
+                message.delete();
                 return;
             }
             break;
