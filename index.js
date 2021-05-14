@@ -200,8 +200,38 @@ client.on('message', message => { //return;//X
         const GR = message.channel.parent;
         const NAME = GR.name;
         const ID = NAME.split('-')[0];
+
+        if (message.channel.topic.includes('&join')) {
+            if (message.member.roles.cache.find(r => r.name === `Game_GM:${ID}`)) {
+                message.channel.send(`> **GM ไม่สามารถใช้คำสั่งใน<\#${message.channel.id}>ได้!**\n` +
+                    '> **คุณทำได้เฉพาะรับผู้เล่นเข้า Game Room ผ่านการReactที่เครื่องหมาย :white_check_mark:**');
+                return;
+            }
+            const roleMem = message.member.roles.cache.find(r => r.name === `Game:${ID}`);
+            switch (command) {
+                case 'join':
+                    if (roleMem) {
+                        message.channel.send('> **คุณเป็นผู้เล่นอยู่แล้ว!**')
+                        return;
+                    }
+                    message.react('✅');
+                    return;
+                case 'leave':
+                    if (!roleMem) {
+                        message.channel.send('> **คุณไม่ได้เป็นผู้เล่นของ Game Room นี้!**')
+                        return;
+                    }
+                    message.channel.send(`> **<@${message.member.id}> ได้ทำการออกจาก Game Room!**`);
+                    message.member.roles.remove(roleMem);
+                    return;
+                default:
+                    message.channel.send('> **`&join [ข้อความ]` - ขอเข้าร่วม Game Room**\n' +
+                        '> **`&leave [ข้อความ]` - ออกจาก Game Room**');
+            }
+            return;
+        }
         switch (message.channel.name.slice(2)) {
-            case '-player':
+            /*case '-player':
                 if (message.member.roles.cache.find(r => r.name === `Game_GM:${ID}`)) {
                     message.channel.send(`> **GM ไม่สามารถใช้คำสั่งใน<\#${message.channel.id}>ได้!**\n` +
                         '> **คุณทำได้เฉพาะรับผู้เล่นเข้า Game Room ผ่านการReactที่เครื่องหมาย :white_check_mark:**');
@@ -228,7 +258,7 @@ client.on('message', message => { //return;//X
                         message.channel.send('> **`&join [ข้อความ]` - ขอเข้าร่วม Game Room**\n' +
                             '> **`&leave [ข้อความ]` - ออกจาก Game Room**');
                 }
-                return;
+                return;*/
             case '-console':
                 const Role = RTH.roles.cache.find(role => role.name === `Game:${ID}`);
                 const GMRole = RTH.roles.cache.find(role => role.name === `Game_GM:${ID}`);
@@ -248,7 +278,7 @@ client.on('message', message => { //return;//X
                             message.channel.send('> **คุณลบตัวเองจากการเป็นสมาชิกไม่ได้!**');
                             return;
                         }
-                        const playerroom = RTH.channels.cache.find(channel => channel.name === `${ID}-player`);
+                        const playerroom = RTH.channels.cache.find(channel => channel.topic.includes('&join')); //.name === `${ID}-player`);
                         if (playerroom !== undefined)
                             playerroom.send(`> **<@${kickMem.id}> ได้ถูกลบออกจาก Game Room โดย <@${message.member.id}>!**`);
                         kickMem.roles.remove(KMemRole);
@@ -601,7 +631,7 @@ function GRSetPerm(channel, IsVoice, permLv, NonGmPower, Role, GMRole) {
 
 client.on('messageReactionAdd', (messageReaction, user) => {
     if (messageReaction.emoji.name != '✅') return;
-    if (messageReaction.message.channel.name.slice(2) !== '-player') return;
+    if (messageReaction.message.channel.topic.includes('&join')) return; //name.slice(2) !== '-player') return;
     const ID = messageReaction.message.channel.name.split('-')[0];
     if (messageReaction.message.member.roles.cache.find(r => r.name === `Game:${ID}`)) return;
     if (RTH.member(user).roles.cache.find(r => r.name === `Game_GM:${ID}`)) {
