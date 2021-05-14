@@ -518,8 +518,10 @@ function CreateNewGame(Type, Name, Creator) {
                     case 'O':
                         GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, 2, Role, GMRole, `<@${Creator.id}>`);
                         GRCreateChannel(ID, NewGameRoom, 'chat', 'ห้องchatเกม! | &join เพื่อเข้า | GMกด✅เพื่อรับผู้เล่น', false, 1, 0, Role, GMRole);
+                        break;
                     case 'C':
                         GRCreateChannel(ID, NewGameRoom, 'chat', 'ห้องchatเกม! | &join เพื่อเข้า | GMกด✅เพื่อรับผู้เล่น', false, 1, 0, Role, GMRole, `<@${Creator.id}>`);
+                        break;
                     case 'L':
                         GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, 2, Role, GMRole, `<@${Creator.id}>`);
                         GRCreateChannel(ID, NewGameRoom, 'player', 'ห้องรับ/ออก ผู้เล่น | &join เพื่อเข้า / &leave เพื่อออก | GMกด✅เพื่อรับผู้เล่น', false, 1, 2, Role, GMRole);
