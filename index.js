@@ -248,8 +248,9 @@ client.on('message', message => { //return;//X
                             message.channel.send('> **คุณลบตัวเองจากการเป็นสมาชิกไม่ได้!**');
                             return;
                         }
-
-                        RTH.channels.cache.find(channel => channel.name === `${ID}-player`).send(`> **<@${kickMem.id}> ได้ถูกลบออกจาก Game Room โดย <@${message.member.id}>!**`);
+                        const playerroom = RTH.channels.cache.find(channel => channel.name === `${ID}-player`);
+                        if (playerroom !== undefined)
+                            playerroom.send(`> **<@${kickMem.id}> ได้ถูกลบออกจาก Game Room โดย <@${message.member.id}>!**`);
                         kickMem.roles.remove(KMemRole);
                         return;
                         /*case 'v_activity':
@@ -408,10 +409,10 @@ function CreateNewGame(Type, Name, Creator) {
                 '(เฉพาะ Game Master+)',
             suss: false
         };
-    if (!(Type === 'O' || Type === 'C'))
+    if (!(Type === 'O' || Type === 'C' || Type === 'L'))
         return {
             t: '**รูปแบบคำสั่งไม่ถูกต้อง!**\n' +
-                '***"+[ประเภทเกม:O,C][ชื่อเกม]"***\n' +
+                '***"+[ประเภทเกม:O,C,L][ชื่อเกม]"***\n' +
                 '**เช่น:** ***"+Oบุกเข้าปราสาทจอมมาร!"***\n' +
                 '**Oneshot📜 - การเล่นครั้งเดียว**\n' +
                 '**Campaign📑 - เส้นเรื่องราวที่ต่อเนื่องกัน หรือการผจญภัยหลายๆตัว มักจะใช้ตัวละครเดิม**',
@@ -482,9 +483,15 @@ function CreateNewGame(Type, Name, Creator) {
             }).then(NewGameRoom => {
                 NewGameRoom.setPosition(Gamecen.position + 1);
                 GRCreateChannel(ID, NewGameRoom, 'console', 'ห้องควบคุม Game Room | & เพื่อดูคำสั่ง', false, 5, 1, Role, GMRole);
+                /*switch (Type) {
+                    case 'O':
+                    case 'C':
+                    case 'L':*/
                 GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, 2, Role, GMRole, `<@${Creator.id}>`);
                 GRCreateChannel(ID, NewGameRoom, 'player', 'ห้องรับ/ออก ผู้เล่น | &join เพื่อเข้า / &leave เพื่อออก | GMกด✅เพื่อรับผู้เล่น', false, 1, 2, Role, GMRole);
                 GRCreateChannel(ID, NewGameRoom, 'roll', 'ห้องchatเกม!', false, 1, 0, Role, GMRole);
+                /*break;
+                }*/
                 GRCreateChannel(ID, NewGameRoom, 'talk', '', true, 2, 0, Role, GMRole);
             }); //IsVoice, permLv, NonGmPower,
         })
@@ -526,6 +533,8 @@ function GREmojiType(char) {
             //       return '';
         case 'C':
             return '📑';
+        case 'L':
+            return '📚';
     }
 }
 
