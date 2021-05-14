@@ -513,15 +513,18 @@ function CreateNewGame(Type, Name, Creator) {
             }).then(NewGameRoom => {
                 NewGameRoom.setPosition(Gamecen.position + 1);
                 GRCreateChannel(ID, NewGameRoom, 'console', 'ห้องควบคุม Game Room | & เพื่อดูคำสั่ง', false, 5, 1, Role, GMRole);
-                /*switch (Type) {
+                switch (Type) {
                     case 'O':
+                        GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, 2, Role, GMRole, `<@${Creator.id}>`);
+                        GRCreateChannel(ID, NewGameRoom, 'chat', 'ห้องchatเกม! | &join เพื่อเข้า | GMกด✅เพื่อรับผู้เล่น', false, 1, 0, Role, GMRole);
                     case 'C':
-                    case 'L':*/
-                GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, 2, Role, GMRole, `<@${Creator.id}>`);
-                GRCreateChannel(ID, NewGameRoom, 'player', 'ห้องรับ/ออก ผู้เล่น | &join เพื่อเข้า / &leave เพื่อออก | GMกด✅เพื่อรับผู้เล่น', false, 1, 2, Role, GMRole);
-                GRCreateChannel(ID, NewGameRoom, 'roll', 'ห้องchatเกม!', false, 1, 0, Role, GMRole);
-                /*break;
-                }*/
+                        GRCreateChannel(ID, NewGameRoom, 'chat', 'ห้องchatเกม! | &join เพื่อเข้า | GMกด✅เพื่อรับผู้เล่น', false, 1, 0, Role, GMRole, `<@${Creator.id}>`);
+                    case 'L':
+                        GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, 2, Role, GMRole, `<@${Creator.id}>`);
+                        GRCreateChannel(ID, NewGameRoom, 'player', 'ห้องรับ/ออก ผู้เล่น | &join เพื่อเข้า / &leave เพื่อออก | GMกด✅เพื่อรับผู้เล่น', false, 1, 2, Role, GMRole);
+                        GRCreateChannel(ID, NewGameRoom, 'roll', 'ห้องchatเกม!', false, 1, 0, Role, GMRole);
+                        break;
+                }
                 GRCreateChannel(ID, NewGameRoom, 'talk', '', true, 2, 0, Role, GMRole);
             }); //IsVoice, permLv, NonGmPower,
         })
