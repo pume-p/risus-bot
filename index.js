@@ -631,7 +631,7 @@ function GRSetPerm(channel, IsVoice, permLv, NonGmPower, Role, GMRole) {
 
 client.on('messageReactionAdd', (messageReaction, user) => {
     if (messageReaction.emoji.name != '✅') return;
-    if (messageReaction.message.channel.topic.includes('&join')) return; //name.slice(2) !== '-player') return;
+    if (!messageReaction.message.channel.topic.includes('&join')) return; //name.slice(2) !== '-player') return;
     const ID = messageReaction.message.channel.name.split('-')[0];
     if (messageReaction.message.member.roles.cache.find(r => r.name === `Game:${ID}`)) return;
     if (RTH.member(user).roles.cache.find(r => r.name === `Game_GM:${ID}`)) {
