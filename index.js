@@ -428,7 +428,10 @@ function joinSever(member) {
 function updatestat() {
     // memRole.members.size
     //guild.members.filter(member => !member.user.bot).size
-    MainCat.setName('▬ สมาชิก : ' + RTH.members.cache.filter(member => member.roles.cache.get(memRole.id)).size + ' ▬');
+
+    RTH.members.fetch().then(guild => {
+        MainCat.setName('▬ สมาชิก : ' + guild.filter(member => member.roles.cache.get(memRole.id)).size + ' ▬');
+      });
 }
 
 //GAMEMANGER
