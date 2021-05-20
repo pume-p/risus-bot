@@ -126,7 +126,7 @@ client.on('message', message => { //return;//X
                 return;
             }
             break;
-        case '731766891512856576':
+        /*case '731766891512856576':
             if (message.content.startsWith('%') && message.member.roles.cache.get(modRole.id)) {
                 const args = message.content.trim().split(/ +/);
                 const warnM = message.mentions.members.first();
@@ -157,7 +157,7 @@ client.on('message', message => { //return;//X
                 message.channel.send('> **`% [+/-, จำนวนWarning] [@ผู้จะแก้จำนวนWarning]`**');
                 return;
             }
-            break;
+            break;*/
         case '731743829207547954':
             if (message.content.startsWith('$#$')) {
                 if (message.content.startsWith('$#$X')) {
@@ -397,8 +397,8 @@ async function sendmshtoall(text) {
 
 client.on('guildMemberRemove', member => {
     updatestat();
-    const wanrNum = member.roles.cache.find(r => r.name.indexOf('Warning:') > -1);
-    if (wanrNum) RTH.channels.cache.get('748200435701121035').send(`${member.user.username} - ${wanrNum}`).catch(console.error);
+    /*const wanrNum = member.roles.cache.find(r => r.name.indexOf('Warning:') > -1);
+    if (wanrNum) RTH.channels.cache.get('748200435701121035').send(`${member.user.username} - ${wanrNum}`).catch(console.error);*/
 });
 
 client.on('guildMemberAdd', member => joinSever(member));
@@ -428,7 +428,7 @@ function joinSever(member) {
 function updatestat() {
     // memRole.members.size
     //guild.members.filter(member => !member.user.bot).size
-    //MainCat.setName('▬ main | member : ' + RTH.members.cache.filter(member => member.roles.cache.get(memRole.id)).size + ' ▬');
+    MainCat.setName('▬ สมาชิก : ' + RTH.members.cache.filter(member => member.roles.cache.get(memRole.id)).size + ' ▬');
 }
 
 //GAMEMANGER
