@@ -33,7 +33,7 @@ client.once('ready', () => {
     fs.readdir(musicFolder, (err, files) => music = files);
     RTH = client.guilds.cache.get('685745431107338271');
     MainCat = RTH.channels.cache.get('731715856840785951');
-    lodge = RTH.channels.cache.get('729738385681547365'); //685745431107338275
+    lodge = RTH.channels.cache.get('844910312083423232'); //685745431107338275
     Gamecen = RTH.channels.cache.get('733718518754836490');
     risusThingScoreBoardCH = RTH.channels.cache.get('831413587813466152');
     memRole = RTH.roles.cache.get('685759082702962715');
