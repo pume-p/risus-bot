@@ -333,7 +333,8 @@ client.on('message', message => { //return;//X
                                 '> **5 - เฉพาะGMที่เห็นห้อง**'); */
                         if (!(args[0] && args[1] && (args[0] >= 1 && args[0] <= 2) && (args[1].length >= 1 && args[1].length <= 60))) {
                             message.channel.send('> **รายละเอียดไม่ครบ!**\n' +
-                                '> **`&tc [1/2] [ชื่อห้อง]`**\n' +
+                                '> **`&tc [0/1/2] [ชื่อห้อง]`**\n' +
+                                '> **0 - คนนอกส่งข้อความได้**\n' +
                                 '> **1 - ผู้เล่นส่งข้อความได้**\n' +
                                 '> **2 - เฉพาะGMส่งข้อความได้**\n' +
                                 '> ***ชื่อห้องไม่สามารถถูกเว้นวรรคได้***');
@@ -342,6 +343,7 @@ client.on('message', message => { //return;//X
                         //if (args[0] === 'v') IsVoice = true
                         let gm_only = 2;
                         if (args[0] == 2) gm_only = 3;
+                        if (args[0] == 0) gm_only = 1;
                         GRCreateChannel(ID, GR, args[1], '', false, gm_only, 0, Role, GMRole); //, `<@${message.author.id}>`);
                         return;
                     case 'vc':
@@ -520,7 +522,7 @@ function CreateNewGame(Type, Name, Creator) {
                         GRCreateChannel(ID, NewGameRoom, 'chat', 'ห้องchatเกม! | &join เพื่อเข้า | GMกด✅เพื่อรับผู้เล่น', false, 1, 0, Role, GMRole);
                         break;
                     case 'C':
-                        GRCreateChannel(ID, NewGameRoom, 'chat', 'ห้องchatเกม! | &join เพื่อเข้า | GMกด✅เพื่อรับผู้เล่น', false, 1, 0, Role, GMRole, `<@${Creator.id}>`);
+                        GRCreateChannel(ID, NewGameRoom, 'chat', 'ห้องchatเกม! | &join เพื่อเข้า | GMกด✅เพื่อรับผู้เล่น | อย่าลืมpin', false, 1, 0, Role, GMRole, `<@${Creator.id}>`);
                         break;
                     case 'L':
                         GRCreateChannel(ID, NewGameRoom, 'info', 'ห้องสำหรับลงข้อมูล Game', false, 3, 2, Role, GMRole, `<@${Creator.id}>`);
@@ -605,6 +607,8 @@ function GRSetPerm(channel, IsVoice, permLv, NonGmPower, Role, GMRole) {
         };
     }
     switch (permLv) {
+        case 1:
+            break;
         case 2:
             channel.updateOverwrite(RTH.roles.everyone, REMOVEpermInteract);
             break;
