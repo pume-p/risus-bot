@@ -126,38 +126,38 @@ client.on('message', message => { //return;//X
                 return;
             }
             break;
-        /*case '731766891512856576':
-            if (message.content.startsWith('%') && message.member.roles.cache.get(modRole.id)) {
-                const args = message.content.trim().split(/ +/);
-                const warnM = message.mentions.members.first();
-                args.shift();
-                if (args[0] && warnM) {
-                    const Wnum = parseInt(args[0]);
-                    if (Wnum && Wnum !== 0) {
-                        const oldWarn = warnM.roles.cache.find(r => r.name.indexOf('Warning:') > -1);
-                        let WarnNum = Wnum;
-                        if (oldWarn) WarnNum += parseInt(oldWarn.name.slice(8));
-                        RTH.roles.create({
-                            data: {
-                                name: 'Warning:' + WarnNum,
-                                color: 'e70e02'
-                            }
-                        }).then(newWarn => {
-                            if (oldWarn) {
-                                warnM.roles.remove(oldWarn);
-                                if (oldWarn.members.size <= 1)
-                                    oldWarn.delete();
-                            }
-                            warnM.roles.add(newWarn);
-                        });
-                        message.react('📌');
-                        return;
+            /*case '731766891512856576':
+                if (message.content.startsWith('%') && message.member.roles.cache.get(modRole.id)) {
+                    const args = message.content.trim().split(/ +/);
+                    const warnM = message.mentions.members.first();
+                    args.shift();
+                    if (args[0] && warnM) {
+                        const Wnum = parseInt(args[0]);
+                        if (Wnum && Wnum !== 0) {
+                            const oldWarn = warnM.roles.cache.find(r => r.name.indexOf('Warning:') > -1);
+                            let WarnNum = Wnum;
+                            if (oldWarn) WarnNum += parseInt(oldWarn.name.slice(8));
+                            RTH.roles.create({
+                                data: {
+                                    name: 'Warning:' + WarnNum,
+                                    color: 'e70e02'
+                                }
+                            }).then(newWarn => {
+                                if (oldWarn) {
+                                    warnM.roles.remove(oldWarn);
+                                    if (oldWarn.members.size <= 1)
+                                        oldWarn.delete();
+                                }
+                                warnM.roles.add(newWarn);
+                            });
+                            message.react('📌');
+                            return;
+                        }
                     }
+                    message.channel.send('> **`% [+/-, จำนวนWarning] [@ผู้จะแก้จำนวนWarning]`**');
+                    return;
                 }
-                message.channel.send('> **`% [+/-, จำนวนWarning] [@ผู้จะแก้จำนวนWarning]`**');
-                return;
-            }
-            break;*/
+                break;*/
         case '731743829207547954':
             if (message.content.startsWith('$#$')) {
                 if (message.content.startsWith('$#$X')) {
@@ -430,8 +430,10 @@ function updatestat() {
     //guild.members.filter(member => !member.user.bot).size
 
     RTH.members.fetch().then(guild => {
-        MainCat.setName('▬ สมาชิก : ' + guild.filter(member => member.roles.cache.get(memRole.id)).size + ' ▬');
-      });
+        const CurrentNUMMEM = guild.filter(member => member.roles.cache.get(memRole.id)).size;
+        if (MainCat.name != '▬ สมาชิก : ' + CurrentNUMMEM + ' ▬')
+            MainCat.setName('▬ สมาชิก : ' + CurrentNUMMEM + ' ▬');
+    });
 }
 
 //GAMEMANGER
