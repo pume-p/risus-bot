@@ -433,7 +433,6 @@ function getRandomWelcomeText() {
     randomWelcomeTextCurrent.splice(randomNUM, 1);
     return RANDOMWELCOME;
 }
-var randomWelcomeTextCurrent = randomWelcomeTextOG.map((x) => x);
 const randomWelcomeTextOG = ['ลองเช็คเว็บเรารึยัง!? https://www.risusiverse-thai.com/',
     'ลองแนะนำตัวดูสิฮะ!',
     'รู้เปล่า!? ถ้าคุณพิมทักทายคุณจะได้roleสมาชิก!',
@@ -467,7 +466,7 @@ const randomWelcomeTextOG = ['ลองเช็คเว็บเรารึ�
     'แนะนำตัวกันบ้างสิ!',
     'serverนี้มีห้องเกมอยู่นะ มันแค่ซ่อนอยู่จนกว่าคุณจะทักทาย!'
 ];
-
+var randomWelcomeTextCurrent = randomWelcomeTextOG.map((x) => x);
 //STAT
 
 function updatestat() {
