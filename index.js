@@ -421,11 +421,20 @@ function joinSever(member) {
         .setColor('#2ecc71')
         .setAuthor(`ยินดีต้อนรับ ${member.displayName} สู่Risusiverse Thai!`, member.user.avatarURL())
         .setDescription(`${member}\n\n` +
-        `*${randomWelcomeText[Math.floor(Math.random() * randomWelcomeText.length)]}*`
+            `*${getRandomWelcomeText()}*`
         )).then(msg => msg.react('👋'));
 }
 
-const randomWelcomeText = ['ลองเช็คเว็บเรารึยัง!? https://www.risusiverse-thai.com/',
+function getRandomWelcomeText() {
+    if (randomWelcomeTextCurrent.length == 0)
+        randomWelcomeTextOG.map((x) => x);
+    var randomNUM = Math.floor(Math.random() * randomWelcomeTextCurrent.length);
+    let RANDOMWELCOME = randomWelcomeTextCurrent[randomNUM];
+    randomWelcomeTextCurrent.splice(randomNUM, 1);
+    return RANDOMWELCOME;
+}
+var randomWelcomeTextCurrent = randomWelcomeTextOG.map((x) => x);
+const randomWelcomeTextOG = ['ลองเช็คเว็บเรารึยัง!? https://www.risusiverse-thai.com/',
     'ลองแนะนำตัวดูสิฮะ!',
     'รู้เปล่า!? ถ้าคุณพิมทักทายคุณจะได้roleสมาชิก!',
     'ลองเช็ควีดีโอวิธีการเล่นเรารึยัง? https://www.youtube.com/watch?v=q5AAxlOouuc&list=PLYxvQ7DmSOyqMYmWVCWGmfUZU5mouwzXl&index=1',
@@ -455,7 +464,8 @@ const randomWelcomeText = ['ลองเช็คเว็บเรารึย�
     'บุคคลในตำนานที่คำทำนายพูดถึงได้มาเยือนแล้ว...',
     'ฮัลโหล',
     'ดีจ้า',
-    'แนะนำตัวกันบ้างสิ!'
+    'แนะนำตัวกันบ้างสิ!',
+    'serverนี้มีห้องเกมอยู่นะ มันแค่ซ่อนอยู่จนกว่าคุณจะทักทาย!'
 ];
 
 //STAT
