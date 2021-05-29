@@ -421,7 +421,7 @@ function joinSever(member) {
         .setColor('#2ecc71')
         .setAuthor(`ยินดีต้อนรับ ${member.displayName} สู่Risusiverse Thai!`, member.user.avatarURL())
         .setDescription(`${member}\n\n` +
-            `*${getRandomWelcomeText()}*`
+            `***${getRandomWelcomeText()}***`
         )).then(msg => msg.react('👋'));
 }
 
