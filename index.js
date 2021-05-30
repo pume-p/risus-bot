@@ -418,12 +418,14 @@ function joinSever(member) {
 
     member.roles.add(gusRole);
     client.channels.cache.get('685761491760447518').send(new Discord.MessageEmbed()
-        .setColor('#2ecc71')
+        .setColor(randomCOlorHEX[Math.floor(Math.random() * randomCOlorHEX.length)])
         .setAuthor(`ยินดีต้อนรับ ${member.displayName} สู่Risusiverse Thai!`, member.user.avatarURL())
         .setDescription(`${member}\n\n` +
             `***${getRandomWelcomeText()}***`
         )).then(msg => msg.react('👋'));
 }
+
+const randomCOlorHEX = ['#2ecc71','#0aa6e2','#e25b0a','#e62424','#e5fe04','#76008a','#ffafc8'];
 
 function getRandomWelcomeText() {
     if (randomWelcomeTextCurrent.length == 0)
