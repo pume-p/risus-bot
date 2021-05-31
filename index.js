@@ -418,7 +418,7 @@ function joinSever(member) {
 
     member.roles.add(gusRole);
     client.channels.cache.get('685761491760447518').send(new Discord.MessageEmbed()
-            .setColor(getRandomColor()])
+        .setColor(getRandomColor())
         .setAuthor(`ยินดีต้อนรับ ${member.displayName} สู่Risusiverse Thai!`, member.user.avatarURL())
         .setDescription(`${member}\n\n` +
             `***${getRandomWelcomeText()}***`
