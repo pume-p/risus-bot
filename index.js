@@ -44,7 +44,9 @@ client.once('ready', () => {
     gmRole = RTH.roles.cache.get('760441106160287744');
 
     //update
-    RTH.members.cache.filter(members => members.roles.cache.size === 1).forEach(member => joinSever(member));
+    RTH.members.fetch().then(mem => {
+        mem.filter(members => members.roles.cache.size === 1).forEach(member => joinSever(member));
+    });
     updatestat();
     StartVC();
 
