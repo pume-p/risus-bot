@@ -418,18 +418,28 @@ function joinSever(member) {
 
     member.roles.add(gusRole);
     client.channels.cache.get('685761491760447518').send(new Discord.MessageEmbed()
-        .setColor(randomCOlorHEX[Math.floor(Math.random() * randomCOlorHEX.length)])
+            .setColor(getRandomColor()])
         .setAuthor(`ยินดีต้อนรับ ${member.displayName} สู่Risusiverse Thai!`, member.user.avatarURL())
         .setDescription(`${member}\n\n` +
             `***${getRandomWelcomeText()}***`
         )).then(msg => msg.react('👋'));
 }
 
-const randomCOlorHEX = ['#2ecc71','#0aa6e2','#e25b0a','#e62424','#e5fe04','#76008a','#ffafc8'];
+function getRandomColor() {
+    if (randomColor.length == 0)
+        randomColor = randomCOlorHEX.map((x) => x);
+    var randomNUM = Math.floor(Math.random() * randomColor.length);
+    let RANDOMWELCOME = randomColor[randomNUM];
+    randomColor.splice(randomNUM, 1);
+    return RANDOMWELCOME;
+}
+const randomCOlorHEX = ['#2ecc71', '#0aa6e2', '#e25b0a', '#e62424', '#e5fe04', '#76008a', '#ffafc8'];
+var randomColor = randomCOlorHEX.map((x) => x);
+
 
 function getRandomWelcomeText() {
     if (randomWelcomeTextCurrent.length == 0)
-        randomWelcomeTextOG.map((x) => x);
+        randomWelcomeTextCurrent = randomWelcomeTextOG.map((x) => x);
     var randomNUM = Math.floor(Math.random() * randomWelcomeTextCurrent.length);
     let RANDOMWELCOME = randomWelcomeTextCurrent[randomNUM];
     randomWelcomeTextCurrent.splice(randomNUM, 1);
