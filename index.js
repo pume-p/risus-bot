@@ -99,8 +99,10 @@ client.on('message', message => { //return;//X
     }
     if (message.type !== 'DEFAULT') return;
     if (message.author.bot) return;
-    message.member.roles.add(memRole);
-    message.member.roles.remove(gusRole);
+    if (message.author.username.charAt(0) == '<') {
+        message.member.roles.add(memRole);
+        message.member.roles.remove(gusRole);
+    }
     if (!message.member.roles.cache.find(r => r.name.indexOf('Game_GM:') > -1)) {
         message.member.roles.remove(djRole);
         message.member.roles.remove(gmRole);
