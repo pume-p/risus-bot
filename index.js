@@ -99,7 +99,7 @@ client.on('message', message => { //return;//X
     }
     if (message.type !== 'DEFAULT') return;
     if (message.author.bot) return;
-    if (message.author.username.charAt(0) == '<') {
+    if (message.member.nickname.charAt(0) === '<') {
         message.member.roles.add(memRole);
         message.member.roles.remove(gusRole);
     }
