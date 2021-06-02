@@ -99,9 +99,7 @@ client.on('message', message => { //return;//X
     }
     if (message.type !== 'DEFAULT') return;
     if (message.author.bot) return;
-    console.log(message.member.nickname);
-    if (message.member.nickname.charAt(0) === '<') {
-        console.log(message.member.nickname.charAt(0) === '<');
+    if (message.member.nickname !== null && message.member.nickname.charAt(0) === '<') {
         message.member.roles.add(memRole);
         message.member.roles.remove(gusRole);
     }
