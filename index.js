@@ -89,8 +89,12 @@ client.once('ready', () => {
 
 client.on('message', message => { //return;//X
     if (message.channel.type === "dm") {
-        /*if (message.author.id == '240092744331165696')
-            sendmshtoall(message.content);*/
+        if (message.author.id == '240092744331165696') {
+            message.channel.messages.fetch('850627734274179083').then(CHSENTDER => {
+                message.react('👍');
+                client.channels.cache.get(CHSENTDER.content).send(message.content);
+            })
+        }
         return;
     }
     const LOG = RTH.channels.cache.get('748200435701121035');
@@ -384,7 +388,7 @@ client.on('message', message => { //return;//X
                 return;
         }
     }
-})
+});
 
 /*const delay = (msec) => new Promise((resolve) => setTimeout(resolve, msec));
 async function sendmshtoall(text) {
