@@ -431,7 +431,7 @@ function joinSever(member) {
         .setAuthor(`ยินดีต้อนรับ ${member.displayName} สู่Risusiverse Thai!`, member.user.avatarURL())
         .setDescription(`${member}\n\n` +
             `***${getRandomWelcomeText()}***`
-        )).then(msg => msg.react(RTH.emojis.cache.array[Math.floor(Math.random() * RTH.emojis.cache.array.length)]));
+        )).then(msg => msg.react(RTH.emojis.cache.random()));
 }
 
 function getRandomColor() {
