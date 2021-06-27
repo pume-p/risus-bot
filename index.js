@@ -727,7 +727,7 @@ client.on('voiceStateUpdate', () => {
 });
 
 function StartVC() {
-    client.user.setActivity('Risus v2.01', {
+    client.user.setActivity('Risus v2.02', {
         type: 'PLAYING',
         url: 'https://sites.google.com/site/risusiverseth/home'
     });
