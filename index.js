@@ -767,7 +767,7 @@ function loopmusic(connection, lodge, PrevMusic) {
                 console.log('restarting music\n---');
             } else {
                 playing = false;
-                client.user.setActivity('Risus v2.01', {
+                client.user.setActivity('Risus v2.02', {
                     type: 'PLAYING',
                     url: 'https://sites.google.com/site/risusiverseth/home'
                 });
