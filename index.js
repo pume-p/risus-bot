@@ -114,6 +114,9 @@ client.on('message', message => { //return;//X
     updatestat();
 
     switch (message.channel.id) {
+        case '859823227047247902':
+            client.channels.cache.get('859822650801258506').send(message.content);
+            break;
         case '744171230080401519':
             if (message.content.startsWith('+')) {
                 const ReturnText = CreateNewGame(message.content.charAt(1), message.content.slice(2), message.member);
