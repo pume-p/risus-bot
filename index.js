@@ -376,7 +376,14 @@ client.on('message', message => { //return;//X
                         RTH.roles.cache.forEach(role => {
                             if (role.name.endsWith(ID)) role.delete();
                         });
-                        GR.children.forEach(channel => channel.delete());
+                        GR.children.forEach(channel => {
+                            if (channel.type = 'voice')
+                                channel.delete()
+                            else {
+                                channel.setParent('860949343633014814');
+                                channel.send(GR.name);
+                            }
+                        });
                         GR.delete();
                         return;
                     default:
