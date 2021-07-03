@@ -377,7 +377,7 @@ client.on('message', message => { //return;//X
                             if (role.name.endsWith(ID)) role.delete();
                         });
                         GR.children.forEach(channel => {
-                            if (channel.type = 'voice')
+                            if (channel.type === 'voice')
                                 channel.delete()
                             else {
                                 channel.setParent('860949343633014814');
