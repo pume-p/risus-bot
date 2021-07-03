@@ -114,8 +114,8 @@ client.on('message', message => { //return;//X
     updatestat();
 
     switch (message.channel.id) {
-        case '859823227047247902':
-            client.channels.cache.get('859822650801258506').send(message.content);
+        case '860959624122728498':
+            client.channels.cache.get('844897409372520478').send(message.content);
             break;
         case '744171230080401519':
             if (message.content.startsWith('+')) {
