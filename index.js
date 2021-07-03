@@ -381,6 +381,7 @@ client.on('message', message => { //return;//X
                                 channel.delete()
                             else {
                                 channel.setParent('860949343633014814');
+                                channel.setPosition(0);
                                 channel.send(`\`${GR.name}\``);
                             }
                         });
