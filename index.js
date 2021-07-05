@@ -116,6 +116,7 @@ client.on('message', message => { //return;//X
     switch (message.channel.id) {
         case '860959624122728498':
             client.channels.cache.get('844897409372520478').send(message.content);
+            message.react('👍');
             break;
         case '744171230080401519':
             if (message.content.startsWith('+')) {
