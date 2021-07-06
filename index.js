@@ -585,7 +585,7 @@ function CreateNewGame(Type, Name, Creator) {
                         allow: allowperm.concat(['MANAGE_MESSAGES', 'MANAGE_CHANNELS'])
                     }, {
                         id: GMRole.id,
-                        allow: allowperm.concat(['MANAGE_MESSAGES', 'PRIORITY_SPEAKER', 'USE_SLASH_COMMANDS'])
+                        allow: allowperm.concat(['MANAGE_MESSAGES', 'PRIORITY_SPEAKER'])
                     }, {
                         id: Role.id,
                         allow: allowperm
